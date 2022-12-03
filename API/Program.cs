@@ -16,12 +16,14 @@ namespace API
         public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
+            // using a single time scope to create a database if not exists
             using var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider;
             try
             {
                 var context = services.GetRequiredService<DataContext>();
                 await context.Database.MigrateAsync();
+                // seeding data
                 await Seed.SeedData(context);
             }
             catch (Exception ex)
