@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -19,8 +20,10 @@ namespace Application.Toolings
         public class Handler : IRequestHandler<Command>
         {
             private readonly DataContext _context;
-            public Handler(DataContext context)
+            private readonly IMapper _mapper;
+            public Handler(DataContext context, IMapper mapper)
             {
+                _mapper = mapper;
                 _context = context;
             }
 
@@ -30,7 +33,8 @@ namespace Application.Toolings
                 .Include(x => x.Product)
                 .FirstOrDefaultAsync(x => x.Id == request.Tooling.Id);
 
-                tooling.PSNumber = request.Tooling.PSNumber ?? tooling.PSNumber;
+                _mapper.Map(request.Tooling, tooling);
+
                 await _context.SaveChangesAsync();
                 return Unit.Value;
             }
