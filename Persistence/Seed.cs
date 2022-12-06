@@ -23,10 +23,12 @@ namespace Persistence
                     IsInProduction=true,
                     NumberOfImpressions= 4,
                     PunnetNumber="PN332467",
-                    Product = new Product
+                    Products = new Product[]
                     {
-                        Name="Waitrose stir fry",
-                        IsAllergen=true
+                        new Product{
+                            Name="The sublime salad",
+                            IsAllergen = false,
+                        }
                     }
                 },
                 new Tooling
@@ -38,10 +40,16 @@ namespace Persistence
                     IsInProduction=true,
                     NumberOfImpressions= 4,
                     PunnetNumber="PN33399980",
-                    Product = new Product
+                    Products = new Product[]
                     {
-                        Name="Tesco corn",
-                        IsAllergen=false
+                        new Product{
+                            Name="Melon and grape",
+                            IsAllergen = false,
+                        },
+                        new Product{
+                            Name="Banana sunrise",
+                            IsAllergen = false,
+                        },
                     }
                 },
             };

@@ -24,15 +24,6 @@ export default function NavBar() {
           Toolings
         </Typography>
         <Category sx={{ display: { xs: "block", sm: "none" } }} />
-        <Button
-          color="success"
-          variant="contained"
-          size="small"
-          sx={{ display: { xs: "none", sm: "block" } }}
-        >
-          Create Tooling
-        </Button>
-        <AddIcon sx={{ display: { xs: "block", sm: "none" } }} />
       </Toolbar>
     </AppBar>
   );

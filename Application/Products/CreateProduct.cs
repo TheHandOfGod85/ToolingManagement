@@ -1,21 +1,23 @@
+using Application.DTOs.ProductDTO;
 using AutoMapper;
 using Domain;
 using MediatR;
 using Persistence;
 
-namespace Application.Toolings
+namespace Application.Products
 {
-    public class Edit
+    public class CreateProduct
     {
         public class Command : IRequest
         {
-            public Tooling Tooling { get; set; }
+            public Product Product { get; set; }
         }
 
         public class Handler : IRequestHandler<Command>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
+
             public Handler(DataContext context, IMapper mapper)
             {
                 _mapper = mapper;
@@ -24,10 +26,7 @@ namespace Application.Toolings
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                var tooling = await _context.Toolings.FindAsync(request.Tooling.Id);
-
-                _mapper.Map(request.Tooling, tooling);
-
+                _context.Products.Add(request.Product);
                 await _context.SaveChangesAsync();
                 return Unit.Value;
             }

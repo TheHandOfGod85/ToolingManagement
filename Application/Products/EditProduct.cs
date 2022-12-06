@@ -1,15 +1,17 @@
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Domain;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Toolings
+namespace Application.Products
 {
-    public class Edit
+    public class EditProduct
     {
         public class Command : IRequest
         {
-            public Tooling Tooling { get; set; }
+            public Product Product { get; set; }
         }
 
         public class Handler : IRequestHandler<Command>
@@ -24,10 +26,9 @@ namespace Application.Toolings
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                var tooling = await _context.Toolings.FindAsync(request.Tooling.Id);
+                var product = await _context.Products.FindAsync(request.Product.Id);
 
-                _mapper.Map(request.Tooling, tooling);
-
+                _mapper.Map(request.Product, product);
                 await _context.SaveChangesAsync();
                 return Unit.Value;
             }

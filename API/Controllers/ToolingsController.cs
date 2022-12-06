@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Application.DTOs.ToolingDTO;
 using Application.Toolings;
 using Domain;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
 
 namespace API.Controllers
 {
@@ -15,14 +9,14 @@ namespace API.Controllers
     {
         // get request that use mediator pattern to return a list of toolings
         [HttpGet]
-        public async Task<ActionResult<List<Tooling>>> GetToolings()
+        public async Task<ActionResult<List<GetToolingDto>>> GetToolings()
         {
             return await Mediator.Send(new List.Query());
 
         }
         // return a single tooling using mediator 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Tooling>> GetTooling(Guid id)
+        public async Task<ActionResult<GetToolingDto>> GetTooling(Guid id)
         {
             return await Mediator.Send(new Details.Query { Id = id });
         }

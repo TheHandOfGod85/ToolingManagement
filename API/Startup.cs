@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using API.Extensions;
 using Application.Core;
@@ -33,7 +34,9 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(
+                x => x.JsonSerializerOptions
+                .ReferenceHandler = ReferenceHandler.IgnoreCycles);
             services.AddApplicationServices(_config);
         }
 
