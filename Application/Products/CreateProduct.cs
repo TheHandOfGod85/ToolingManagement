@@ -1,4 +1,3 @@
-using Application.DTOs.ProductDTO;
 using AutoMapper;
 using Domain;
 using MediatR;

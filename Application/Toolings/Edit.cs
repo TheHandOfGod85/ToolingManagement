@@ -1,5 +1,7 @@
+using Application.Toolings.Validator;
 using AutoMapper;
 using Domain;
+using FluentValidation;
 using MediatR;
 using Persistence;
 
@@ -10,6 +12,15 @@ namespace Application.Toolings
         public class Command : IRequest
         {
             public Tooling Tooling { get; set; }
+        }
+
+         // validator 
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.Tooling).SetValidator(new ToolingValidator());
+            }
         }
 
         public class Handler : IRequestHandler<Command>

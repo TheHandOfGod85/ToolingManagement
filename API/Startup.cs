@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using API.Extensions;
 using Application.Core;
 using Application.Toolings;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,6 +40,8 @@ namespace API
                 x => x.JsonSerializerOptions
                 .ReferenceHandler = ReferenceHandler.IgnoreCycles);
             services.AddApplicationServices(_config);
+            services.AddFluentValidationAutoValidation();
+            services.AddValidatorsFromAssemblyContaining<Create>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
