@@ -4,17 +4,18 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Application.DTOs.ProductDTO;
+using Application.Core;
 
 namespace Application.Products
 {
     public class ListProduct
     {
-        public class Query : IRequest<List<GetProductDto>>
+        public class Query : IRequest<ErrorResult<List<GetProductDto>>>
         {
 
         }
 
-        public class Handler : IRequestHandler<Query, List<GetProductDto>>
+        public class Handler : IRequestHandler<Query, ErrorResult<List<GetProductDto>>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -24,14 +25,14 @@ namespace Application.Products
                 _context = context;
             }
 
-            public async Task<List<GetProductDto>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<ErrorResult<List<GetProductDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var products = await _context.Products
-                .ProjectTo<GetProductDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+                return ErrorResult<List<GetProductDto>>.Success(await _context.Products
+                   .ProjectTo<GetProductDto>(_mapper.ConfigurationProvider)
+                   .ToListAsync());
 
 
-                return products;
+
             }
         }
     }

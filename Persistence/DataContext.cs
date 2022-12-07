@@ -21,8 +21,7 @@ namespace Persistence
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-
+            builder.Entity<Product>().HasOne(prt => prt.Tooling).WithMany(tlg => tlg.Products);
         }
     }
 }

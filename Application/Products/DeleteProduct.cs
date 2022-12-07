@@ -1,3 +1,4 @@
+using Application.Core;
 using AutoMapper;
 using MediatR;
 using Persistence;
@@ -6,12 +7,12 @@ namespace Application.Products
 {
     public class DeleteProduct
     {
-        public class Command : IRequest
+        public class Command : IRequest<ErrorResult<Unit>>
         {
             public int Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command>
+        public class Handler : IRequestHandler<Command, ErrorResult<Unit>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -22,12 +23,14 @@ namespace Application.Products
                 _context = context;
             }
 
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<ErrorResult<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var product = await _context.Products.FindAsync(request.Id);
+                if (product == null) return null;
                 _context.Remove(product);
-                await _context.SaveChangesAsync();
-                return Unit.Value;
+                var result = await _context.SaveChangesAsync() > 0;
+                if (!result) return ErrorResult<Unit>.Failure("Failed to delete the product");
+                return ErrorResult<Unit>.Success(Unit.Value);
             }
         }
     }

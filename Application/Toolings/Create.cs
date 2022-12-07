@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Core;
 using Application.Toolings.Validator;
 using Domain;
 using FluentValidation;
@@ -13,7 +14,7 @@ namespace Application.Toolings
     public class Create
     {
         // a command following the  CQRS pattern allos to modify the database
-        public class Command : IRequest
+        public class Command : IRequest<ErrorResult<Unit>>
         {
             public Tooling Tooling { get; set; }
         }
@@ -27,7 +28,7 @@ namespace Application.Toolings
             }
         }
 
-        public class Handler : IRequestHandler<Command>
+        public class Handler : IRequestHandler<Command, ErrorResult<Unit>>
         {
             private readonly DataContext _context;
             public Handler(DataContext context)
@@ -35,12 +36,13 @@ namespace Application.Toolings
                 _context = context;
             }
 
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<ErrorResult<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 _context.Toolings.Add(request.Tooling);
-                await _context.SaveChangesAsync();
+                var result = await _context.SaveChangesAsync() > 0;
+                if (!result) return ErrorResult<Unit>.Failure("Failed to create a new tooling");
 
-                return Unit.Value;
+                return ErrorResult<Unit>.Success(Unit.Value);
             }
         }
     }

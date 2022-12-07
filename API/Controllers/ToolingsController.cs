@@ -9,35 +9,35 @@ namespace API.Controllers
     {
         // get request that use mediator pattern to return a list of toolings
         [HttpGet]
-        public async Task<ActionResult<List<GetToolingDto>>> GetToolings()
+        public async Task<IActionResult> GetToolings()
         {
-            return await Mediator.Send(new List.Query());
+            return HandleResult(await Mediator.Send(new List.Query()));
 
         }
         // return a single tooling using mediator 
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetToolingDto>> GetTooling(Guid id)
+        public async Task<IActionResult> GetTooling(Guid id)
         {
-            return await Mediator.Send(new Details.Query { Id = id });
+            return HandleResult(await Mediator.Send(new Details.Query { Id = id }));
         }
         // creating a tooling
         [HttpPost]
         public async Task<IActionResult> CreateTooling(Tooling tooling)
         {
-            return Ok(await Mediator.Send(new Create.Command { Tooling = tooling }));
+            return HandleResult(await Mediator.Send(new Create.Command { Tooling = tooling }));
         }
         //updating toolings
         [HttpPut("{id}")]
         public async Task<IActionResult> EditTooling(Guid id, Tooling tooling)
         {
             tooling.Id = id;
-            return Ok(await Mediator.Send(new Edit.Command { Tooling = tooling }));
+            return HandleResult(await Mediator.Send(new Edit.Command { Tooling = tooling }));
         }
         //deleteing a tooling
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTooling(Guid id)
         {
-            return Ok(await Mediator.Send(new Delete.Command { Id = id }));
+            return HandleResult(await Mediator.Send(new Delete.Command { Id = id }));
         }
     }
 }

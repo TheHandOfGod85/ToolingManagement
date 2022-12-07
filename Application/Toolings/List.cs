@@ -1,3 +1,4 @@
+using Application.Core;
 using Application.DTOs.ToolingDTO;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -13,10 +14,10 @@ namespace Application.Toolings
     public class List
     {
         // this is the Query to request a list of toolings
-        public class Query : IRequest<List<GetToolingDto>> { }
+        public class Query : IRequest<ErrorResult<List<GetToolingDto>>> { }
 
         // the handler using the request, in this case a query that return a list of toolings
-        public class Handler : IRequestHandler<Query, List<GetToolingDto>>
+        public class Handler : IRequestHandler<Query, ErrorResult<List<GetToolingDto>>>
         {
             // Inject the data context
             private readonly DataContext _context;
@@ -27,12 +28,12 @@ namespace Application.Toolings
                 _context = context;
             }
 
-            public async Task<List<GetToolingDto>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<ErrorResult<List<GetToolingDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 // return a list of toolings including the Product
-                return await _context.Toolings
+                return ErrorResult<List<GetToolingDto>>.Success(await _context.Toolings
                 .ProjectTo<GetToolingDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+                .ToListAsync());
             }
         }
     }

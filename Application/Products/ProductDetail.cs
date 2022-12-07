@@ -1,3 +1,4 @@
+using Application.Core;
 using Application.DTOs.ProductDTO;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -10,10 +11,10 @@ namespace Application.Products
 {
     public class ProductDetail
     {
-        public class Query : IRequest<GetProductDto>
+        public class Query : IRequest<ErrorResult<GetProductDto>>
         { public int Id { get; set; } }
 
-        public class Handler : IRequestHandler<Query, GetProductDto>
+        public class Handler : IRequestHandler<Query, ErrorResult<GetProductDto>>
         {
             private readonly DataContext _dataContext;
             private readonly IMapper _mapper;
@@ -24,13 +25,13 @@ namespace Application.Products
                 _mapper = mapper;
             }
 
-            public async Task<GetProductDto> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<ErrorResult<GetProductDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var product = await _dataContext.Products
                 .ProjectTo<GetProductDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(x => x.Id == request.Id);
 
-                return product;
+                return ErrorResult<GetProductDto>.Success(product);
             }
         }
     }
