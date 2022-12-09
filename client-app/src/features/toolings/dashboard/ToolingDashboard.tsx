@@ -1,13 +1,8 @@
-import { Box, Button, ButtonGroup, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
-import { Tooling } from "../../../app/layout/models/tooling";
 import GridTable from "./GridTable";
 
-interface Props {
-  toolings: Tooling[];
-}
-
-export default function ToolingDashboard({ toolings }: Props) {
+export default function ToolingDashboard() {
   return (
     <>
       <Box sx={{ height: 400, width: "100%" }}>
@@ -18,10 +13,9 @@ export default function ToolingDashboard({ toolings }: Props) {
         >
           Manage Toolings
         </Typography>
-        <GridTable toolings={toolings} />
+        <GridTable />
       </Box>
-      <Box sx={{ mt: 10 }}>
-      </Box>
+      <Box sx={{ mt: 10 }}></Box>
     </>
   );
 }

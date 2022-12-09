@@ -1,26 +1,30 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Tooling } from "./models/tooling";
 import NavBar from "./NavBar";
 import ToolingDashboard from "../../features/toolings/dashboard/ToolingDashboard";
+import { Grid } from "@mui/material";
+import { Route } from "react-router-dom";
+import HomePage from "../../features/toolings/home/HomePage";
+import { useStore } from "../stores/store";
+import { useEffect } from "react";
+import { observer } from "mobx-react-lite";
+import CreateToolingForm from "../../features/toolings/form/CreateToolingForm";
 
 function App() {
-  const [toolings, setToolings] = useState<Tooling[]>([]);
+  const { toolingStore } = useStore();
 
   useEffect(() => {
-    axios
-      .get<Tooling[]>("http://localhost:5000/api/toolings")
-      .then((response) => {
-        console.log(response);
-        setToolings(response.data);
-      });
-  }, []);
+    toolingStore.loadToolings();
+  }, [toolingStore]);
+
   return (
     <>
       <NavBar />
-      <ToolingDashboard toolings={toolings}/>
+      <Grid container sx={{ mt: "7em" }}>
+        <Route exact path={"/"} component={HomePage} />
+        <Route exact path={"/toolings"} component={ToolingDashboard} />
+        <Route exact path={"/createTooling"} component={CreateToolingForm} />
+      </Grid>
     </>
   );
 }
 
-export default App;
+export default observer(App);

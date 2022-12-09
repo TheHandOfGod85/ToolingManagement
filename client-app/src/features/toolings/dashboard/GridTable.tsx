@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   DataGrid,
   GridRenderEditCellParams,
@@ -9,15 +9,18 @@ import {
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import { Button, ButtonGroup, IconButton } from "@mui/material";
-import { Tooling } from "../../../app/layout/models/tooling";
+import { Product } from "../../../app/layout/models/tooling";
 import AddToolingModal from "../form/AddToolingModal";
 import AddIcon from "@mui/icons-material/Add";
+import { useStore } from "../../../app/stores/store";
+import { observer } from "mobx-react-lite";
+import CreateToolingForm from "../form/CreateToolingForm";
+import { Link } from "react-router-dom";
 
-interface Props {
-  toolings: Tooling[];
-}
+export default observer(function GridTable() {
+  const { toolingStore } = useStore();
+  const { toolings } = toolingStore;
 
-export default function GridTable({ toolings }: Props) {
   // columns set up for the grid table
   const columns = [
     {
@@ -65,14 +68,25 @@ export default function GridTable({ toolings }: Props) {
       disableColumnMenu: true,
       width: 147,
     },
-    { field: "punnetNumber", headerName: "Punnet Number", width: 120 },
+    {
+      field: "punnetNumber",
+      headerName: "Punnet Number",
+      width: 130,
+      sortable: false,
+      disableColumnMenu: true,
+    },
     {
       field: "product",
       sortable: false,
       disableColumnMenu: true,
-      valueGetter: (params: GridRenderEditCellParams) => {
-        return params.row.product.name;
-      },
+      renderCell: (params: GridRenderEditCellParams) => (
+        <ul className="flex">
+          {params.row.products.map((product: Product) => (
+            <li key={product.id}>{product.name}</li>
+          ))}
+        </ul>
+      ),
+      type: "string",
       headerName: "Product Name",
       width: 200,
     },
@@ -82,13 +96,14 @@ export default function GridTable({ toolings }: Props) {
       sortable: false,
       disableColumnMenu: true,
       width: 200,
+      type: "string",
       renderCell: (params: GridRenderEditCellParams) => {
         return params.row.note === null ? "No Notes to show" : params.row.note;
       },
     },
     {
       field: "col7",
-      headerName: "Edit",
+      headerName: " ",
       width: 150,
       sortable: false,
       editMode: "row",
@@ -114,7 +129,9 @@ export default function GridTable({ toolings }: Props) {
         <GridToolbarDensitySelector />
         <GridToolbarExport />
         <Button
-          onClick={openForm}
+          // onClick={openForm}
+          component={Link}
+          to={"/createTooling"}
           variant="text"
           color="primary"
           size="small"
@@ -133,7 +150,6 @@ export default function GridTable({ toolings }: Props) {
       </GridToolbarContainer>
     );
   }
-
   return (
     <>
       <DataGrid
@@ -143,7 +159,7 @@ export default function GridTable({ toolings }: Props) {
           Toolbar: CustomToolbar,
         }}
       />
-      <AddToolingModal open={open} onClose={() => setOpen(false)} />;
+      {/* <AddToolingModal open={open} onClose={() => setOpen(false)} />; */}
     </>
   );
-}
+});

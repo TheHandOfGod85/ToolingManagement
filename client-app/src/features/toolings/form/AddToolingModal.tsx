@@ -27,6 +27,7 @@ export default function AddToolingModal({ open, onClose }: Props) {
       <Dialog open={open} onClose={onClose} fullWidth maxWidth={"lg"}>
         <DialogTitle>Add New Tooling</DialogTitle>
         <Grid
+        container
           direction={"column"}
           sx={{
             display: "flex",

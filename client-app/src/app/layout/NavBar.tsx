@@ -1,7 +1,7 @@
 import Category from "@mui/icons-material/Category";
-import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import React from "react";
+import { IconButton } from "@mui/joy";
+import { AppBar, Paper, Toolbar, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export default function NavBar() {
   return (
@@ -9,21 +9,40 @@ export default function NavBar() {
       <Toolbar
         style={{ display: "flex", justifyContent: "flex-start", gap: "25px" }}
       >
-        <Typography variant="h6" sx={{ display: { xs: "none", sm: "block" } }}>
+        <Typography
+          component={Link}
+          to={"/"}
+          variant="button"
+          sx={{
+            display: { xs: "none", sm: "block" },
+            color: "white",
+            textDecoration: "none",
+          }}
+        >
           Tooling System
         </Typography>
-        <Box
-          component="img"
-          src="/assets/logo.png"
-          alt="logo"
-          width={30}
-          height={30}
+        <Paper
+          component={Link}
+          to="/"
           sx={{ display: { xs: "block", sm: "none" } }}
-        />
-        <Typography variant="h6" sx={{ display: { xs: "none", sm: "block" } }}>
+        >
+          <img src="/assets/logo.png" alt="logo" width={30} height={30} />
+        </Paper>
+        <Typography
+          component={Link}
+          to={"/toolings"}
+          variant="button"
+          sx={{
+            display: { xs: "none", sm: "block" },
+            color: "white",
+            textDecoration: "none",
+          }}
+        >
           Toolings
         </Typography>
-        <Category sx={{ display: { xs: "block", sm: "none" } }} />
+        <IconButton component={Link} to="/toolings">
+          <Category sx={{ display: { xs: "block", sm: "none" } }} />
+        </IconButton>
       </Toolbar>
     </AppBar>
   );
