@@ -7,17 +7,21 @@ import {
   Grid,
   MenuItem,
   TextField,
+  Typography,
 } from "@mui/material";
-import { Form, Formik } from "formik";
-import { ChangeEvent, useState } from "react";
-import { Link } from "react-router-dom";
-import { Tooling } from "../../../app/layout/models/tooling";
+import { FieldArray, Form, Formik } from "formik";
+import { ChangeEvent, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { Tooling } from "../../../models/tooling";
 import { useStore } from "../../../app/stores/store";
+import { values } from "mobx";
 
 export default function CreateToolingForm() {
   const { toolingStore } = useStore();
 
-  const { toolings, singleTooling } = toolingStore;
+  const { singleTooling, loadTooling } = toolingStore;
+
+  const { id } = useParams<{ id: string }>();
 
   const departments = ["Fruit", "Salad", "Stir Fry", ""];
 
@@ -27,19 +31,20 @@ export default function CreateToolingForm() {
     id: "",
     tNumber: "",
     psNumber: "",
-    quantity: null,
+    quantity: 0,
     department: "",
     note: "",
     isInProduction: false,
-    numberOfImpressions: null,
+    numberOfImpressions: 0,
     image: "",
     punnetNumber: "",
     products: [],
   });
 
-  const handelChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setDepartment(e.target.value);
-  };
+  useEffect(() => {
+    if (id) loadTooling(id).then((tool) => setTooling(tool!));
+    console.log(tooling);
+  }, [id, loadTooling]);
 
   return (
     <Grid
@@ -49,9 +54,9 @@ export default function CreateToolingForm() {
       sx={{ alignItems: "center" }}
     >
       <Grid item xs={3} sm={6}>
-        <Formik initialValues={tooling} onSubmit={() => {}}>
+        <Formik enableReinitialize initialValues={tooling} onSubmit={() => {}}>
           {({ values: tooling, handleChange, handleSubmit }) => (
-            <Form autoComplete="off">
+            <Form autoComplete="off" onSubmit={handleSubmit}>
               <Grid container direction={"column"} spacing={1}>
                 <Grid container spacing={1} mb={1}>
                   <Grid item xs={12} sm={6}>
@@ -130,25 +135,52 @@ export default function CreateToolingForm() {
                       label={"Image"}
                       fullWidth
                       value={tooling.image}
+                      onChange={handleChange}
                     />
                   </Grid>
+                </Grid>
+                <Grid container spacing={1} mb={1} direction={"column"}>
                   <Grid item xs={12} sm={6}>
-                    <TextField
-                      name="products"
-                      label={"Products"}
-                      fullWidth
-                      value={tooling.products}
-                    />
+                    <FieldArray name="products">
+                      {({ push, remove }) => (
+                        <>
+                          <Grid item>
+                            <Typography mb={2} variant="h5">
+                              Products :
+                            </Typography>
+                          </Grid>
+                          {tooling.products.map((product) => (
+                            <Grid container>
+                              <Grid item mb={2}>
+                                <TextField
+                                  value={product.name}
+                                  label={"Product Name"}
+                                  name={`products[${product.id}].name`}
+                                />
+                                <FormControlLabel
+                                  sx={{ ml: 2 }}
+                                  label={"Allergen"}
+                                  control={<Checkbox />}
+                                  name={`products[${product.id}].isInProduction`}
+                                ></FormControlLabel>
+                              </Grid>
+                            </Grid>
+                          ))}
+                        </>
+                      )}
+                    </FieldArray>
                   </Grid>
                 </Grid>
 
                 <Grid container>
                   <Grid item>
                     <Textarea
+                      name="note"
                       placeholder="Type a comment..."
                       minRows={3}
                       sx={{ width: 440 }}
                       value={tooling.note}
+                      onChange={handleChange}
                     />
                   </Grid>
                 </Grid>

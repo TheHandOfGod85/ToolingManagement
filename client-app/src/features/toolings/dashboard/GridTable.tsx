@@ -9,12 +9,10 @@ import {
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import { Button, ButtonGroup, IconButton } from "@mui/material";
-import { Product } from "../../../app/layout/models/tooling";
-import AddToolingModal from "../form/AddToolingModal";
+import { Product } from "../../../models/tooling";
 import AddIcon from "@mui/icons-material/Add";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
-import CreateToolingForm from "../form/CreateToolingForm";
 import { Link } from "react-router-dom";
 
 export default observer(function GridTable() {
@@ -104,14 +102,21 @@ export default observer(function GridTable() {
     {
       field: "col7",
       headerName: " ",
-      width: 150,
+      width: 200,
       sortable: false,
       editMode: "row",
       disableColumnMenu: true,
-      renderCell: () => (
+      renderCell: (params: GridRenderEditCellParams) => (
         <ButtonGroup variant="contained" size="small">
           <Button color="inherit">Edit</Button>
           <Button color="warning">Delete</Button>
+          <Button
+            component={Link}
+            to={`/toolings/${params.row.id}`}
+            color="secondary"
+          >
+            View
+          </Button>
         </ButtonGroup>
       ),
     },

@@ -1,6 +1,7 @@
+import { async } from "q";
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { Tooling } from "../layout/models/tooling";
+import { Tooling } from "../../models/tooling";
 import { v4 as uuid } from "uuid";
 
 export default class ToolingStore {
@@ -29,8 +30,28 @@ export default class ToolingStore {
     }
   };
 
-  selectTooling = (id: string) => {
-    this.singleTooling = this.toolings.find((a) => a.id === id);
+  loadTooling = async (id: string) => {
+    let single = this.getTooling(id);
+    if (single) {
+      this.singleTooling = single;
+      return single;
+    } else {
+      try {
+        single = await agent.Toolings.detail(id);
+        this.setTooling(single);
+        return single;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  private setTooling = (tooling: Tooling) => {
+    this.toolings.push(tooling);
+  };
+
+  private getTooling = (id: string) => {
+    return this.toolings.find((x) => x.id === id);
   };
 
   cancelSingleTooling = () => {

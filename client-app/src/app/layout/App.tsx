@@ -7,6 +7,7 @@ import { useStore } from "../stores/store";
 import { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import CreateToolingForm from "../../features/toolings/form/CreateToolingForm";
+import ToolingDetail from "../../features/toolings/details/ToolingDetail";
 
 function App() {
   const { toolingStore } = useStore();
@@ -22,6 +23,8 @@ function App() {
         <Route exact path={"/"} component={HomePage} />
         <Route exact path={"/toolings"} component={ToolingDashboard} />
         <Route exact path={"/createTooling"} component={CreateToolingForm} />
+        <Route exact path={"/toolings/:id"} component={ToolingDetail} />
+        <Route exact path={"/manage/:id"} component={CreateToolingForm} />
       </Grid>
     </>
   );

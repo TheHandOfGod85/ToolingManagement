@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { Tooling } from "../layout/models/tooling";
+import { Tooling } from "../../models/tooling";
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
@@ -14,8 +14,8 @@ const requests = {
 };
 
 const Toolings = {
-  list: () => requests.get<Tooling[]>("toolings"),
-  detail: (id: string) => requests.get<Tooling>(`toolings/${id}`),
+  list: () => requests.get<Tooling[]>("/toolings"),
+  detail: (id: string) => requests.get<Tooling>(`/toolings/${id}`),
   create: (tooling: Tooling) => requests.post<void>("/toolings", tooling),
   update: (tooling: Tooling) =>
     requests.put<void>(`/toolings/${tooling.id}`, tooling),
