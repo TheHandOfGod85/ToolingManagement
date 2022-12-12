@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export default function NavBar() {
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" className="navbar">
       <Toolbar
         style={{ display: "flex", justifyContent: "flex-start", gap: "25px" }}
       >
