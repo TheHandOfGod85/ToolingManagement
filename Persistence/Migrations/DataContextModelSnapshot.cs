@@ -29,7 +29,7 @@ namespace Persistence.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("ToolingId")
+                    b.Property<Guid>("ToolingId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -81,7 +81,9 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.Tooling", "Tooling")
                         .WithMany("Products")
-                        .HasForeignKey("ToolingId");
+                        .HasForeignKey("ToolingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Tooling");
                 });

@@ -12,8 +12,7 @@ namespace Application.Core
         {
             CreateMap<Tooling, Tooling>();
             CreateMap<Product, Product>();
-            CreateMap<Product, GetProductDto>()
-            .ForMember(dto => dto.ToolingId, o => o.MapFrom(product => product.Tooling.Id));
+            CreateMap<Product, GetProductDto>();
             CreateMap<Tooling, GetToolingDto>()
             .ForMember(dto => dto.Products, o => o.MapFrom(
                 tooling => tooling.Products));

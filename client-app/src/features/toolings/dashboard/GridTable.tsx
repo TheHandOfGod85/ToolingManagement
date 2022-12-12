@@ -80,7 +80,7 @@ export default observer(function GridTable() {
       renderCell: (params: GridRenderEditCellParams) => (
         <ul className="flex">
           {params.row.products.map((product: Product) => (
-            <li key={product.id}>{product.name}</li>
+            <li key={product.name}>{product.name}</li>
           ))}
         </ul>
       ),
@@ -108,7 +108,13 @@ export default observer(function GridTable() {
       disableColumnMenu: true,
       renderCell: (params: GridRenderEditCellParams) => (
         <ButtonGroup variant="contained" size="small">
-          <Button color="inherit">Edit</Button>
+          <Button
+            component={Link}
+            to={`/manage/${params.row.id}`}
+            color="inherit"
+          >
+            Edit
+          </Button>
           <Button color="warning">Delete</Button>
           <Button
             component={Link}
@@ -148,7 +154,8 @@ export default observer(function GridTable() {
         <IconButton
           color="primary"
           sx={{ display: { xs: "flex", sm: "none" } }}
-          onClick={openForm}
+          component={Link}
+          to={"/createTooling"}
         >
           <AddIcon />
         </IconButton>

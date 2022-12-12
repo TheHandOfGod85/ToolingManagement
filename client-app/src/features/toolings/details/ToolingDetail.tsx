@@ -62,7 +62,7 @@ export default observer(function ToolingDetail() {
               Products :{" "}
               <ul className="flex">
                 {singleTooling?.products.map((product: Product) => (
-                  <li key={product.id}>{product.name}</li>
+                  <li key={product.name}>{product.name}</li>
                 ))}
               </ul>
             </Typography>

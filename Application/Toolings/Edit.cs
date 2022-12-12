@@ -4,6 +4,7 @@ using AutoMapper;
 using Domain;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Toolings
@@ -36,13 +37,15 @@ namespace Application.Toolings
 
             public async Task<ErrorResult<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var tooling = await _context.Toolings.FindAsync(request.Tooling.Id);
+                var tooling = await _context.Toolings
+                .Include(x => x.Products)
+                .FirstOrDefaultAsync(x => x.Id == request.Tooling.Id);
                 if (tooling == null) return null;
 
                 _mapper.Map(request.Tooling, tooling);
 
                 var result = await _context.SaveChangesAsync() > 0;
-                if (!result) return ErrorResult<Unit>.Failure("Failde to update the tooling");
+                if (!result) return ErrorResult<Unit>.Failure("Failed to update the tooling");
                 return ErrorResult<Unit>.Success(Unit.Value);
             }
         }

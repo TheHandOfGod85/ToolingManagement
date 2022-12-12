@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +17,14 @@ namespace Persistence
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<Product>().HasOne(prt => prt.Tooling).WithMany(tlg => tlg.Products);
+            builder.Entity<Product>()
+            .HasOne<Tooling>(x => x.Tooling)
+            .WithMany(g => g.Products);
+
+
+            builder.Entity<Tooling>()
+            .HasMany(c => c.Products)
+            .WithOne(e => e.Tooling);
         }
     }
 }
