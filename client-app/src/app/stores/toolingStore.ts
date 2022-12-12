@@ -54,8 +54,20 @@ export default class ToolingStore {
     return this.toolings.find((x) => x.id === id);
   };
 
-  cancelSingleTooling = () => {
-    this.singleTooling = undefined;
+  deleteTooling = async (id: string) => {
+    this.loading = true;
+    try {
+      await agent.Toolings.delete(id);
+      runInAction(() => {
+        this.toolings = [...this.toolings.filter((x) => x.id !== id)];
+        this.loading = false;
+      });
+    } catch (error) {
+      console.log(error);
+      runInAction(() => {
+        this.loading = false;
+      });
+    }
   };
 
   createTooling = async (tooling: Tooling) => {

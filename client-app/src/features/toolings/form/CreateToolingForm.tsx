@@ -8,7 +8,7 @@ import {
 import { FieldArray, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
-import { Tooling, Product } from "../../../models/tooling";
+import { Tooling } from "../../../models/tooling";
 import { useStore } from "../../../app/stores/store";
 import MyTextInput from "./common/MyTextInput";
 import * as Yup from "yup";

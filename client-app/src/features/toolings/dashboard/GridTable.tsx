@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   DataGrid,
   GridRenderEditCellParams,
@@ -8,7 +7,14 @@ import {
   GridToolbarExport,
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
-import { Button, ButtonGroup, IconButton } from "@mui/material";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  IconButton,
+  List,
+  ListItem,
+} from "@mui/material";
 import { Product } from "../../../models/tooling";
 import AddIcon from "@mui/icons-material/Add";
 import { useStore } from "../../../app/stores/store";
@@ -17,7 +23,8 @@ import { Link } from "react-router-dom";
 
 export default observer(function GridTable() {
   const { toolingStore } = useStore();
-  const { toolings } = toolingStore;
+  const { toolings, deleteTooling } = toolingStore;
+
 
   // columns set up for the grid table
   const columns = [
@@ -78,11 +85,13 @@ export default observer(function GridTable() {
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params: GridRenderEditCellParams) => (
-        <ul className="flex">
-          {params.row.products.map((product: Product) => (
-            <li key={product.name}>{product.name}</li>
-          ))}
-        </ul>
+        <Box sx={{ maxHeight: 200, overflow: "auto" }}>
+          <List>
+            {params.row.products.map((product: Product) => (
+              <ListItem key={product.name}>{product.name}</ListItem>
+            ))}
+          </List>
+        </Box>
       ),
       type: "string",
       headerName: "Product Name",
@@ -96,7 +105,7 @@ export default observer(function GridTable() {
       width: 200,
       type: "string",
       renderCell: (params: GridRenderEditCellParams) => {
-        return params.row.note === null ? "No Notes to show" : params.row.note;
+        return params.row.note === null ? "Nothing to note" : params.row.note;
       },
     },
     {
@@ -115,7 +124,12 @@ export default observer(function GridTable() {
           >
             Edit
           </Button>
-          <Button color="warning">Delete</Button>
+          <Button
+            onClick={() => deleteTooling(params.row.id)}
+            color="warning"
+          >
+            Delete
+          </Button>
           <Button
             component={Link}
             to={`/toolings/${params.row.id}`}
@@ -127,10 +141,6 @@ export default observer(function GridTable() {
       ),
     },
   ];
-  const [open, setOpen] = useState(false);
-  function openForm() {
-    return setOpen(true);
-  }
   // custom toolbar to sort and export the table
   function CustomToolbar() {
     return (
@@ -165,6 +175,7 @@ export default observer(function GridTable() {
   return (
     <>
       <DataGrid
+        sx={{ height: 400 }}
         columns={columns}
         rows={toolings}
         components={{
