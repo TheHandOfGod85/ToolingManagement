@@ -1,43 +1,62 @@
-import { Button, Grid, Typography } from "@mui/material";
-import { Container } from "@mui/system";
-import { Image } from "mui-image";
+import { Button, CssBaseline, Grid, Typography } from "@mui/material";
+import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
+import { useStore } from "../../../app/stores/store";
+import { HomePageContainer } from "./homePage";
 
-export default function HomePage() {
+export default observer(function HomePage() {
+  const { userStore } = useStore();
   return (
-    <Container>
-      <Grid
-        className="masthead"
-        container
-        direction={"row"}
-        justifyContent={"center"}
-      >
-        <Grid item>
-          <Image src="/assets/logo.png" width={80} height={50} />
-        </Grid>
-        <Grid item>
-          <Typography
-            color={"white"}
-            className="masthead-h5"
-            variant="h5"
-            ml={2}
-          >
-            TOOLING MANAGEMENT SYSTEM
-          </Typography>
-        </Grid>
+    <>
+      <CssBaseline />
+      <HomePageContainer alignItems={"center"}>
         <Grid container direction={"row"} justifyContent={"center"}>
           <Grid item>
-            <Button
-              size="small"
-              variant="contained"
-              component={Link}
-              to={"/toolings"}
+            <Typography
+              color={"white"}
+              className="masthead-h5"
+              variant="h5"
+              ml={2}
             >
-              toolings
-            </Button>
+              TOOLING MANAGEMENT SYSTEM
+            </Typography>
           </Grid>
+          {userStore.isLoggedIn ? (
+            <>
+              <Grid
+                container
+                direction={"column"}
+                justifyContent={"center"}
+                alignItems={"center"}
+              >
+                <Grid item mt={3}>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    component={Link}
+                    to={"/toolings"}
+                  >
+                    Go to toolings
+                  </Button>
+                </Grid>
+              </Grid>
+            </>
+          ) : (
+            <Grid container direction={"row"} justifyContent={"center"}>
+              <Grid item mt={3}>
+                <Button
+                  size="small"
+                  variant="contained"
+                  component={Link}
+                  to={"/login"}
+                >
+                  Login
+                </Button>
+              </Grid>
+            </Grid>
+          )}
         </Grid>
-      </Grid>
-    </Container>
+      </HomePageContainer>
+    </>
   );
-}
+});

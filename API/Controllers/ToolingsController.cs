@@ -1,4 +1,3 @@
-using Application.DTOs.ToolingDTO;
 using Application.Toolings;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
@@ -6,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    [AllowAnonymous]
     public class ToolingsController : BaseApiController
     {
         // get request that use mediator pattern to return a list of toolings

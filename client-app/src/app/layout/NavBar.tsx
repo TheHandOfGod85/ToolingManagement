@@ -1,11 +1,28 @@
-import Category from "@mui/icons-material/Category";
-import { IconButton } from "@mui/joy";
-import { AppBar, Paper, Toolbar, Typography } from "@mui/material";
+import PersonIcon from "@mui/icons-material/Person";
+import {
+  AppBar,
+  MenuItem,
+  Paper,
+  Select,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
+import { useStore } from "../stores/store";
 
-export default function NavBar() {
+export default observer(function NavBar() {
+  const {
+    userStore: { user, logout },
+  } = useStore();
   return (
-    <AppBar position="sticky" className="navbar">
+    <AppBar
+      position="sticky"
+      className="navbar"
+      sx={{
+        backgroundImage: "linear-gradient(to right bottom, #6a11cb, #2575fc)",
+      }}
+    >
       <Toolbar
         style={{ display: "flex", justifyContent: "flex-start", gap: "25px" }}
       >
@@ -21,13 +38,6 @@ export default function NavBar() {
         >
           Tooling System
         </Typography>
-        <Paper
-          component={Link}
-          to="/"
-          sx={{ display: { xs: "block", sm: "none" } }}
-        >
-          <img src="/assets/logo.png" alt="logo" width={30} height={30} />
-        </Paper>
         <Typography
           component={Link}
           to={"/toolings"}
@@ -40,10 +50,14 @@ export default function NavBar() {
         >
           Toolings
         </Typography>
-        <IconButton component={Link} to="/toolings">
-          <Category sx={{ display: { xs: "block", sm: "none" } }} />
-        </IconButton>
+        <PersonIcon />
+        <Select label={user?.displayName} >
+          <MenuItem component={Link} to={`/profile/${user?.username}`}>
+            My Profile
+          </MenuItem>
+          <MenuItem onClick={logout}>Logout</MenuItem>
+        </Select>
       </Toolbar>
     </AppBar>
   );
-}
+});

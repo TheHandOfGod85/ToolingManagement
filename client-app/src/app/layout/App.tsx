@@ -1,31 +1,48 @@
 import NavBar from "./NavBar";
-import ToolingDashboard from "../../features/toolings/dashboard/ToolingDashboard";
-import { Grid } from "@mui/material";
-import { Route } from "react-router-dom";
-import HomePage from "../../features/toolings/home/HomePage";
+import { CssBaseline } from "@mui/material";
+import { Outlet, useLocation } from "react-router-dom";
 import { useStore } from "../stores/store";
 import { useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import CreateToolingForm from "../../features/toolings/form/CreateToolingForm";
-import ToolingDetail from "../../features/toolings/details/ToolingDetail";
+import { Container } from "@mui/system";
+import HomePage from "../../features/toolings/home/HomePage";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function App() {
-  const { toolingStore } = useStore();
+  const { toolingStore, commonStore, userStore } = useStore();
+  const location = useLocation();
 
   useEffect(() => {
     toolingStore.loadToolings();
   }, [toolingStore]);
 
+  useEffect(() => {
+    if (commonStore.token) {
+      userStore.getUser().finally(() => commonStore.setAppLoaded());
+    } else {
+      commonStore.setAppLoaded();
+    }
+  }, [commonStore, userStore]);
+
+  if (!commonStore.appLoaded) return <CircularProgress />;
+
   return (
     <>
-      <NavBar />
-      <Grid container sx={{ mt: "7em" }}>
-        <Route exact path={"/"} component={HomePage} />
-        <Route exact path={"/toolings"} component={ToolingDashboard} />
-        <Route exact path={"/createTooling"} component={CreateToolingForm} />
-        <Route exact path={"/toolings/:id"} component={ToolingDetail} />
-        <Route exact path={"/manage/:id"} component={CreateToolingForm} />
-      </Grid>
+      {location.pathname === "/" ? (
+        <HomePage />
+      ) : (
+        <>
+          <CssBaseline />
+          <Container
+            maxWidth={false}
+            disableGutters={true}
+            sx={{ height: "100vh", display: "flex", flexDirection: "column" }}
+          >
+            <NavBar />
+            <Outlet />
+          </Container>
+        </>
+      )}
     </>
   );
 }

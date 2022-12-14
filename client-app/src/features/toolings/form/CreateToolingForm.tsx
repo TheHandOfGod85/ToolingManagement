@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import { FieldArray, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Tooling } from "../../../models/tooling";
 import { useStore } from "../../../app/stores/store";
 import MyTextInput from "./common/MyTextInput";
@@ -19,11 +19,10 @@ import MyCheckBox from "./common/MyCheckBox";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { v4 as uuid } from "uuid";
+import { router } from "../../../app/router/Routes";
 
 export default function CreateToolingForm() {
   const { toolingStore } = useStore();
-
-  const history = useHistory();
 
   const { loadTooling, createTooling, updateTooling } = toolingStore;
 
@@ -70,11 +69,11 @@ export default function CreateToolingForm() {
         id: uuid(),
       };
       createTooling(newTooling).then(() =>
-        history.push(`/toolings/${newTooling.id}`)
+        router.navigate(`/toolings/${newTooling.id}`)
       );
     } else {
       updateTooling(tooling).then(() =>
-        history.push(`/toolings/${tooling.id}`)
+        router.navigate(`/toolings/${tooling.id}`)
       );
     }
   }
