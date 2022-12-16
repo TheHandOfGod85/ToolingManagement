@@ -4,9 +4,13 @@ import { Outlet, useLocation } from "react-router-dom";
 import { useStore } from "../stores/store";
 import { useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import { Container } from "@mui/system";
-import HomePage from "../../features/toolings/home/HomePage";
-import CircularProgress from "@mui/material/CircularProgress";
+import HomePage from "../../components/toolings/home/HomePage";
+import ModalContainer from "../common/modals/ModalContainer";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+import NotFound from "../../components/errors/NotFound";
 
 function App() {
   const { toolingStore, commonStore, userStore } = useStore();
@@ -24,23 +28,16 @@ function App() {
     }
   }, [commonStore, userStore]);
 
-  if (!commonStore.appLoaded) return <CircularProgress />;
-
   return (
     <>
+      <ModalContainer />
       {location.pathname === "/" ? (
         <HomePage />
       ) : (
         <>
           <CssBaseline />
-          <Container
-            maxWidth={false}
-            disableGutters={true}
-            sx={{ height: "100vh", display: "flex", flexDirection: "column" }}
-          >
-            <NavBar />
-            <Outlet />
-          </Container>
+          <NavBar />
+          <Outlet />
         </>
       )}
     </>

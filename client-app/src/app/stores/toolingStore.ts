@@ -8,24 +8,23 @@ export default class ToolingStore {
   toolings: Tooling[] = [];
   singleTooling: Tooling | undefined = undefined;
   loading = false;
-  loadingInitial = false;
 
   constructor() {
     makeAutoObservable(this);
   }
 
   loadToolings = async () => {
-    this.loadingInitial = true;
+    this.loading = true;
     try {
       const toolingList = await agent.Toolings.list();
       runInAction(() => {
         this.toolings = toolingList;
-        this.loadingInitial = false;
+        this.loading = false;
       });
     } catch (error) {
       console.log(error);
       runInAction(() => {
-        this.loadingInitial = false;
+        this.loading = false;
       });
     }
   };

@@ -1,23 +1,26 @@
-import { Button, CssBaseline, Grid, Typography } from "@mui/material";
+import {
+  Button,
+  ButtonGroup,
+  CssBaseline,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
 import { useStore } from "../../../app/stores/store";
-import { HomePageContainer } from "./homePage";
+import LoginForm from "../../users/LoginForm";
+import RegisterForm from "../../users/RegisterForm";
+import { HomePageContainer } from "./styles";
 
 export default observer(function HomePage() {
-  const { userStore } = useStore();
+  const { userStore, modalStore } = useStore();
   return (
     <>
       <CssBaseline />
-      <HomePageContainer alignItems={"center"}>
+      <HomePageContainer>
         <Grid container direction={"row"} justifyContent={"center"}>
           <Grid item>
-            <Typography
-              color={"white"}
-              className="masthead-h5"
-              variant="h5"
-              ml={2}
-            >
+            <Typography color={"white"} variant="h5" ml={2}>
               TOOLING MANAGEMENT SYSTEM
             </Typography>
           </Grid>
@@ -44,14 +47,16 @@ export default observer(function HomePage() {
           ) : (
             <Grid container direction={"row"} justifyContent={"center"}>
               <Grid item mt={3}>
-                <Button
-                  size="small"
-                  variant="contained"
-                  component={Link}
-                  to={"/login"}
-                >
-                  Login
-                </Button>
+                <ButtonGroup size="small" variant="contained">
+                  <Button onClick={() => modalStore.openModal(<LoginForm />)}>
+                    Login
+                  </Button>
+                  <Button
+                    onClick={() => modalStore.openModal(<RegisterForm />)}
+                  >
+                    Register
+                  </Button>
+                </ButtonGroup>
               </Grid>
             </Grid>
           )}

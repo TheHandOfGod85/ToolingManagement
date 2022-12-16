@@ -23,6 +23,7 @@ export default class UserStore {
       runInAction(() => {
         this.user = user;
         router.navigate("toolings");
+        store.modalStore.closeModal();
       });
     } catch (error) {
       throw error;
@@ -43,6 +44,19 @@ export default class UserStore {
       });
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  register = async (creds: UserFormValues) => {
+    try {
+      const user = await agent.Account.register(creds);
+      runInAction(() => {
+        this.user = user;
+        router.navigate("toolings");
+        store.modalStore.closeModal();
+      });
+    } catch (error) {
+      throw error;
     }
   };
 }

@@ -6,4 +6,5 @@ export const HomePageContainer = styled(Box)(() => ({
   width: "100%",
   backgroundImage: "linear-gradient(to right bottom, #6a11cb, #2575fc)",
   display: "flex",
+  alignItems: "center",
 }));

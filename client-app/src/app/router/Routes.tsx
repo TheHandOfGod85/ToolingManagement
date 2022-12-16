@@ -1,8 +1,11 @@
-import { createBrowserRouter, RouteObject } from "react-router-dom";
-import ToolingDashboard from "../../features/toolings/dashboard/ToolingDashboard";
-import ToolingDetail from "../../features/toolings/details/ToolingDetail";
-import CreateToolingForm from "../../features/toolings/form/CreateToolingForm";
-import LoginForm from "../../features/users/LoginForm";
+import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
+import NotFound from "../../components/errors/NotFound";
+import ServerError from "../../components/errors/ServerError";
+import TestErrors from "../../components/errors/TestError";
+import ToolingDashboard from "../../components/toolings/dashboard/ToolingDashboard";
+import ToolingDetail from "../../components/toolings/details/ToolingDetail";
+import CreateToolingForm from "../../components/toolings/form/CreateToolingForm";
+import LoginForm from "../../components/users/LoginForm";
 import App from "../layout/App";
 
 export const routes: RouteObject[] = [
@@ -14,7 +17,10 @@ export const routes: RouteObject[] = [
       { path: "createTooling", element: <CreateToolingForm /> },
       { path: "toolings/:id", element: <ToolingDetail /> },
       { path: "manage/:id", element: <CreateToolingForm /> },
-      { path: "login", element: <LoginForm /> },
+      { path: "not-found", element: <NotFound /> },
+      { path: "server-error", element: <ServerError /> },
+      { path: "errors", element: <TestErrors /> },
+      { path: "*", element: <Navigate replace to={"/not-found"} /> },
     ],
   },
 ];
