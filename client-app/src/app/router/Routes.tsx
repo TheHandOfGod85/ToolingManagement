@@ -1,7 +1,9 @@
 import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
+import Forbidden from "../../components/errors/Forbidden";
 import NotFound from "../../components/errors/NotFound";
 import ServerError from "../../components/errors/ServerError";
 import TestErrors from "../../components/errors/TestError";
+import Unauthorized from "../../components/errors/Unauthorized";
 import ToolingDashboard from "../../components/toolings/dashboard/ToolingDashboard";
 import ToolingDetail from "../../components/toolings/details/ToolingDetail";
 import CreateToolingForm from "../../components/toolings/form/CreateToolingForm";
@@ -19,6 +21,8 @@ export const routes: RouteObject[] = [
       { path: "manage/:id", element: <CreateToolingForm /> },
       { path: "not-found", element: <NotFound /> },
       { path: "server-error", element: <ServerError /> },
+      { path: "unauthorized", element: <Unauthorized /> },
+      { path: "forbidden", element: <Forbidden /> },
       { path: "errors", element: <TestErrors /> },
       { path: "*", element: <Navigate replace to={"/not-found"} /> },
     ],

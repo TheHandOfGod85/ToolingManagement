@@ -12,14 +12,12 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import NotFound from "../../components/errors/NotFound";
 import ServerError from "../../components/errors/ServerError";
+import Unauthorized from "../../components/errors/Unauthorized";
+import Forbidden from "../../components/errors/Forbidden";
 
 function App() {
-  const { toolingStore, commonStore, userStore } = useStore();
+  const { commonStore, userStore } = useStore();
   const location = useLocation();
-
-  useEffect(() => {
-    toolingStore.loadToolings();
-  }, [toolingStore]);
 
   useEffect(() => {
     if (commonStore.token) {
@@ -38,6 +36,10 @@ function App() {
         <NotFound />
       ) : location.pathname === "/server-error" ? (
         <ServerError />
+      ) : location.pathname === "/unauthorized" ? (
+        <Unauthorized />
+      ) : location.pathname === "/forbidden" ? (
+        <Forbidden />
       ) : (
         <>
           <CssBaseline />

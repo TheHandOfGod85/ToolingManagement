@@ -38,10 +38,10 @@ axios.interceptors.response.use(
         }
         break;
       case 401:
-        console.log("unauthorised");
+        router.navigate("/unauthorized");
         break;
       case 403:
-        console.log("forbidden");
+        router.navigate("/forbidden");
         break;
       case 404:
         router.navigate("/not-found");
@@ -85,6 +85,7 @@ const Account = {
   login: (user: UserFormValues) => requests.post<User>("/account/login", user),
   register: (user: UserFormValues) =>
     requests.post<User>("/account/register", user),
+  roles: () => requests.get<string[]>("/account/roles"),
 };
 
 const agent = {

@@ -4,13 +4,21 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "../../app/stores/store";
 import MyTextInput from "../toolings/form/common/MyTextInput";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
-import { Alert, Box, FormGroup, Paper, Typography } from "@mui/material";
+import { Autocomplete, Box, FormGroup, Paper, Typography } from "@mui/material";
 
 import * as Yup from "yup";
 import ValidationErrors from "../errors/ValidationErrors";
+import { useEffect } from "react";
 
 export default observer(function RegisterForm() {
   const { userStore } = useStore();
+  const { getUser, user, getRoles } = userStore;
+
+  useEffect(() => {
+    getRoles();
+    getUser();
+  }, [userStore, getRoles, getUser]);
+
   return (
     <Box
       sx={{
@@ -48,13 +56,13 @@ export default observer(function RegisterForm() {
                   fullWidth
                 />
               </FormGroup>
-              <FormGroup row sx={{ padding: 2, justifyContent: "" }}>
+              <FormGroup row sx={{ padding: 2 }}>
                 <MyTextInput name="username" placeholder="Username" fullWidth />
               </FormGroup>
-              <FormGroup row sx={{ padding: 2, justifyContent: "" }}>
+              <FormGroup row sx={{ padding: 2 }}>
                 <MyTextInput name="email" placeholder="Email" fullWidth />
               </FormGroup>
-              <FormGroup row sx={{ padding: 2, justifyContent: "" }}>
+              <FormGroup row sx={{ padding: 2 }}>
                 <MyTextInput
                   fullWidth
                   name="password"
@@ -62,6 +70,27 @@ export default observer(function RegisterForm() {
                   type="password"
                 />
               </FormGroup>
+              {user?.role === "Admin" ? (
+                <FormGroup row sx={{ padding: 2 }}>
+                  <Autocomplete
+                    options={userStore.userRoles}
+                    renderInput={(params) => {
+                      return (
+                        <MyTextInput
+                          name="role"
+                          placeholder="Role"
+                          {...params}
+                        />
+                      );
+                    }}
+                    getOptionLabel={(roleOption) => `${roleOption}`}
+                    renderOption={(props, option) => {
+                      return <li {...props}>{`${option}`}</li>;
+                    }}
+                  />
+                </FormGroup>
+              ) : null}
+
               <Box
                 sx={{
                   ml: 2,

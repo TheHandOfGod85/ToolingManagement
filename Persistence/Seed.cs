@@ -5,21 +5,36 @@ namespace Persistence
 {
     public class Seed
     {
-        public static async Task SeedData(DataContext context, UserManager<AppUser> userManager)
+        public static async Task SeedData(DataContext context, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
+
+
+
+            if (!roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult())
+            {
+                await roleManager.CreateAsync(new IdentityRole("Admin"));
+                await roleManager.CreateAsync(new IdentityRole("Basic"));
+            }
             if (!userManager.Users.Any())
             {
                 var users = new List<AppUser>
                 {
-                    new AppUser{DisplayName = "Dan",UserName = "dan",Email="dan@test.com"},
-                    new AppUser{DisplayName = "Tom",UserName = "tom",Email="tom@test.com"},
-                    new AppUser{DisplayName = "Jan",UserName = "jan",Email="jan@test.com"}
+                    new AppUser{DisplayName = "Dan",UserName = "dan",Email="dan@test.com",Role="Admin"},
+                    new AppUser{DisplayName = "Tom",UserName = "tom",Email="tom@test.com",Role="Basic"},
+                    new AppUser{DisplayName = "Jan",UserName = "jan",Email="jan@test.com",Role="Basic"}
                 };
+
                 foreach (var user in users)
                 {
                     await userManager.CreateAsync(user, "Pa$$0rd");
                 }
+
+                await userManager.AddToRoleAsync(users[0], "Admin");
+                await userManager.AddToRoleAsync(users[1], "Basic");
+                await userManager.AddToRoleAsync(users[2], "Basic");
+
             }
+
 
             if (context.Toolings.Any()) return;
 

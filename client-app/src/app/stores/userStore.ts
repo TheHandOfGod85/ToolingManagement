@@ -7,6 +7,7 @@ import { store } from "./store";
 
 export default class UserStore {
   user: User | null = null;
+  userRoles: string[] = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -49,11 +50,27 @@ export default class UserStore {
 
   register = async (creds: UserFormValues) => {
     try {
-      const user = await agent.Account.register(creds);
+      var user = await agent.Account.register(creds);
       runInAction(() => {
-        this.user = user;
-        router.navigate("toolings");
+        if (this.user?.role === "Admin") {
+          router.navigate("/toolings");
+        } else {
+          this.user = user;
+          router.navigate("/");
+        }
+
         store.modalStore.closeModal();
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  getRoles = async () => {
+    try {
+      const roles = await agent.Account.roles();
+      runInAction(() => {
+        this.userRoles = roles;
       });
     } catch (error) {
       throw error;

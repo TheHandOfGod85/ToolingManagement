@@ -23,8 +23,12 @@ namespace API
 
             services.AddControllers(opt =>
             {
-                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                opt.Filters.Add(new AuthorizeFilter(policy));
+                // var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                // opt.Filters.Add(new AuthorizeFilter(policy));
+                services.AddAuthorization(opt =>
+                {
+                    opt.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                });
             });
             // .AddJsonOptions(
             //     x => x.JsonSerializerOptions
@@ -39,6 +43,7 @@ namespace API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseMiddleware<ExceptionMiddleware>();
+
 
             if (env.IsDevelopment())
             {

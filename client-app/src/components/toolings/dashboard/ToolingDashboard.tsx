@@ -4,10 +4,15 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import GridTable from "./GridTable";
 import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
 
 export default observer(function ToolingDashboard() {
   const { toolingStore } = useStore();
   const { loading } = toolingStore;
+
+  useEffect(() => {
+    toolingStore.loadToolings();
+  }, [toolingStore]);
 
   if (loading)
     return (
