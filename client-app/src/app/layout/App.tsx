@@ -11,6 +11,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import NotFound from "../../components/errors/NotFound";
+import ServerError from "../../components/errors/ServerError";
 
 function App() {
   const { toolingStore, commonStore, userStore } = useStore();
@@ -33,6 +34,10 @@ function App() {
       <ModalContainer />
       {location.pathname === "/" ? (
         <HomePage />
+      ) : location.pathname === "/not-found" ? (
+        <NotFound />
+      ) : location.pathname === "/server-error" ? (
+        <ServerError />
       ) : (
         <>
           <CssBaseline />
