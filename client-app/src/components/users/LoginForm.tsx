@@ -4,13 +4,7 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "../../app/stores/store";
 import MyTextInput from "../toolings/form/common/MyTextInput";
 import LoginIcon from "@mui/icons-material/Login";
-import {
-  Alert,
-  Box,
-  FormGroup,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Alert, Box, FormGroup, Paper, Typography } from "@mui/material";
 
 export default observer(function LoginForm() {
   const { userStore } = useStore();
@@ -24,11 +18,7 @@ export default observer(function LoginForm() {
         <Formik
           initialValues={{ email: "", password: "", error: null }}
           onSubmit={(values, { setErrors }) =>
-            userStore
-              .login(values)
-              .catch((error) =>
-                setErrors({ error: "Invalid email or password" })
-              )
+            userStore.login(values).catch((error) => setErrors({ error }))
           }
         >
           {({ handleSubmit, isSubmitting, errors }) => (

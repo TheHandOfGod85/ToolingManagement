@@ -12,12 +12,12 @@ import { useEffect } from "react";
 
 export default observer(function RegisterForm() {
   const { userStore } = useStore();
-  const { getUser, user, getRoles } = userStore;
+  const { user, getRoles } = userStore;
 
   useEffect(() => {
     getRoles();
-    getUser();
-  }, [userStore, getRoles, getUser]);
+   
+  }, [userStore, getRoles]);
 
   return (
     <Box
@@ -32,7 +32,8 @@ export default observer(function RegisterForm() {
             username: "",
             email: "",
             password: "",
-            error: null,
+            role: "",
+            error: [],
           }}
           onSubmit={(values, { setErrors }) =>
             userStore.register(values).catch((error) => setErrors({ error }))

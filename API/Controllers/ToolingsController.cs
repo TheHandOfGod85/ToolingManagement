@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    [Authorize]
     public class ToolingsController : BaseApiController
     {
         // get request that use mediator pattern to return a list of toolings

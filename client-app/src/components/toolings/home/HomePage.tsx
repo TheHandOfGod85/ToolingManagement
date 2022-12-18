@@ -6,6 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useStore } from "../../../app/stores/store";
 import LoginForm from "../../users/LoginForm";
@@ -13,7 +14,15 @@ import RegisterForm from "../../users/RegisterForm";
 import { HomePageContainer } from "./styles";
 
 export default observer(function HomePage() {
-  const { userStore, modalStore } = useStore();
+  const { commonStore, userStore, modalStore } = useStore();
+  useEffect(() => {
+    if (commonStore.token) {
+      userStore.getUser().finally(() => commonStore.setAppLoaded());
+    } else {
+      commonStore.setAppLoaded();
+    }
+  }, [commonStore, userStore]);
+
   return (
     <>
       <CssBaseline />

@@ -29,13 +29,19 @@ namespace API.Controllers
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
-            if (user == null) return Unauthorized();
+            if (user == null)
+            {
+                ModelState.AddModelError("email", "Email was not found or incorrect");
+                return ValidationProblem();
+            }
+
             var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
             if (result)
             {
                 return CreateUserObject(user);
             }
-            return Unauthorized();
+            ModelState.AddModelError("password", "Password was incorrect");
+            return ValidationProblem();
         }
 
 
@@ -76,7 +82,7 @@ namespace API.Controllers
             }
             return BadRequest(result.Errors);
         }
-        
+
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {

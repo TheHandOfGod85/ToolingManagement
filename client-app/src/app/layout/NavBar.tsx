@@ -18,15 +18,13 @@ import RegisterForm from "../../components/users/RegisterForm";
 
 export default observer(function NavBar() {
   const { userStore, modalStore } = useStore();
-  const { user, getUser, logout } = userStore;
+  const { user, logout } = userStore;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
-  useEffect(() => {
-    getUser();
-  }, [userStore, getUser]);
+  useEffect(() => {}, [userStore]);
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -51,10 +49,9 @@ export default observer(function NavBar() {
         >
           Home
         </Typography>
-        <Tabs>
+        <Tabs value={false}>
           <Tab
             label="Toolings"
-            
             sx={{
               color: "white",
             }}
