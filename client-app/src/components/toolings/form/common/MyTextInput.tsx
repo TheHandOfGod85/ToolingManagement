@@ -1,4 +1,4 @@
-import { Grid, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { useField } from "formik";
 
 interface Props {
@@ -7,6 +7,7 @@ interface Props {
   label?: string;
   type?: string;
   fullWidth?: boolean;
+  sx?: {};
 }
 
 export default function MyTextInput(props: Props) {
@@ -21,7 +22,6 @@ export default function MyTextInput(props: Props) {
       label={props.label}
       variant={"outlined"}
       helperText={meta.touched && meta.error ? meta.error : null}
-      sx={{ minWidth: 300 }}
     ></TextField>
   );
 }

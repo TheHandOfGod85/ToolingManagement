@@ -8,16 +8,10 @@ import { Autocomplete, Box, FormGroup, Paper, Typography } from "@mui/material";
 
 import * as Yup from "yup";
 import ValidationErrors from "../errors/ValidationErrors";
-import { useEffect } from "react";
 
 export default observer(function RegisterForm() {
   const { userStore } = useStore();
-  const { user, getRoles } = userStore;
-
-  useEffect(() => {
-    getRoles();
-   
-  }, [userStore, getRoles]);
+  const { user } = userStore;
 
   return (
     <Box
@@ -47,25 +41,40 @@ export default observer(function RegisterForm() {
         >
           {({ handleSubmit, isSubmitting, errors, isValid, dirty }) => (
             <Form onSubmit={handleSubmit} autoComplete="off" className="error">
-              <Typography textAlign={"center"} variant="h6">
-                Sign up to Toolings
-              </Typography>
-              <FormGroup row sx={{ padding: 2, justifyContent: "" }}>
+              {user?.role === "Admin" ? (
+                <Typography textAlign={"center"} variant="h6">
+                  Create a new User
+                </Typography>
+              ) : (
+                <Typography textAlign={"center"} variant="h6">
+                  Sign up to Toolings
+                </Typography>
+              )}
+
+              <FormGroup row sx={{ padding: 2 }}>
                 <MyTextInput
+                  sx={{ minWidth: 300 }}
                   name="displayName"
                   placeholder="Display Name"
-                  fullWidth
                 />
               </FormGroup>
               <FormGroup row sx={{ padding: 2 }}>
-                <MyTextInput name="username" placeholder="Username" fullWidth />
-              </FormGroup>
-              <FormGroup row sx={{ padding: 2 }}>
-                <MyTextInput name="email" placeholder="Email" fullWidth />
+                <MyTextInput
+                  sx={{ minWidth: 300 }}
+                  name="username"
+                  placeholder="Username"
+                />
               </FormGroup>
               <FormGroup row sx={{ padding: 2 }}>
                 <MyTextInput
-                  fullWidth
+                  sx={{ minWidth: 300 }}
+                  name="email"
+                  placeholder="Email"
+                />
+              </FormGroup>
+              <FormGroup row sx={{ padding: 2 }}>
+                <MyTextInput
+                  sx={{ minWidth: 300 }}
                   name="password"
                   placeholder="Password"
                   type="password"
@@ -78,6 +87,7 @@ export default observer(function RegisterForm() {
                     renderInput={(params) => {
                       return (
                         <MyTextInput
+                          sx={{ minWidth: 300 }}
                           name="role"
                           placeholder="Role"
                           {...params}

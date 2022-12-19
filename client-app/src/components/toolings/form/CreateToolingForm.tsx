@@ -1,8 +1,10 @@
 import {
   Button,
   ButtonGroup,
+  FormGroup,
   Grid,
   IconButton,
+  Paper,
   Typography,
 } from "@mui/material";
 import { FieldArray, Form, Formik } from "formik";
@@ -80,169 +82,156 @@ export default function CreateToolingForm() {
 
   return (
     //Main grid container
-    <Grid
-      container
-      spacing={0}
-      direction="column"
-      sx={{ alignItems: "center" }}
-    >
+    <Paper sx={{ alignItems: "center", m: 3, mt: 10, height: "100%" }}>
       {!id ? (
-        <Typography variant="h4" mb={3}>
+        <Typography textAlign={"center"} variant="h4" mb={3}>
           Create Tooling Form
         </Typography>
       ) : (
-        <Typography variant="h4" mb={3}>
+        <Typography textAlign={"center"} variant="h4" mb={3}>
           Edit Tooling Form
         </Typography>
       )}
 
       {/* Container form */}
-      <Grid item xs={3} sm={6}>
-        <Formik
-          validationSchema={validationSchema}
-          enableReinitialize
-          initialValues={tooling}
-          onSubmit={(values: Tooling) => handleFormSubmit(values)}
-        >
-          {({
-            values: tooling,
-            handleSubmit,
-            isValid,
-            isSubmitting,
-            dirty,
-          }) => (
-            <Form autoComplete="off" onSubmit={handleSubmit}>
-              <Grid container direction={"column"} spacing={1}>
-                {/* Tnumber and ps number fields */}
-                <Grid container spacing={1} mb={1}>
-                  <MyTextInput name="tNumber" placeholder="T Number" />
-                  <MyTextInput name="psNumber" placeholder="PS Number" />
-                </Grid>
-                {/* quantity and number of impressions fields */}
-                <Grid container spacing={1} mb={1}>
-                  <MyTextInput
-                    type="number"
-                    name="quantity"
-                    placeholder="Quantity"
-                    label="Quantity"
-                  />
-                  <MyTextInput
-                    type="number"
-                    name="numberOfImpressions"
-                    placeholder="Impressions"
-                    label="Number Of Impressions"
-                  />
-                </Grid>
-                {/* department and punnet number fields */}
-                <Grid container spacing={1} mb={1}>
-                  <MySelectInput
-                    name="department"
-                    placeholder="Department"
-                    options={departmentOptions}
-                  />
-                  <MyTextInput
-                    name="punnetNumber"
-                    placeholder="Punnet Number"
-                  />
-                </Grid>
-                {/* image field */}
-                <Grid container spacing={1} mb={1}>
-                  <MyTextInput name="image" placeholder="Image" />
-                </Grid>
-                {/* Field array start */}
-                <Grid container spacing={1} mb={1} direction={"column"}>
-                  <Grid item xs={12} sm={6}>
-                    <FieldArray
-                      name="products"
-                      render={(arrayHelpers) => (
-                        <>
-                          <Grid item>
-                            <Typography mb={2} variant="h5">
-                              Products{" "}
-                              <IconButton
-                                onClick={() =>
-                                  arrayHelpers.push({
-                                    name: "",
-                                    isAllergen: false,
-                                  })
-                                }
-                              >
-                                <AddIcon fontSize="small" />
-                              </IconButton>
-                            </Typography>
-                          </Grid>
-                          {tooling.products.map((product, index) => (
-                            <Grid
-                              container
-                              spacing={1}
-                              mb={1}
-                              key={index}
-                              direction={"row"}
-                            >
-                              <MyTextInput
-                                name={`products[${index}].name`}
-                                placeholder={"Product Name"}
-                              />
-                              <MyCheckBox
-                                name={`products[${index}].isAllergen`}
-                                label={"Allergen"}
-                              ></MyCheckBox>
-                              <Grid item>
-                                <IconButton
-                                  onClick={() => arrayHelpers.remove(index)}
-                                >
-                                  <RemoveIcon fontSize="small" />
-                                </IconButton>
-                              </Grid>
-                            </Grid>
-                          ))}
-                          <Grid item></Grid>
-                        </>
-                      )}
-                    />
-                  </Grid>
-                </Grid>
-                {/* Field array end */}
-                {/* note field */}
-                <Grid container>
-                  <MyTextArea
-                    name="note"
-                    placeholder="Please type a comment..."
-                    rows={3}
-                  />
-                </Grid>
-                {/* checkbox */}
-                <Grid container mb={5}>
-                  <MyCheckBox name="isInProduction" label="In Use?" />
-                </Grid>
-                {/* buttons */}
-                <Grid container>
-                  <Grid item>
-                    <ButtonGroup>
-                      <Button
-                        disabled={isSubmitting || !dirty || !isValid}
-                        type="submit"
-                        variant="contained"
-                        sx={{ mr: 1 }}
-                      >
-                        Submit
-                      </Button>
-                      <Button
-                        component={Link}
-                        to={"/toolings"}
-                        variant="contained"
-                        color="error"
-                      >
-                        Cancel
-                      </Button>
-                    </ButtonGroup>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Form>
-          )}
-        </Formik>
-      </Grid>
-    </Grid>
+
+      <Formik
+        validationSchema={validationSchema}
+        enableReinitialize
+        initialValues={tooling}
+        onSubmit={(values: Tooling) => handleFormSubmit(values)}
+      >
+        {({ values: tooling, handleSubmit, isValid, isSubmitting, dirty }) => (
+          <Form autoComplete="off" onSubmit={handleSubmit}>
+            {/* Tnumber and ps number fields */}
+            <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
+              <MyTextInput
+                sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
+                name="tNumber"
+                placeholder="T Number"
+              />
+              <MyTextInput
+                sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
+                name="psNumber"
+                placeholder="PS Number"
+              />
+            </FormGroup>
+            {/* quantity and number of impressions fields */}
+            <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
+              <MyTextInput
+                sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
+                type="number"
+                name="quantity"
+                placeholder="Quantity"
+                label="Quantity"
+              />
+              <MyTextInput
+                sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
+                type="number"
+                name="numberOfImpressions"
+                placeholder="Impressions"
+                label="Number Of Impressions"
+              />
+            </FormGroup>
+            {/* department and punnet number fields */}
+            <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
+              <MySelectInput
+                sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
+                name="department"
+                placeholder="Department"
+                options={departmentOptions}
+              />
+              <MyTextInput
+                name="punnetNumber"
+                placeholder="Punnet Number"
+                sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
+              />
+            </FormGroup>
+            {/* image field */}
+            <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
+              <MyTextInput
+                name="image"
+                placeholder="Image"
+                sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
+              />
+            </FormGroup>
+
+            {/* note field */}
+            <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
+              <MyTextArea
+                name="note"
+                placeholder="Please type a comment..."
+                rows={3}
+              />
+            </FormGroup>
+            {/* checkbox */}
+            <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
+              <MyCheckBox name="isInProduction" label="In Use?" />
+            </FormGroup>
+            {/* Field array start */}
+            <FieldArray
+              name="products"
+              render={(arrayHelpers) => (
+                <>
+                  <Typography textAlign={"center"} mb={2} variant="h5">
+                    Add Products{" "}
+                    <IconButton
+                      onClick={() =>
+                        arrayHelpers.push({
+                          name: "",
+                          isAllergen: false,
+                        })
+                      }
+                    >
+                      <AddIcon fontSize="small" />
+                    </IconButton>
+                  </Typography>
+
+                  {tooling.products.map((product, index) => (
+                    <FormGroup row sx={{ mb: 2, justifyContent: "center" }}>
+                      <MyTextInput
+                        name={`products[${index}].name`}
+                        placeholder={"Product Name"}
+                      />
+                      <MyCheckBox
+                        sx={{ ml: 1 }}
+                        name={`products[${index}].isAllergen`}
+                        label={"Allergen"}
+                      ></MyCheckBox>
+
+                      <IconButton onClick={() => arrayHelpers.remove(index)}>
+                        <RemoveIcon fontSize="small" />
+                      </IconButton>
+                    </FormGroup>
+                  ))}
+                </>
+              )}
+            />
+            {/* Field array end */}
+            {/* buttons */}
+            <FormGroup row sx={{ justifyContent: "space-evenly" }}>
+              <ButtonGroup sx={{ mb: 2 }}>
+                <Button
+                  disabled={isSubmitting || !dirty || !isValid}
+                  type="submit"
+                  variant="contained"
+                  sx={{ mr: 1 }}
+                >
+                  Submit
+                </Button>
+                <Button
+                  component={Link}
+                  to={"/toolings"}
+                  variant="contained"
+                  color="error"
+                >
+                  Cancel
+                </Button>
+              </ButtonGroup>
+            </FormGroup>
+          </Form>
+        )}
+      </Formik>
+    </Paper>
   );
 }

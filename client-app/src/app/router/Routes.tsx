@@ -7,7 +7,6 @@ import Unauthorized from "../../components/errors/Unauthorized";
 import ToolingDashboard from "../../components/toolings/dashboard/ToolingDashboard";
 import ToolingDetail from "../../components/toolings/details/ToolingDetail";
 import CreateToolingForm from "../../components/toolings/form/CreateToolingForm";
-import LoginForm from "../../components/users/LoginForm";
 import App from "../layout/App";
 
 export const routes: RouteObject[] = [

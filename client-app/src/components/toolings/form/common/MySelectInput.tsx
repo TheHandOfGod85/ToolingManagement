@@ -6,6 +6,7 @@ interface Props {
   name: string;
   options: any;
   label?: string;
+  sx?: {};
 }
 
 export default function MySelectInput(props: Props) {
@@ -14,7 +15,6 @@ export default function MySelectInput(props: Props) {
   return (
     <Grid item xs={12} sm={6}>
       <TextField
-        fullWidth
         select
         {...field}
         {...props}

@@ -16,10 +16,7 @@ import Unauthorized from "../../components/errors/Unauthorized";
 import Forbidden from "../../components/errors/Forbidden";
 
 function App() {
-  const { commonStore, userStore } = useStore();
   const location = useLocation();
-
-  
 
   return (
     <>
