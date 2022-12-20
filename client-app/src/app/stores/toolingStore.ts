@@ -35,12 +35,20 @@ export default class ToolingStore {
       this.singleTooling = single;
       return single;
     } else {
+      this.loading = true;
       try {
         single = await agent.Toolings.detail(id);
         this.setTooling(single);
+        runInAction(() => {
+          this.singleTooling = single;
+          this.loading = false;
+        });
         return single;
       } catch (error) {
         console.log(error);
+        runInAction(() => {
+          this.loading = false;
+        });
       }
     }
   };

@@ -1,6 +1,8 @@
 import {
+  Box,
   Button,
   ButtonGroup,
+  CircularProgress,
   FormGroup,
   Grid,
   IconButton,
@@ -188,7 +190,11 @@ export default function CreateToolingForm() {
                   </Typography>
 
                   {tooling.products.map((product, index) => (
-                    <FormGroup row sx={{ mb: 2, justifyContent: "center" }}>
+                    <FormGroup
+                      key={index}
+                      row
+                      sx={{ mb: 2, justifyContent: "center" }}
+                    >
                       <MyTextInput
                         name={`products[${index}].name`}
                         placeholder={"Product Name"}

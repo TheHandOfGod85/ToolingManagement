@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useStore } from "../stores/store";
 import React, { useEffect } from "react";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -18,17 +18,12 @@ import RegisterForm from "../../components/users/RegisterForm";
 
 export default observer(function NavBar() {
   const { userStore, modalStore } = useStore();
-  const { user, logout, getUser, getRoles } = userStore;
+  const { user, logout } = userStore;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const location = useLocation();
-
-  useEffect(() => {
-    if (location.pathname === "/toolings") getUser();
-    getRoles();
-  }, [userStore, getUser, getRoles]);
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -55,6 +50,8 @@ export default observer(function NavBar() {
         </Typography>
         <Tabs value={false}>
           <Tab
+            component={Link}
+            to={"/toolings"}
             label="Toolings"
             sx={{
               color: "white",

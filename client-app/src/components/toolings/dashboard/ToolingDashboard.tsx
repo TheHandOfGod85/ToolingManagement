@@ -8,10 +8,10 @@ import { useEffect } from "react";
 
 export default observer(function ToolingDashboard() {
   const { toolingStore } = useStore();
-  const { loading } = toolingStore;
+  const { loading, loadToolings } = toolingStore;
 
   useEffect(() => {
-    toolingStore.loadToolings();
+    loadToolings();
   }, [toolingStore]);
 
   if (loading)
