@@ -1,6 +1,9 @@
 import {
+  Alert,
+  AlertTitle,
   Button,
   ButtonGroup,
+  Dialog,
   FormGroup,
   IconButton,
   Paper,
@@ -21,11 +24,14 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { v4 as uuid } from "uuid";
 import { router } from "../../../app/router/Routes";
+import ModalContainer from "../../../app/common/modals/ModalContainer";
+import { AxiosResponse } from "axios";
 
 export default function CreateToolingForm() {
-  const { toolingStore } = useStore();
+  const { toolingStore, modalStore } = useStore();
 
   const { loadTooling, createTooling, updateTooling } = toolingStore;
+  const { openModal, closeModal } = modalStore;
 
   const { id } = useParams<{ id: string }>();
 
@@ -72,169 +78,189 @@ export default function CreateToolingForm() {
       createTooling(newTooling).then(() =>
         router.navigate(`/toolings/${newTooling.id}`)
       );
+      openModal(
+        <Alert>
+          <AlertTitle>Success!!</AlertTitle>Tooling Created
+        </Alert>
+      );
     } else {
       updateTooling(tooling).then(() =>
         router.navigate(`/toolings/${tooling.id}`)
+      );
+      openModal(
+        <Alert>
+          <AlertTitle>Success!!</AlertTitle>Tooling Modified
+        </Alert>
       );
     }
   }
 
   return (
-    //Main grid container
-    <Paper sx={{ alignItems: "center", m: 3, mt: 10, height: "100%" }}>
-      {!id ? (
-        <Typography textAlign={"center"} variant="h4" mb={3}>
-          Create Tooling Form
-        </Typography>
-      ) : (
-        <Typography textAlign={"center"} variant="h4" mb={3}>
-          Edit Tooling Form
-        </Typography>
-      )}
-
-      {/* Container form */}
-
-      <Formik
-        validationSchema={validationSchema}
-        enableReinitialize
-        initialValues={tooling}
-        onSubmit={(values: Tooling) => handleFormSubmit(values)}
-      >
-        {({ values: tooling, handleSubmit, isValid, isSubmitting, dirty }) => (
-          <Form autoComplete="off" onSubmit={handleSubmit}>
-            {/* Tnumber and ps number fields */}
-            <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
-              <MyTextInput
-                sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
-                name="tNumber"
-                placeholder="T Number"
-              />
-              <MyTextInput
-                sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
-                name="psNumber"
-                placeholder="PS Number"
-              />
-            </FormGroup>
-            {/* quantity and number of impressions fields */}
-            <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
-              <MyTextInput
-                sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
-                type="number"
-                name="quantity"
-                placeholder="Quantity"
-                label="Quantity"
-              />
-              <MyTextInput
-                sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
-                type="number"
-                name="numberOfImpressions"
-                placeholder="Impressions"
-                label="Number Of Impressions"
-              />
-            </FormGroup>
-            {/* department and punnet number fields */}
-            <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
-              <MySelectInput
-                sx={{ minWidth: 300, mb: { xs: 2 } }}
-                name="department"
-                placeholder="Department"
-                options={departmentOptions}
-              />
-              <MyTextInput
-                name="punnetNumber"
-                placeholder="Punnet Number"
-                sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
-              />
-            </FormGroup>
-            {/* image field */}
-            <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
-              <MyTextInput
-                name="image"
-                placeholder="Image"
-                sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
-              />
-            </FormGroup>
-
-            {/* note field */}
-            <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
-              <MyTextArea
-                name="note"
-                placeholder="Please type a comment..."
-                rows={3}
-              />
-            </FormGroup>
-            {/* checkbox */}
-            <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
-              <MyCheckBox name="isInProduction" label="In Use?" />
-            </FormGroup>
-            {/* Field array start */}
-            <FieldArray
-              name="products"
-              render={(arrayHelpers) => (
-                <>
-                  <Typography textAlign={"center"} mb={2} variant="h5">
-                    Add Products{" "}
-                    <IconButton
-                      onClick={() =>
-                        arrayHelpers.push({
-                          name: "",
-                          isAllergen: false,
-                        })
-                      }
-                    >
-                      <AddIcon fontSize="small" />
-                    </IconButton>
-                  </Typography>
-
-                  {tooling.products.map((product, index) => (
-                    <FormGroup
-                      key={index}
-                      row
-                      sx={{ mb: 2, justifyContent: "center" }}
-                    >
-                      <MyTextInput
-                        name={`products[${index}].name`}
-                        placeholder={"Product Name"}
-                      />
-                      <MyCheckBox
-                        sx={{ ml: 1 }}
-                        name={`products[${index}].isAllergen`}
-                        label={"Allergen"}
-                      ></MyCheckBox>
-
-                      <IconButton onClick={() => arrayHelpers.remove(index)}>
-                        <RemoveIcon fontSize="small" />
-                      </IconButton>
-                    </FormGroup>
-                  ))}
-                </>
-              )}
-            />
-            {/* Field array end */}
-            {/* buttons */}
-            <FormGroup row sx={{ justifyContent: "space-evenly" }}>
-              <ButtonGroup sx={{ mb: 2 }}>
-                <Button
-                  disabled={isSubmitting || !dirty || !isValid}
-                  type="submit"
-                  variant="contained"
-                  sx={{ mr: 1 }}
-                >
-                  Submit
-                </Button>
-                <Button
-                  component={Link}
-                  to={"/toolings"}
-                  variant="contained"
-                  color="error"
-                >
-                  Cancel
-                </Button>
-              </ButtonGroup>
-            </FormGroup>
-          </Form>
+    <>
+      //Main grid container
+      <Paper sx={{ alignItems: "center", m: 3, mt: 10, height: "100%" }}>
+        {!id ? (
+          <Typography textAlign={"center"} variant="h4" mb={3}>
+            Create Tooling Form
+          </Typography>
+        ) : (
+          <Typography textAlign={"center"} variant="h4" mb={3}>
+            Edit Tooling Form
+          </Typography>
         )}
-      </Formik>
-    </Paper>
+
+        {/* Container form */}
+
+        <Formik
+          validationSchema={validationSchema}
+          enableReinitialize
+          initialValues={tooling}
+          onSubmit={(values: Tooling) => handleFormSubmit(values)}
+        >
+          {({
+            values: tooling,
+            handleSubmit,
+            isValid,
+            isSubmitting,
+            dirty,
+          }) => (
+            <Form autoComplete="off" onSubmit={handleSubmit}>
+              {/* Tnumber and ps number fields */}
+              <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
+                <MyTextInput
+                  sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
+                  name="tNumber"
+                  placeholder="T Number"
+                />
+                <MyTextInput
+                  sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
+                  name="psNumber"
+                  placeholder="PS Number"
+                />
+              </FormGroup>
+              {/* quantity and number of impressions fields */}
+              <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
+                <MyTextInput
+                  sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
+                  type="number"
+                  name="quantity"
+                  placeholder="Quantity"
+                  label="Quantity"
+                />
+                <MyTextInput
+                  sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
+                  type="number"
+                  name="numberOfImpressions"
+                  placeholder="Impressions"
+                  label="Number Of Impressions"
+                />
+              </FormGroup>
+              {/* department and punnet number fields */}
+              <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
+                <MySelectInput
+                  sx={{ minWidth: 300, mb: { xs: 2 } }}
+                  name="department"
+                  placeholder="Department"
+                  label="Department"
+                  options={departmentOptions}
+                />
+                <MyTextInput
+                  name="punnetNumber"
+                  placeholder="Punnet Number"
+                  sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
+                />
+              </FormGroup>
+              {/* image field */}
+              <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
+                <MyTextInput
+                  name="image"
+                  placeholder="Image"
+                  sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
+                />
+              </FormGroup>
+
+              {/* note field */}
+              <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
+                <MyTextArea
+                  name="note"
+                  placeholder="Please type a comment..."
+                  rows={3}
+                />
+              </FormGroup>
+              {/* checkbox */}
+              <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
+                <MyCheckBox name="isInProduction" label="In Use?" />
+              </FormGroup>
+              {/* Field array start */}
+              <FieldArray
+                name="products"
+                render={(arrayHelpers) => (
+                  <>
+                    <Typography textAlign={"center"} mb={2} variant="h5">
+                      Add Products{" "}
+                      <IconButton
+                        onClick={() =>
+                          arrayHelpers.push({
+                            name: "",
+                            isAllergen: false,
+                          })
+                        }
+                      >
+                        <AddIcon fontSize="small" />
+                      </IconButton>
+                    </Typography>
+
+                    {tooling.products.map((product, index) => (
+                      <FormGroup
+                        key={index}
+                        row
+                        sx={{ mb: 2, justifyContent: "center" }}
+                      >
+                        <MyTextInput
+                          name={`products[${index}].name`}
+                          placeholder={"Product Name"}
+                        />
+                        <MyCheckBox
+                          sx={{ ml: 1 }}
+                          name={`products[${index}].isAllergen`}
+                          label={"Allergen"}
+                        ></MyCheckBox>
+
+                        <IconButton onClick={() => arrayHelpers.remove(index)}>
+                          <RemoveIcon fontSize="small" />
+                        </IconButton>
+                      </FormGroup>
+                    ))}
+                  </>
+                )}
+              />
+              {/* Field array end */}
+              {/* buttons */}
+              <FormGroup row sx={{ justifyContent: "space-evenly" }}>
+                <ButtonGroup sx={{ mb: 2 }}>
+                  <Button
+                    disabled={isSubmitting || !dirty || !isValid}
+                    type="submit"
+                    variant="contained"
+                    sx={{ mr: 1 }}
+                  >
+                    Submit
+                  </Button>
+                  <Button
+                    component={Link}
+                    to={"/toolings"}
+                    variant="contained"
+                    color="error"
+                  >
+                    Cancel
+                  </Button>
+                </ButtonGroup>
+              </FormGroup>
+            </Form>
+          )}
+        </Formik>
+      </Paper>
+      <ModalContainer />
+    </>
   );
 }

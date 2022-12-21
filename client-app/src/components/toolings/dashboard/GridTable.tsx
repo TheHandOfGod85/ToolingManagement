@@ -9,6 +9,8 @@ import {
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import {
+  Alert,
+  AlertTitle,
   Box,
   Button,
   ButtonGroup,
@@ -26,9 +28,19 @@ import { Link } from "react-router-dom";
 export default observer(function GridTable() {
   const {
     toolingStore,
+    modalStore: { openModal },
     userStore: { user },
   } = useStore();
   const { toolings, deleteTooling } = toolingStore;
+
+  function handleDeleteTooling(id: string) {
+    deleteTooling(id);
+    openModal(
+      <Alert>
+        <AlertTitle>Success</AlertTitle>Tooling Deleted
+      </Alert>
+    );
+  }
 
   // columns set up for the grid table
   const columns = [
@@ -135,7 +147,7 @@ export default observer(function GridTable() {
                 Edit
               </Button>
               <Button
-                onClick={() => deleteTooling(params.row.id)}
+                onClick={() => handleDeleteTooling(params.row.id)}
                 color="warning"
               >
                 Delete

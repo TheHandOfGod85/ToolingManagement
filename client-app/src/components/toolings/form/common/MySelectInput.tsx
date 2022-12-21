@@ -1,7 +1,7 @@
 import {
-  Box,
   FormHelperText,
-  Grid,
+  InputLabel,
+  ListItemText,
   MenuItem,
   Select,
   Stack,
@@ -21,27 +21,24 @@ export default function MySelectInput(props: Props) {
   const [field, meta, helpers] = useField(props.name);
 
   return (
-    <Stack alignItems={"center"}>
-      <Select
-        {...field}
-        {...props}
-        error={meta.touched && !!meta.error}
-        label={props.label}
-        variant={"outlined"}
-        value={field.value == null ? "" : field.value}
-        onChange={(e) => helpers.setValue(e.target.value)}
-        onBlur={() => helpers.setTouched(true)}
-        placeholder={props.placeholder}
-      >
-        {props.options.map((option: any) => (
-          <MenuItem key={option.key} value={option.value}>
-            {option.value}
-          </MenuItem>
-        ))}
-      </Select>
-      <FormHelperText error sx={{ mt: -1.5 }}>
-        {meta.touched && meta.error ? meta.error : null}
-      </FormHelperText>
-    </Stack>
+    <TextField
+      {...field}
+      {...props}
+      select
+      error={meta.touched && !!meta.error}
+      label={props.label}
+      variant={"outlined"}
+      value={field.value == null ? "" : field.value}
+      onChange={(e) => helpers.setValue(e.target.value)}
+      onBlur={() => helpers.setTouched(true)}
+      placeholder={props.placeholder}
+      helperText={meta.touched && meta.error ? meta.error : null}
+    >
+      {props.options.map((option: any) => (
+        <MenuItem key={option.key} value={option.value}>
+          <ListItemText primary={option.value} />
+        </MenuItem>
+      ))}
+    </TextField>
   );
 }
