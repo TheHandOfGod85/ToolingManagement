@@ -1,10 +1,7 @@
 import {
-  Box,
   Button,
   ButtonGroup,
-  CircularProgress,
   FormGroup,
-  Grid,
   IconButton,
   Paper,
   Typography,
@@ -138,7 +135,7 @@ export default function CreateToolingForm() {
             {/* department and punnet number fields */}
             <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
               <MySelectInput
-                sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
+                sx={{ minWidth: 300, mb: { xs: 2 } }}
                 name="department"
                 placeholder="Department"
                 options={departmentOptions}

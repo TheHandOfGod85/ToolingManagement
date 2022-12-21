@@ -12,7 +12,7 @@ import {
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
 import { useStore } from "../stores/store";
-import React, { useEffect } from "react";
+import React from "react";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import RegisterForm from "../../components/users/RegisterForm";
 

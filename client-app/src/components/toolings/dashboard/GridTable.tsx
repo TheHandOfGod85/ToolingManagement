@@ -1,5 +1,6 @@
 import {
   DataGrid,
+  GridRenderCellParams,
   GridRenderEditCellParams,
   GridToolbarColumnsButton,
   GridToolbarContainer,
@@ -14,6 +15,7 @@ import {
   IconButton,
   List,
   ListItem,
+  Typography,
 } from "@mui/material";
 import { Product } from "../../../models/tooling";
 import AddIcon from "@mui/icons-material/Add";
@@ -22,9 +24,11 @@ import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
 
 export default observer(function GridTable() {
-  const { toolingStore } = useStore();
+  const {
+    toolingStore,
+    userStore: { user },
+  } = useStore();
   const { toolings, deleteTooling } = toolingStore;
-
 
   // columns set up for the grid table
   const columns = [
@@ -104,9 +108,13 @@ export default observer(function GridTable() {
       disableColumnMenu: true,
       width: 200,
       type: "string",
-      renderCell: (params: GridRenderEditCellParams) => {
-        return params.row.note === null ? "Nothing to note" : params.row.note;
-      },
+      renderCell: (params: GridRenderCellParams<string>) => (
+        <Box>
+          <Typography fontSize={14} variant="body1">
+            {params.value === null ? "Nothing to note" : params.value}
+          </Typography>
+        </Box>
+      ),
     },
     {
       field: "col7",
@@ -116,28 +124,42 @@ export default observer(function GridTable() {
       editMode: "row",
       disableColumnMenu: true,
       renderCell: (params: GridRenderEditCellParams) => (
-        <ButtonGroup variant="contained" size="small">
-          <Button
-            component={Link}
-            to={`/manage/${params.row.id}`}
-            color="inherit"
-          >
-            Edit
-          </Button>
-          <Button
-            onClick={() => deleteTooling(params.row.id)}
-            color="warning"
-          >
-            Delete
-          </Button>
-          <Button
-            component={Link}
-            to={`/toolings/${params.row.id}`}
-            color="secondary"
-          >
-            View
-          </Button>
-        </ButtonGroup>
+        <>
+          {user?.role === "Admin" ? (
+            <ButtonGroup variant="contained" size="small">
+              <Button
+                component={Link}
+                to={`/manage/${params.row.id}`}
+                color="inherit"
+              >
+                Edit
+              </Button>
+              <Button
+                onClick={() => deleteTooling(params.row.id)}
+                color="warning"
+              >
+                Delete
+              </Button>
+              <Button
+                component={Link}
+                to={`/toolings/${params.row.id}`}
+                color="secondary"
+              >
+                View
+              </Button>
+            </ButtonGroup>
+          ) : (
+            <ButtonGroup variant="contained" size="small">
+              <Button
+                component={Link}
+                to={`/toolings/${params.row.id}`}
+                color="secondary"
+              >
+                View
+              </Button>
+            </ButtonGroup>
+          )}
+        </>
       ),
     },
   ];
@@ -149,40 +171,45 @@ export default observer(function GridTable() {
         <GridToolbarFilterButton />
         <GridToolbarDensitySelector />
         <GridToolbarExport />
-        <Button
-          // onClick={openForm}
-          component={Link}
-          to={"/createTooling"}
-          variant="text"
-          color="primary"
-          size="small"
-          sx={{ display: { xs: "none", sm: "flex" } }}
-          startIcon={<AddIcon />}
-        >
-          add tooling
-        </Button>
-        <IconButton
-          color="primary"
-          sx={{ display: { xs: "flex", sm: "none" } }}
-          component={Link}
-          to={"/createTooling"}
-        >
-          <AddIcon />
-        </IconButton>
+        {user?.role === "Admin" ? (
+          <>
+            <Button
+              component={Link}
+              to={"/createTooling"}
+              variant="text"
+              color="primary"
+              size="small"
+              sx={{ display: { xs: "none", sm: "flex" } }}
+              startIcon={<AddIcon />}
+            >
+              add tooling
+            </Button>
+            <IconButton
+              color="primary"
+              sx={{ display: { xs: "flex", sm: "none" } }}
+              component={Link}
+              to={"/createTooling"}
+            >
+              <AddIcon />
+            </IconButton>
+          </>
+        ) : null}
       </GridToolbarContainer>
     );
   }
   return (
-    <>
+    <div>
       <DataGrid
-        sx={{ height: 400 }}
+        sx={{ minHeight: 500 }}
+        autoHeight
         columns={columns}
+        rowHeight={120}
         rows={toolings}
+        pageSize={3}
         components={{
           Toolbar: CustomToolbar,
         }}
       />
-      {/* <AddToolingModal open={open} onClose={() => setOpen(false)} />; */}
-    </>
+    </div>
   );
 });

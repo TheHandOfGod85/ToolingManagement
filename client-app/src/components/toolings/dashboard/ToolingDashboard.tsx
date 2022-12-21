@@ -12,7 +12,7 @@ export default observer(function ToolingDashboard() {
 
   useEffect(() => {
     loadToolings();
-  }, [toolingStore]);
+  }, [loadToolings]);
 
   if (loading)
     return (
@@ -30,7 +30,7 @@ export default observer(function ToolingDashboard() {
     );
   return (
     <>
-      <Box sx={{ height: 400, width: "100%" }}>
+      <Box sx={{ height: 400, width: "100%", mt: 10 }} height={"100%"}>
         <Typography
           variant="h3"
           component="h3"

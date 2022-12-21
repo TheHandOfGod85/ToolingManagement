@@ -10,15 +10,14 @@ import {
   Typography,
 } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Product, Tooling } from "../../../models/tooling";
+import { Product } from "../../../models/tooling";
 import { useStore } from "../../../app/stores/store";
 
 export default observer(function ToolingDetail() {
   const { toolingStore } = useStore();
   const { loadTooling, loading, singleTooling } = toolingStore;
-  const [tooling, setTooling] = useState<Tooling>();
   const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
