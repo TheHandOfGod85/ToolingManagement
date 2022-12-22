@@ -10,8 +10,8 @@ namespace Domain
         public string Note { get; set; }
         public bool IsInProduction { get; set; }
         public int NumberOfImpressions { get; set; }
-        public string Image { get; set; }
         public string PunnetNumber { get; set; }
+        public ICollection<Image> Images { get; set; } = new List<Image>();
         public ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }
