@@ -18,13 +18,14 @@ import { useStore } from "../stores/store";
 function App() {
   const location = useLocation();
   const { commonStore, userStore } = useStore();
-  const { getUser } = userStore;
+  const { getUser, getRoles } = userStore;
 
   useEffect(() => {
     if (commonStore.token) {
       getUser();
+      getRoles();
     }
-  }, [commonStore, getUser]);
+  }, [commonStore, getUser, getRoles]);
 
   return (
     <>

@@ -10,5 +10,11 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new Add.Command { File = file, ToolingId = id }));
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string imageId)
+        {
+            return HandleResult(await Mediator.Send(new Delete.Command { ImageId = imageId }));
+        }
     }
 }

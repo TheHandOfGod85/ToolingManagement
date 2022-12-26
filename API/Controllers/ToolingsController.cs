@@ -34,7 +34,7 @@ namespace API.Controllers
             tooling.Id = id;
             return HandleResult(await Mediator.Send(new Edit.Command { Tooling = tooling }));
         }
-        //deleteing a tooling
+        //deleting a tooling
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTooling(Guid id)
         {
