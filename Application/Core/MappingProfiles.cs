@@ -1,3 +1,4 @@
+using Application.DTOs.ImageDTO;
 using Application.DTOs.ProductDTO;
 using Application.DTOs.ToolingDTO;
 using AutoMapper;
@@ -19,6 +20,7 @@ namespace Application.Core
                 .ForMember(dto => dto.Images, o => o.MapFrom(
                     tooling => tooling.Images
                 ));
+            CreateMap<Image, ImageDto>();
         }
     }
 }

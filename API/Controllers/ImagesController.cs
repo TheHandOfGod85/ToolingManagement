@@ -1,3 +1,4 @@
+using Application.DTOs.ImageDTO;
 using Application.Photos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,10 +12,10 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new Add.Command { File = file, ToolingId = id }));
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string imageId)
+        [HttpDelete]
+        public async Task<IActionResult> Delete(DeleteImageDto deleteDto)
         {
-            return HandleResult(await Mediator.Send(new Delete.Command { ImageId = imageId }));
+            return HandleResult(await Mediator.Send(new Delete.Command { DeleteImage = deleteDto }));
         }
     }
 }

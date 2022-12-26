@@ -11,13 +11,14 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221217141642_IdentityRole")]
-    partial class IdentityRole
+    [Migration("20221226181335_InitialCreate")]
+    partial class InitialCreate
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.11");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.1");
 
             modelBuilder.Entity("Domain.AppUser", b =>
                 {
@@ -92,6 +93,27 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Image", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsMain")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("ToolingId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ToolingId");
+
+                    b.ToTable("Images");
+                });
+
             modelBuilder.Entity("Domain.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -121,9 +143,6 @@ namespace Persistence.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Department")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Image")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsInProduction")
@@ -280,6 +299,17 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Image", b =>
+                {
+                    b.HasOne("Domain.Tooling", "Tooling")
+                        .WithMany("Images")
+                        .HasForeignKey("ToolingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tooling");
+                });
+
             modelBuilder.Entity("Domain.Product", b =>
                 {
                     b.HasOne("Domain.Tooling", "Tooling")
@@ -344,6 +374,8 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Tooling", b =>
                 {
+                    b.Navigation("Images");
+
                     b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
