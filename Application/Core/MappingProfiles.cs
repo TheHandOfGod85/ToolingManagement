@@ -19,7 +19,8 @@ namespace Application.Core
                 tooling => tooling.Products))
                 .ForMember(dto => dto.Images, o => o.MapFrom(
                     tooling => tooling.Images
-                ));
+                ))
+                .ForMember(dto => dto.Image, o => o.MapFrom(tooling => tooling.Images.FirstOrDefault(x => x.IsMain).Url));
             CreateMap<Image, ImageDto>();
         }
     }

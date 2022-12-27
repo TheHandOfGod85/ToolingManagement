@@ -19,6 +19,7 @@ namespace Application.DTOs.ToolingDTO
         public bool IsInProduction { get; set; }
         public int NumberOfImpressions { get; set; }
         public string PunnetNumber { get; set; }
+        public string Image { get; set; }
         public ICollection<GetProductDto> Products { get; set; }
         public ICollection<ImageDto> Images { get; set; }
     }
