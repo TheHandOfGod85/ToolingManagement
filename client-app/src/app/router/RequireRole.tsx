@@ -8,7 +8,7 @@ export default observer(function RequireRole() {
   } = useStore();
   const location = useLocation();
   if (user?.role === "Basic") {
-    return <Navigate to={"/unauthorized"} state={{ from: location }} />;
+    return <Navigate to={"/forbidden"} state={{ from: location }} />;
   }
   return <Outlet />;
 });
