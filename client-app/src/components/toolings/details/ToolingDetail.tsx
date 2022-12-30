@@ -16,13 +16,15 @@ import { Product } from "../../../models/tooling";
 import { useStore } from "../../../app/stores/store";
 
 export default observer(function ToolingDetail() {
-  const { toolingStore } = useStore();
+  const {
+    toolingStore,
+    userStore: { user },
+  } = useStore();
   const { loadTooling, loading, singleTooling } = toolingStore;
   const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
     if (id) loadTooling(id);
-    // .then((tool) => setTooling(tool));
   }, [id, loadTooling]);
 
   if (loading)
@@ -45,7 +47,7 @@ export default observer(function ToolingDetail() {
         <CardMedia
           component="img"
           height="140"
-          image="/assets/placeholder.png"
+          image={singleTooling?.image || "/assets/placeholder.png"}
           alt="tooling"
         />
         <CardContent>
@@ -84,13 +86,15 @@ export default observer(function ToolingDetail() {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button
-            component={Link}
-            to={`/manage/${singleTooling?.id}`}
-            size="small"
-          >
-            Edit
-          </Button>
+          {user?.role === "Admin" ? (
+            <Button
+              component={Link}
+              to={`/manage/${singleTooling?.id}`}
+              size="small"
+            >
+              Edit
+            </Button>
+          ) : null}
           <Button component={Link} to={"/toolings"} size="small">
             Cancel
           </Button>

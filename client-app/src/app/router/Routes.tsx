@@ -8,16 +8,22 @@ import ToolingDashboard from "../../components/toolings/dashboard/ToolingDashboa
 import ToolingDetail from "../../components/toolings/details/ToolingDetail";
 import CreateToolingForm from "../../components/toolings/form/CreateToolingForm";
 import App from "../layout/App";
+import RequireRole from "./RequireRole";
 
 export const routes: RouteObject[] = [
   {
     path: "/",
     element: <App />,
     children: [
+      {
+        element: <RequireRole />,
+        children: [
+          { path: "createTooling", element: <CreateToolingForm /> },
+          { path: "manage/:id", element: <CreateToolingForm /> },
+        ],
+      },
       { path: "toolings", element: <ToolingDashboard /> },
-      { path: "createTooling", element: <CreateToolingForm /> },
       { path: "toolings/:id", element: <ToolingDetail /> },
-      { path: "manage/:id", element: <CreateToolingForm /> },
       { path: "not-found", element: <NotFound /> },
       { path: "server-error", element: <ServerError /> },
       { path: "unauthorized", element: <Unauthorized /> },

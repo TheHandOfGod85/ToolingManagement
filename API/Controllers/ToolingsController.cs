@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [AllowAnonymous]
     public class ToolingsController : BaseApiController
     {
         // get request that use mediator pattern to return a list of toolings
@@ -23,12 +22,14 @@ namespace API.Controllers
         }
         // creating a tooling
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateTooling(Tooling tooling)
         {
             return HandleResult(await Mediator.Send(new Create.Command { Tooling = tooling }));
         }
         //updating toolings
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditTooling(Guid id, Tooling tooling)
         {
             tooling.Id = id;
@@ -36,6 +37,7 @@ namespace API.Controllers
         }
         //deleting a tooling
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteTooling(Guid id)
         {
             return HandleResult(await Mediator.Send(new Delete.Command { Id = id }));
