@@ -23,8 +23,6 @@ namespace API
 
             services.AddControllers(opt =>
             {
-                // var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                // opt.Filters.Add(new AuthorizeFilter(policy));
                 services.AddAuthorization(opt =>
                 {
                     opt.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
@@ -50,8 +48,6 @@ namespace API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv5 v1"));
             }
-
-            // app.UseHttpsRedirection();
 
             app.UseRouting();
 

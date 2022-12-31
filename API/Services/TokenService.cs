@@ -20,7 +20,8 @@ namespace API.Services
             {
                 new Claim(ClaimTypes.Name, appUser.UserName),
                 new Claim(ClaimTypes.NameIdentifier, appUser.Id),
-                new Claim(ClaimTypes.Email, appUser.Email)
+                new Claim(ClaimTypes.Email, appUser.Email),
+                new Claim(ClaimTypes.Role, appUser.Role)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"]));

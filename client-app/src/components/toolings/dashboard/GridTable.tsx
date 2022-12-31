@@ -217,7 +217,6 @@ export default observer(function GridTable() {
         columns={columns}
         rowHeight={120}
         rows={toolings}
-        pageSize={3}
         components={{
           Toolbar: CustomToolbar,
         }}
