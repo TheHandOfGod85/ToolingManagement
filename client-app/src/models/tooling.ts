@@ -10,6 +10,7 @@ export interface Tooling {
   image?: string;
   punnetNumber: string;
   products: Product[];
+  images: Image[];
 }
 
 export interface Product {
@@ -17,4 +18,10 @@ export interface Product {
   name: string;
   isAllergen: boolean;
   tooling: Tooling;
+}
+
+export interface Image {
+  id: string;
+  url: string;
+  isMain: boolean;
 }

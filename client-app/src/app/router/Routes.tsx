@@ -6,6 +6,7 @@ import TestErrors from "../../components/errors/TestError";
 import Unauthorized from "../../components/errors/Unauthorized";
 import ToolingDashboard from "../../components/toolings/dashboard/ToolingDashboard";
 import ToolingDetail from "../../components/toolings/details/ToolingDetail";
+import ToolingImagesDetail from "../../components/toolings/details/ToolingImagesDetail";
 import CreateToolingForm from "../../components/toolings/form/CreateToolingForm";
 import App from "../layout/App";
 import RequireRole from "./RequireRole";
@@ -24,6 +25,7 @@ export const routes: RouteObject[] = [
       },
       { path: "toolings", element: <ToolingDashboard /> },
       { path: "toolings/:id", element: <ToolingDetail /> },
+      { path: "images/:id", element: <ToolingImagesDetail /> },
       { path: "not-found", element: <NotFound /> },
       { path: "server-error", element: <ServerError /> },
       { path: "unauthorized", element: <Unauthorized /> },

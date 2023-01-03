@@ -46,6 +46,7 @@ export default function CreateToolingForm() {
     numberOfImpressions: 0,
     image: "",
     punnetNumber: "",
+    images: [],
     products: [],
   });
 

@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Card,
+  CardActionArea,
   CardActions,
   CardContent,
   CardMedia,
@@ -44,12 +45,14 @@ export default observer(function ToolingDetail() {
   return (
     <Stack direction={"row"} justifyContent={"center"} mt={10} height={"100%"}>
       <Card sx={{ maxWidth: 445 }}>
-        <CardMedia
-          component="img"
-          height="140"
-          image={singleTooling?.image || "/assets/placeholder.png"}
-          alt="tooling"
-        />
+        <CardActionArea component={Link} to={`/images/${singleTooling?.id}`}>
+          <CardMedia
+            component="img"
+            height="140"
+            image={singleTooling?.image || "/assets/placeholder.png"}
+            alt="tooling"
+          />
+        </CardActionArea>
         <CardContent>
           <Typography variant="h6">
             T Number : {singleTooling?.tNumber}
