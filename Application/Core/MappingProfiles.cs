@@ -11,8 +11,12 @@ namespace Application.Core
     {
         public MappingProfiles()
         {
-            CreateMap<Tooling, Tooling>();
-            CreateMap<Product, Product>();
+            CreateMap<ToolingDto, Tooling>()
+            .ForMember(dto => dto.Products, o => o.Ignore())
+            .ForMember(dto => dto.Images, o => o.Ignore());
+
+            // CreateMap<Tooling, Tooling>();
+            // CreateMap<Product, Product>();
             CreateMap<Product, GetProductDto>();
             CreateMap<Tooling, GetToolingDto>()
             .ForMember(dto => dto.Products, o => o.MapFrom(
@@ -22,7 +26,7 @@ namespace Application.Core
                 ))
                 .ForMember(dto => dto.Image, o => o.MapFrom(tooling => tooling.Images.FirstOrDefault(x => x.IsMain).Url));
             CreateMap<Image, ImageDto>();
-            CreateMap<Tooling, ToolingDto>();
+
         }
     }
 }

@@ -1,11 +1,10 @@
-using Domain;
 using Microsoft.AspNetCore.Http;
 
 namespace Application.DTOs.ToolingDTO
 {
     public class ToolingDto
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } 
         public string TNumber { get; set; }
         public string PSNumber { get; set; }
         public int Quantity { get; set; }

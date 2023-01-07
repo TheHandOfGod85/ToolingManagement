@@ -34,7 +34,7 @@ namespace API.Extensions
             // add mediator as service
             services.AddMediatR(typeof(List.Handler).Assembly);
             // add automapper as service
-            services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            services.AddAutoMapper(typeof(MappingProfiles));
             services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
             return services;

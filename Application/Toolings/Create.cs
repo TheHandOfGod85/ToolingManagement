@@ -44,6 +44,10 @@ namespace Application.Toolings
 
             public async Task<ErrorResult<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
+                if (Guid.TryParse(request.ToolingDto.Id.ToString(), out Guid guidResult))
+                {
+                    request.ToolingDto.Id = Guid.NewGuid();
+                }
                 var images = new List<Image>();
                 var uploadedImages = await _photoAccessor.AddPhoto(request.ToolingDto.Files);
                 foreach (var image in uploadedImages)

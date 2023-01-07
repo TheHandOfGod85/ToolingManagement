@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [AllowAnonymous]
+    [Route("api/toolings")]
+    [ApiController]
     public class ToolingsController : BaseApiController
     {
         // get request that use mediator pattern to return a list of toolings
@@ -26,7 +28,7 @@ namespace API.Controllers
         // creating a tooling
         [HttpPost]
         [Authorize(Roles = Roles.Admin)]
-        public async Task<IActionResult> Post([FromForm]ToolingDto toolingDto)
+        public async Task<IActionResult> CreateTooling([FromForm] ToolingDto toolingDto)
         {
             return HandleResult(await Mediator.Send(new Create.Command { ToolingDto = toolingDto }));
         }

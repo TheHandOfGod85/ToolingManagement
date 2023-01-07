@@ -27,6 +27,8 @@ namespace Persistence
             builder.Entity<Tooling>()
             .HasMany(c => c.Products)
             .WithOne(e => e.Tooling);
+
+            // builder.Entity<Tooling>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
         }
     }
 }
