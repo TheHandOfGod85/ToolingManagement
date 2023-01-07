@@ -1,4 +1,5 @@
 using Application.Core;
+using Application.DTOs.ToolingDTO;
 using Application.Toolings.Validator;
 using AutoMapper;
 using Domain;
@@ -13,7 +14,7 @@ namespace Application.Toolings
     {
         public class Command : IRequest<ErrorResult<Unit>>
         {
-            public Tooling Tooling { get; set; }
+            public ToolingDto ToolingDto { get; set; }
         }
 
         // validator 
@@ -21,7 +22,7 @@ namespace Application.Toolings
         {
             public CommandValidator()
             {
-                RuleFor(x => x.Tooling).SetValidator(new ToolingValidator());
+                RuleFor(x => x.ToolingDto).SetValidator(new ToolingValidator());
             }
         }
 
@@ -39,10 +40,10 @@ namespace Application.Toolings
             {
                 var tooling = await _context.Toolings
                 .Include(x => x.Products)
-                .FirstOrDefaultAsync(x => x.Id == request.Tooling.Id);
+                .FirstOrDefaultAsync(x => x.Id == request.ToolingDto.Id);
                 if (tooling == null) return null;
 
-                _mapper.Map(request.Tooling, tooling);
+                _mapper.Map(request.ToolingDto, tooling);
 
                 var result = await _context.SaveChangesAsync() > 0;
                 if (!result) return ErrorResult<Unit>.Failure("Failed to update the tooling");

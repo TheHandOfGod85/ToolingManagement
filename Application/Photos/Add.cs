@@ -14,7 +14,7 @@ namespace Application.Photos
     {
         public class Command : IRequest<ErrorResult<ImageDto>>
         {
-            public IFormFile File { get; set; }
+            public IFormFile[] File { get; set; }
             public Guid ToolingId { get; set; }
         }
 
@@ -41,21 +41,21 @@ namespace Application.Photos
 
                 var photoUploadResult = await _photoAccessor.AddPhoto(request.File);
 
-                var image = new Image
-                {
-                    Url = photoUploadResult.Url,
-                    Id = photoUploadResult.PublicId,
-                    ToolingId = tooling.Id
-                };
+                // var image = new Image
+                // {
+                //     Url = photoUploadResult.Url,
+                //     Id = photoUploadResult.PublicId,
+                //     ToolingId = tooling.Id
+                // };
 
-                if (!tooling.Images.Any(x => x.IsMain)) image.IsMain = true;
+                // if (!tooling.Images.Any(x => x.IsMain)) image.IsMain = true;
 
-                tooling.Images.Add(image);
+                // tooling.Images.Add(image);
                 var result = await _context.SaveChangesAsync() > 0;
-                ImageDto imageDto = _mapper.Map<ImageDto>(image);
+                // ImageDto imageDto = _mapper.Map<ImageDto>(image);
 
 
-                if (result) return ErrorResult<ImageDto>.Success(imageDto);
+                // if (result) return ErrorResult<ImageDto>.Success(imageDto);
                 return ErrorResult<ImageDto>.Failure("Problem adding image");
             }
         }

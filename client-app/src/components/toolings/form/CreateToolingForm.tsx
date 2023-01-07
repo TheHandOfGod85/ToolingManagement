@@ -26,6 +26,7 @@ import { v4 as uuid } from "uuid";
 import { router } from "../../../app/router/Routes";
 import ModalContainer from "../../../app/common/modals/ModalContainer";
 import { AxiosResponse } from "axios";
+import MyImagesUpload from "./common/options/MyImagesUpload";
 
 export default function CreateToolingForm() {
   const { toolingStore, modalStore } = useStore();
@@ -173,7 +174,7 @@ export default function CreateToolingForm() {
               </FormGroup>
               {/* image field */}
               <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
-                <MyTextInput
+                <MyImagesUpload
                   name="image"
                   placeholder="Image"
                   sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}

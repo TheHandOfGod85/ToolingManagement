@@ -1,7 +1,9 @@
-namespace Domain
+using Domain;
+using Microsoft.AspNetCore.Http;
 
+namespace Application.DTOs.ToolingDTO
 {
-    public class Tooling
+    public class ToolingDto
     {
         public Guid Id { get; set; }
         public string TNumber { get; set; }
@@ -12,7 +14,7 @@ namespace Domain
         public bool IsInProduction { get; set; }
         public int NumberOfImpressions { get; set; }
         public string PunnetNumber { get; set; }
-        public ICollection<Image> Images { get; set; } = new List<Image>();
-        public ICollection<Product> Products { get; set; } = new List<Product>();
+        public IFormFile[] Files { get; set; }
+
     }
 }

@@ -20,28 +20,30 @@ namespace Infrastructure.Photos
             _cloudinary = new Cloudinary(account);
         }
 
-        public async Task<PhotoUploadResult> AddPhoto(IFormFile file)
+        public async Task<List<PhotoUploadResult>> AddPhoto(IFormFile[] files)
         {
-            if (file.Length > 0)
+            if (files is null) return new List<PhotoUploadResult>();
+            if (files.Length > 0)
             {
-                await using var stream = file.OpenReadStream();
-                var uploadParams = new ImageUploadParams
+                List<PhotoUploadResult> uploadResults = new List<PhotoUploadResult>();
+                foreach (var file in files)
                 {
-                    File = new FileDescription(file.FileName, stream),
-                    Transformation = new Transformation().Height(500).Width(500).Crop("fill")
-                };
-                var uploadResult = await _cloudinary.UploadAsync(uploadParams);
-                if (uploadResult.Error != null)
-                {
-                    throw new Exception(uploadResult.Error.Message);
+                    await using var stream = file.OpenReadStream();
+                    var uploadParams = new ImageUploadParams
+                    {
+                        File = new FileDescription(file.FileName, stream),
+                        Transformation = new Transformation().Height(500).Width(500).Crop("fill")
+                    };
+                    var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+                    if (uploadResult.Error != null)
+                    {
+                        throw new Exception(uploadResult.Error.Message);
+                    }
+                    uploadResults.Add(GetUploadedResult(uploadResult));
                 }
-                return new PhotoUploadResult
-                {
-                    PublicId = uploadResult.PublicId,
-                    Url = uploadResult.SecureUrl.ToString()
-                };
+                return uploadResults;
             }
-            return null;
+            return new List<PhotoUploadResult>();
         }
 
         public async Task<string> DeletePhoto(string publicId)
@@ -50,5 +52,15 @@ namespace Infrastructure.Photos
             var result = await _cloudinary.DestroyAsync(deleteParams);
             return result.Result == "ok" ? result.Result : null;
         }
+
+        private PhotoUploadResult GetUploadedResult(ImageUploadResult result)
+        {
+            return new PhotoUploadResult
+            {
+                PublicId = result.PublicId,
+                Url = result.SecureUrl.ToString()
+            };
+        }
+
     }
 }

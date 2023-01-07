@@ -1,4 +1,5 @@
 using API.Utilities;
+using Application.DTOs.ToolingDTO;
 using Application.Toolings;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
@@ -25,17 +26,17 @@ namespace API.Controllers
         // creating a tooling
         [HttpPost]
         [Authorize(Roles = Roles.Admin)]
-        public async Task<IActionResult> CreateTooling(Tooling tooling)
+        public async Task<IActionResult> Post([FromForm]ToolingDto toolingDto)
         {
-            return HandleResult(await Mediator.Send(new Create.Command { Tooling = tooling }));
+            return HandleResult(await Mediator.Send(new Create.Command { ToolingDto = toolingDto }));
         }
         //updating toolings
         [HttpPut("{id}")]
         [Authorize(Roles = Roles.Admin)]
-        public async Task<IActionResult> EditTooling(Guid id, Tooling tooling)
+        public async Task<IActionResult> EditTooling(Guid id, ToolingDto toolingDto)
         {
-            tooling.Id = id;
-            return HandleResult(await Mediator.Send(new Edit.Command { Tooling = tooling }));
+            toolingDto.Id = id;
+            return HandleResult(await Mediator.Send(new Edit.Command { ToolingDto = toolingDto }));
         }
         //deleting a tooling
         [HttpDelete("{id}")]
