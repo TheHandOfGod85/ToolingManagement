@@ -6,10 +6,10 @@ namespace API.Controllers
 {
     public class ImagesController : BaseApiController
     {
-        [HttpPost("{id}")]
-        public async Task<IActionResult> Add(IFormFile[] file, Guid id)
+        [HttpPost]
+        public async Task<IActionResult> Add([FromForm] AddImagesDto addImagesDto)
         {
-            return HandleResult(await Mediator.Send(new Add.Command { File = file, ToolingId = id }));
+            return HandleResult(await Mediator.Send(new Add.Command { AddImagesDto = addImagesDto }));
         }
 
         [HttpDelete]

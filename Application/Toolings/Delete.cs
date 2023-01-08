@@ -33,7 +33,6 @@ namespace Application.Toolings
                 foreach (var img in tooling.Images)
                 {
                     await _photoAccessor.DeletePhoto(img.Id);
-                    // _context.Images.Remove(img);
                 }
                 _context.Remove(tooling);
                 var result = await _context.SaveChangesAsync() > 0;
