@@ -5,7 +5,7 @@ namespace Application.Interfaces
 {
     public interface IPhotoAccessor
     {
-        Task<List<PhotoUploadResult>> AddPhoto(IFormFile[] files);
+        Task<List<PhotoUploadResultDto>> AddPhoto(IFormFile[] files);
         Task<string> DeletePhoto(string publicId);
     }
 }

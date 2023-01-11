@@ -20,12 +20,12 @@ namespace Infrastructure.Photos
             _cloudinary = new Cloudinary(account);
         }
 
-        public async Task<List<PhotoUploadResult>> AddPhoto(IFormFile[] files)
+        public async Task<List<PhotoUploadResultDto>> AddPhoto(IFormFile[] files)
         {
-            if (files is null) return new List<PhotoUploadResult>();
+            if (files is null) return new List<PhotoUploadResultDto>();
             if (files.Length > 0)
             {
-                List<PhotoUploadResult> uploadResults = new List<PhotoUploadResult>();
+                List<PhotoUploadResultDto> uploadResults = new List<PhotoUploadResultDto>();
                 foreach (var file in files)
                 {
                     await using var stream = file.OpenReadStream();
@@ -43,7 +43,7 @@ namespace Infrastructure.Photos
                 }
                 return uploadResults;
             }
-            return new List<PhotoUploadResult>();
+            return new List<PhotoUploadResultDto>();
         }
 
         public async Task<string> DeletePhoto(string publicId)
@@ -53,9 +53,9 @@ namespace Infrastructure.Photos
             return result.Result == "ok" ? result.Result : null;
         }
 
-        private PhotoUploadResult GetUploadedResult(ImageUploadResult result)
+        private PhotoUploadResultDto GetUploadedResult(ImageUploadResult result)
         {
-            return new PhotoUploadResult
+            return new PhotoUploadResultDto
             {
                 PublicId = result.PublicId,
                 Url = result.SecureUrl.ToString()

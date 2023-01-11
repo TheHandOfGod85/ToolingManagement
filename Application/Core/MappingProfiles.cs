@@ -12,12 +12,11 @@ namespace Application.Core
         public MappingProfiles()
         {
             CreateMap<ToolingDto, Tooling>()
-            .ForMember(dto => dto.Products, o => o.Ignore())
+            .ForMember(dto => dto.Products, o => o.MapFrom(tooling => tooling.Products))
             .ForMember(dto => dto.Images, o => o.Ignore());
-
-            // CreateMap<Tooling, Tooling>();
-            // CreateMap<Product, Product>();
-            CreateMap<Product, GetProductDto>();
+            CreateMap<Tooling, Tooling>();
+            CreateMap<Product, Product>();
+            CreateMap<Product, ProductDto>();
             CreateMap<Tooling, GetToolingDto>()
             .ForMember(dto => dto.Products, o => o.MapFrom(
                 tooling => tooling.Products))

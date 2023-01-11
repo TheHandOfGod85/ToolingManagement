@@ -1,5 +1,4 @@
 using Application.DTOs.ToolingDTO;
-using Domain;
 using FluentValidation;
 
 namespace Application.Toolings.Validator

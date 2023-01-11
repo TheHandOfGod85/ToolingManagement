@@ -1,10 +1,9 @@
 using API.Extensions;
 using API.MIddleware;
-using Application.Toolings;
+using Application.Toolings.Commands;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace API
 {
@@ -33,7 +32,7 @@ namespace API
             //     .ReferenceHandler = ReferenceHandler.IgnoreCycles);
             services.AddApplicationServices(_config);
             services.AddFluentValidationAutoValidation();
-            services.AddValidatorsFromAssemblyContaining<Create>();
+            services.AddValidatorsFromAssemblyContaining<CreateToolingCommand>();
             services.AddIdentityServices(_config);
         }
 

@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application.DTOs.ImageDTO;
 using Application.DTOs.ProductDTO;
-using Domain;
 
 namespace Application.DTOs.ToolingDTO
 {
@@ -20,7 +15,7 @@ namespace Application.DTOs.ToolingDTO
         public int NumberOfImpressions { get; set; }
         public string PunnetNumber { get; set; }
         public string Image { get; set; }
-        public ICollection<GetProductDto> Products { get; set; }
+        public ProductDto[] Products { get; set; }
         public ICollection<ImageDto> Images { get; set; }
     }
 }
