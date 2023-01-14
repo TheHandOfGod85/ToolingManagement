@@ -12,7 +12,9 @@ namespace API.Mappings
         {
             CreateMap<PutPostToolingDto, CreateToolingCommand>();
             CreateMap<PutPostToolingDto, UpdateToolingCommand>();
-            CreateMap<Tooling, GetToolingDto>();
+            CreateMap<Tooling, GetToolingDto>()
+            .ForMember(x => x.Images, o => o.MapFrom(x => x.Images))
+            .ForMember(x => x.Products, o => o.MapFrom(x => x.Products));
         }
     }
 }

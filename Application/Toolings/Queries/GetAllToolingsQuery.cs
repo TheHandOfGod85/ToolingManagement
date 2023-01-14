@@ -1,5 +1,4 @@
 ﻿global using Domain;
-using Application.Core;
 using MediatR;
 
 namespace Application.Toolings.Queries

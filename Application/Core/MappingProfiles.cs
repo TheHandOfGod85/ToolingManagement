@@ -1,7 +1,5 @@
 ﻿using Application.DTOs.ImageDTO;
-using Application.DTOs.ProductDTO;
 using AutoMapper;
-using Domain;
 
 namespace Application.Core
 {
@@ -10,7 +8,7 @@ namespace Application.Core
     {
         public MappingProfiles()
         {
-            CreateMap<Product, ProductDto>();
+
             CreateMap<Image, ImageDto>();
 
         }

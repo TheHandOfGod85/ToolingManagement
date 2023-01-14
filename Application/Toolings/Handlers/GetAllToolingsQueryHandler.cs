@@ -1,7 +1,5 @@
-﻿using Application.Core;
-using Application.Toolings.Queries;
+﻿using Application.Toolings.Queries;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -12,7 +10,7 @@ namespace Application.Toolings.Handlers
     public class GetAllToolingsQueryHandler : IRequestHandler<GetAllToolingsQuery, List<Tooling>>
     {
         private readonly DataContext _context;
-        public GetAllToolingsQueryHandler(DataContext context, IMapper mapper)
+        public GetAllToolingsQueryHandler(DataContext context)
         {
             _context = context;
 
@@ -22,6 +20,7 @@ namespace Application.Toolings.Handlers
             return await _context.Toolings
                 .AsNoTracking()
                 .Include(x => x.Products)
+                .Include(x => x.Images)
                         .ToListAsync();
         }
     }

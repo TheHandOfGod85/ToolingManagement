@@ -1,9 +1,8 @@
-using Application.DTOs.ProductDTO;
 using FluentValidation;
 
 namespace Application.Products.Validator
 {
-    public class ProductValidator : AbstractValidator<CreateProductDto>
+    public class ProductValidator : AbstractValidator<Product>
     {
         public ProductValidator()
         {

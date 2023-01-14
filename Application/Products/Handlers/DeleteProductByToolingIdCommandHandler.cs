@@ -6,7 +6,7 @@ using Persistence;
 
 namespace Application.Products.Handlers
 {
-    public class DeleteProductByToolingIdCommandHandler : IRequestHandler<DeleteProductByToolingIdCommand, ErrorResult<Unit>>
+    public class DeleteProductByToolingIdCommandHandler : IRequestHandler<DeleteProductByToolingIdCommand, bool>
     {
         private readonly DataContext _context;
 
@@ -14,22 +14,21 @@ namespace Application.Products.Handlers
         {
             _context = context;
         }
-        public async Task<ErrorResult<Unit>> Handle(DeleteProductByToolingIdCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(DeleteProductByToolingIdCommand request, CancellationToken cancellationToken)
         {
             var tooling = await _context.Toolings
-            .Include(x => x.Products)
-            .FirstOrDefaultAsync(x => x.Id == request.DeleteProduct.ToolingId);
-            if (tooling == null) return null;
+            .FirstOrDefaultAsync(x => x.Id == request.ToolingId);
+            if (tooling is null) return false;
 
             var product = await _context.Products
-            .FirstOrDefaultAsync(x => x.Id == request.DeleteProduct.ProductId);
-            if (product == null) return null;
+            .FirstOrDefaultAsync(x => x.Id == request.ProductId);
+            if (product is null) return false;
 
             tooling.Products.Remove(product);
+            _context.Products.Remove(product);
 
             var result = await _context.SaveChangesAsync() > 0;
-            if (!result) return ErrorResult<Unit>.Failure("Failed to delete the product");
-            return ErrorResult<Unit>.Success(Unit.Value);
+            return result;
         }
     }
 }

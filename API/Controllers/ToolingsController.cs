@@ -1,10 +1,8 @@
 ﻿using API.DTOs.Toolings;
 using API.Utilities;
 using Application.DTOs.ToolingDTO;
-using Application.Toolings;
 using Application.Toolings.Commands;
 using Application.Toolings.Queries;
-using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,7 +22,7 @@ namespace API.Controllers
             return Ok(mappedResult);
 
         }
-        
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTooling(Guid id)
         {
@@ -56,7 +54,9 @@ namespace API.Controllers
         [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> DeleteTooling(Guid id)
         {
-            return HandleResult(await Mediator.Send(new DeleteSingleToolingCommand(id)));
+            var command = Mapper.Map<DeleteSingleToolingCommand>(id);
+            var result = await Mediator.Send(command);
+            return result ? NoContent() : NotFound();
         }
     }
 }

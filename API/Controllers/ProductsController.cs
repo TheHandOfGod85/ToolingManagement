@@ -13,20 +13,24 @@ namespace API.Controllers
         [HttpGet("getProductsByToolingId/{toolingId}")]
         public async Task<IActionResult> GetProductsByToolingId([FromRoute] Guid toolingId)
         {
-            var query = new GetProductsByToolingIdQuery(toolingId);
-            var response = await Mediator.Send(query);
-            return Ok(response);
+            var result = await Mediator.Send(new GetProductsByToolingIdQuery(toolingId));
+            var mappedResult = Mapper.Map<List<ProductDto>>(result);
+            return Ok(mappedResult);
         }
         [HttpPost("createProduct")]
         public async Task<IActionResult> CreateProduct([FromBody] CreateProductDto createProductDto)
         {
-            return HandleResult(await Mediator.Send(new CreateProductCommand(createProductDto)));
+            var command = Mapper.Map<CreateProductCommand>(createProductDto);
+            var result = await Mediator.Send(command);
+            return Ok(result);
         }
 
         [HttpDelete("deleteProductByToolingId")]
         public async Task<IActionResult> DeleteProduct(DeleteProductByToolingIdDto deleteProduct)
         {
-            return HandleResult(await Mediator.Send(new DeleteProductByToolingIdCommand(deleteProduct)));
+            var command = Mapper.Map<DeleteProductByToolingIdCommand>(deleteProduct);
+            var result = await Mediator.Send(command);
+            return result ? NoContent() : NotFound();
         }
     }
 }

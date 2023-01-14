@@ -1,7 +1,5 @@
 ﻿using API.Mappings;
-using Application.Core;
 using Application.Interfaces;
-using Application.Toolings;
 using Application.Toolings.Handlers;
 using Infrastructure.Photos;
 using MediatR;
@@ -38,7 +36,7 @@ namespace API.Extensions
             // add mediator as service
             services.AddMediatR(typeof(GetAllToolingsQueryHandler).Assembly);
             // add automapper as service
-            services.AddAutoMapper(typeof(MappingProfiles), typeof(Markup));
+            services.AddAutoMapper(typeof(Markup));
             services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
             return services;

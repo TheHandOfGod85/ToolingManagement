@@ -1,16 +1,25 @@
-using Application.Core;
-using Application.DTOs.ProductDTO;
+using Domain;
 using MediatR;
 
 namespace Application.Products.Commands
 {
-    public class CreateProductCommand : IRequest<ErrorResult<Unit>>
+    public class CreateProductCommand : IRequest<Product>
     {
-        public CreateProductDto CreateProductDto { get; }
-        public CreateProductCommand(CreateProductDto createProductDto)
-        {
-            CreateProductDto = createProductDto;
+        public string Name { get; set; }
+        public bool IsAllergen { get; set; }
+        public Guid ToolingId { get; set; }
 
+
+        internal Product CreateProduct()
+        {
+            return new Product
+            {
+                Name = Name,
+                IsAllergen = IsAllergen,
+                ToolingId = ToolingId
+            };
         }
     }
+
+
 }

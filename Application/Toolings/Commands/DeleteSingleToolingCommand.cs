@@ -3,12 +3,9 @@ using MediatR;
 
 namespace Application.Toolings.Commands
 {
-    public class DeleteSingleToolingCommand : IRequest<ErrorResult<Unit>>
+    public class DeleteSingleToolingCommand : IRequest<bool>
     {
         public Guid Id { get; }
-        public DeleteSingleToolingCommand(Guid id)
-        {
-            Id = id;
-        }
+        
     }
 }

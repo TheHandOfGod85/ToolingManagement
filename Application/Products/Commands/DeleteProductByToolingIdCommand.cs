@@ -1,15 +1,10 @@
-using Application.Core;
-using Application.DTOs.ProductDTO;
 using MediatR;
 
 namespace Application.Products.Commands
 {
-    public class DeleteProductByToolingIdCommand : IRequest<ErrorResult<Unit>>
+    public class DeleteProductByToolingIdCommand : IRequest<bool>
     {
-        public DeleteProductByToolingIdDto DeleteProduct { get; }
-        public DeleteProductByToolingIdCommand(DeleteProductByToolingIdDto deleteProduct)
-        {
-            DeleteProduct = deleteProduct;
-        }
+        public int ProductId { get; set; }
+        public Guid ToolingId { get; set; }
     }
 }
