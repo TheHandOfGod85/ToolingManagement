@@ -1,6 +1,5 @@
-using Application.DTOs.ImageDTO;
+﻿using Application.DTOs.ImageDTO;
 using Application.DTOs.ProductDTO;
-using Application.DTOs.ToolingDTO;
 using AutoMapper;
 using Domain;
 
@@ -11,19 +10,7 @@ namespace Application.Core
     {
         public MappingProfiles()
         {
-            CreateMap<ToolingDto, Tooling>()
-            .ForMember(dto => dto.Products, o => o.MapFrom(tooling => tooling.Products))
-            .ForMember(dto => dto.Images, o => o.Ignore());
-            CreateMap<Tooling, Tooling>();
-            CreateMap<Product, Product>();
             CreateMap<Product, ProductDto>();
-            CreateMap<Tooling, GetToolingDto>()
-            .ForMember(dto => dto.Products, o => o.MapFrom(
-                tooling => tooling.Products))
-                .ForMember(dto => dto.Images, o => o.MapFrom(
-                    tooling => tooling.Images
-                ))
-                .ForMember(dto => dto.Image, o => o.MapFrom(tooling => tooling.Images.FirstOrDefault(x => x.IsMain).Url));
             CreateMap<Image, ImageDto>();
 
         }

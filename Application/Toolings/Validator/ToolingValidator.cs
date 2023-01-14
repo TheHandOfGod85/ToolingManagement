@@ -1,9 +1,10 @@
-using Application.DTOs.ToolingDTO;
+﻿using Domain;
 using FluentValidation;
 
 namespace Application.Toolings.Validator
 {
-    public class ToolingValidator : AbstractValidator<ToolingDto>
+     
+    public class ToolingValidator : AbstractValidator<Tooling>
     {
         public ToolingValidator()
         {
