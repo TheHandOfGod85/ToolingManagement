@@ -1,6 +1,4 @@
-using Application.Core;
-using Application.DTOs.ToolingDTO;
-using AutoMapper;
+﻿using Application.Core;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -8,23 +6,21 @@ using Persistence;
 
 namespace Application.Toolings.Queries
 {
-    public class GetSingleToolingQueryHandler : IRequestHandler<GetSingleToolingQuery, ErrorResult<GetToolingDto>>
+    public class GetSingleToolingQueryHandler : IRequestHandler<GetToolingQuery, Tooling>
     {
         private readonly DataContext _context;
-        private readonly IMapper _mapper;
-        public GetSingleToolingQueryHandler(DataContext context, IMapper mapper)
+        public GetSingleToolingQueryHandler(DataContext context)
         {
-            _mapper = mapper;
             _context = context;
 
         }
-        public async Task<ErrorResult<GetToolingDto>> Handle(GetSingleToolingQuery request, CancellationToken cancellationToken)
+        public async Task<Tooling> Handle(GetToolingQuery request, CancellationToken cancellationToken)
         {
             var tooling = await _context.Toolings
-                .ProjectTo<GetToolingDto>(_mapper.ConfigurationProvider)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.Id);
 
-            return ErrorResult<GetToolingDto>.Success(tooling);
+            return tooling;
         }
     }
 }

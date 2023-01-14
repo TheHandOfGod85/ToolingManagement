@@ -1,8 +1,10 @@
+﻿using API.DTOs.Toolings;
 using API.Utilities;
 using Application.DTOs.ToolingDTO;
 using Application.Toolings;
 using Application.Toolings.Commands;
 using Application.Toolings.Queries;
+using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,29 +19,37 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetToolings()
         {
-            return HandleResult(await Mediator.Send(new GetAllToolingsQuery()));
+            var result = await Mediator.Send(new GetAllToolingsQuery());
+            var mappedResult = Mapper.Map<List<GetToolingDto>>(result);
+            return Ok(mappedResult);
 
         }
-        // return a single tooling using mediator 
+        
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTooling(Guid id)
         {
-            return HandleResult(await Mediator.Send(new GetSingleToolingQuery(id)));
+            var result = await Mediator.Send(new GetToolingQuery(id));
+            var mappedResult = Mapper.Map<GetToolingDto>(result);
+            return Ok(mappedResult);
         }
         // creating a tooling
         [HttpPost]
-        [Authorize(Roles = Roles.Admin)]
-        public async Task<IActionResult> CreateTooling([FromForm] ToolingDto toolingDto)
+        //[Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> CreateTooling([FromBody] PutPostToolingDto toolingDto)
         {
-            return HandleResult(await Mediator.Send(new CreateToolingCommand(toolingDto)));
+            var command = Mapper.Map<CreateToolingCommand>(toolingDto);
+            var result = await Mediator.Send(command);
+            return Ok(result);
         }
         //updating toolings
         [HttpPut("{id}")]
         [Authorize(Roles = Roles.Admin)]
-        public async Task<IActionResult> EditTooling(Guid id, ToolingDto toolingDto)
+        public async Task<IActionResult> EditTooling(Guid id, [FromBody] PutPostToolingDto toolingDto)
         {
-            toolingDto.Id = id;
-            return HandleResult(await Mediator.Send(new EditToolingCommand(toolingDto)));
+            var command = Mapper.Map<UpdateToolingCommand>(toolingDto);
+            command.Id = id;
+            var result = await Mediator.Send(command);
+            return result ? NoContent() : NotFound();
         }
         //deleting a tooling
         [HttpDelete("{id}")]

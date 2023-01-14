@@ -1,4 +1,5 @@
-using Application.Core;
+﻿using Application.Core;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,11 +11,13 @@ namespace API.Controllers
     {
         // injecting the Mediator in the base controller so other controller wiil reuse it
         private IMediator _mediator;
+         private IMapper _mapper;
 
         // getting the mediator from the hhtpcontext requesting the service
         protected IMediator Mediator => _mediator ??= HttpContext.RequestServices
         .GetService<IMediator>();
-
+        protected IMapper Mapper => _mapper ??= HttpContext.RequestServices
+      .GetService<IMapper>();
         // error handling for the controllers
         protected ActionResult HandleResult<T>(ErrorResult<T> result)
         {

@@ -1,9 +1,9 @@
+﻿using Application.DTOs.ImageDTO;
 using Application.DTOs.ProductDTO;
-using Microsoft.AspNetCore.Http;
 
 namespace Application.DTOs.ToolingDTO
 {
-    public class ToolingDto
+    public class GetToolingDto
     {
         public Guid Id { get; set; }
         public string TNumber { get; set; }
@@ -14,8 +14,8 @@ namespace Application.DTOs.ToolingDTO
         public bool IsInProduction { get; set; }
         public int NumberOfImpressions { get; set; }
         public string PunnetNumber { get; set; }
-        public ICollection<ProductDto> Products { get; set; } = new List<ProductDto>();
-        public IFormFile[] Files { get; set; }
-
+        public string Image { get; set; }
+        public List<ProductDto> Products { get; set; }
+        public List<ImageDto> Images { get; set; }
     }
 }

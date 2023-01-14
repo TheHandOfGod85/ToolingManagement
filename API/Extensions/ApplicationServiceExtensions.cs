@@ -1,3 +1,4 @@
+﻿using API.Mappings;
 using Application.Core;
 using Application.Interfaces;
 using Application.Toolings;
@@ -28,14 +29,16 @@ namespace API.Extensions
             {
                 opt.AddPolicy("CorsPolicy", policy =>
                 {
-                    policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000");
+                    policy.AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .WithOrigins("http://localhost:3000");
                 });
             });
 
             // add mediator as service
             services.AddMediatR(typeof(GetAllToolingsQueryHandler).Assembly);
             // add automapper as service
-            services.AddAutoMapper(typeof(MappingProfiles));
+            services.AddAutoMapper(typeof(MappingProfiles), typeof(Markup));
             services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
             return services;

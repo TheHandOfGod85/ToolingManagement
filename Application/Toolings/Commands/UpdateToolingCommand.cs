@@ -1,9 +1,10 @@
-using Application.DTOs.ImageDTO;
-using Application.DTOs.ProductDTO;
+﻿using Application.Core;
+using Domain;
+using MediatR;
 
-namespace Application.DTOs.ToolingDTO
+namespace Application.Toolings.Commands
 {
-    public class GetToolingDto
+    public class UpdateToolingCommand : IRequest<bool>
     {
         public Guid Id { get; set; }
         public string TNumber { get; set; }
@@ -14,8 +15,7 @@ namespace Application.DTOs.ToolingDTO
         public bool IsInProduction { get; set; }
         public int NumberOfImpressions { get; set; }
         public string PunnetNumber { get; set; }
-        public string Image { get; set; }
-        public ProductDto[] Products { get; set; }
-        public ICollection<ImageDto> Images { get; set; }
+
+       
     }
 }
