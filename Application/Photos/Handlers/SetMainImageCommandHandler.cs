@@ -1,4 +1,4 @@
-using Application.Core;
+﻿using Application.Core;
 using Application.Photos.Commands;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -18,10 +18,10 @@ namespace Application.Photos.Handlers
         {
             var tooling = await _context.Toolings
                  .Include(x => x.Images)
-                 .FirstOrDefaultAsync(x => x.Id == request.SetMain.ToolingId);
+                 .FirstOrDefaultAsync(x => x.Id == request.ToolingId);
             if (tooling == null) return null;
 
-            var image = tooling.Images.FirstOrDefault(x => x.Id == request.SetMain.ImageId);
+            var image = tooling.Images.FirstOrDefault(x => x.Id == request.ImageId);
             if (image == null) return null;
 
             var mainImage = tooling.Images.FirstOrDefault(x => x.IsMain);

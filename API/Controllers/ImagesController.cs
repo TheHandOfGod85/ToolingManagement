@@ -1,5 +1,4 @@
-using Application.DTOs.ImageDTO;
-using Application.Photos;
+﻿using Application.DTOs.ImageDTO;
 using Application.Photos.Commands;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,19 +9,25 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromForm] AddImagesDto addImagesDto)
         {
-            return HandleResult(await Mediator.Send(new AddImagesCommand(addImagesDto)));
+            var command = Mapper.Map<AddImagesCommand>(addImagesDto);
+            var result = await Mediator.Send(command);
+            return HandleResult(result);
         }
 
         [HttpDelete]
         public async Task<IActionResult> Delete(DeleteImageDto deleteDto)
         {
-            return HandleResult(await Mediator.Send(new DeleteImagesCommand(deleteDto)));
+            var command = Mapper.Map<DeleteImagesCommand>(deleteDto);
+            var result = await Mediator.Send(command);
+            return HandleResult(result);
         }
 
         [HttpPost("setMain")]
         public async Task<IActionResult> SetMain(DeleteImageDto setMain)
         {
-            return HandleResult(await Mediator.Send(new SetMainImageCommand(setMain)));
+            var command = Mapper.Map<SetMainImageCommand>(setMain);
+            var result = await Mediator.Send(command);
+            return HandleResult(result);
         }
     }
 }

@@ -18,6 +18,8 @@ namespace Application.Toolings.Queries
         {
             var tooling = await _context.Toolings
                 .AsNoTracking()
+                .Include(x=>x.Images)
+                .Include(y=>y.Products)
                 .FirstOrDefaultAsync(x => x.Id == request.Id);
 
             return tooling;

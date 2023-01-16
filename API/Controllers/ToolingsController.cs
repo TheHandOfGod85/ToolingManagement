@@ -51,12 +51,11 @@ namespace API.Controllers
         }
         //deleting a tooling
         [HttpDelete("{id}")]
-        [Authorize(Roles = Roles.Admin)]
-        public async Task<IActionResult> DeleteTooling(Guid id)
+        //[Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> DeleteTooling([FromRoute]Guid id)
         {
-            var command = Mapper.Map<DeleteSingleToolingCommand>(id);
-            var result = await Mediator.Send(command);
-            return result ? NoContent() : NotFound();
+            var result = await Mediator.Send(new DeleteSingleToolingCommand(id));
+            return Ok(result);
         }
     }
 }

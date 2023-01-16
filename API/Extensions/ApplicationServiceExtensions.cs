@@ -1,4 +1,5 @@
 ﻿using API.Mappings;
+using Application.Core;
 using Application.Interfaces;
 using Application.Toolings.Handlers;
 using Infrastructure.Photos;
@@ -34,7 +35,7 @@ namespace API.Extensions
             });
 
             // add mediator as service
-            services.AddMediatR(typeof(GetAllToolingsQueryHandler).Assembly);
+            services.AddMediatR(typeof(GetAllToolingsQueryHandler));
             // add automapper as service
             services.AddAutoMapper(typeof(Markup));
             services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));

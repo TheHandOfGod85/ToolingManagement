@@ -1,17 +1,14 @@
-using Application.Core;
+﻿using Application.Core;
 using Application.DTOs.ImageDTO;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Photos.Commands
 {
-    public class AddImagesCommand : IRequest<ErrorResult<List<ImageDto>>>
+    public class AddImagesCommand : IRequest<ErrorResult<List<Image>>>
     {
-        public AddImagesDto AddImagesDto { set; get; }
-        public AddImagesCommand(AddImagesDto addImagesDto)
-        {
-            AddImagesDto = addImagesDto;
-
-        }
+        public Guid ToolingId { get; set; }
+        public IFormFile[] Files { get; set; }
 
     }
 }

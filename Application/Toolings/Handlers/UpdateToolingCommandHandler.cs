@@ -1,8 +1,4 @@
-﻿using Application.Core;
-using Application.Toolings.Commands;
-using Application.Toolings.Validator;
-using AutoMapper;
-using FluentValidation;
+﻿using Application.Toolings.Commands;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;

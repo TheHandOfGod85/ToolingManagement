@@ -1,7 +1,10 @@
-﻿namespace API.DTOs.Toolings
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace API.DTOs.Toolings
 {
     public class PutPostToolingDto
     {
+        
         public string TNumber { get; set; }
         public string PSNumber { get; set; }
         public int Quantity { get; set; }

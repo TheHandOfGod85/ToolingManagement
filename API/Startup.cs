@@ -1,3 +1,4 @@
+﻿using System.Text.Json.Serialization;
 using API.Extensions;
 using API.MIddleware;
 using Application.Toolings.Commands;
@@ -26,10 +27,10 @@ namespace API
                 {
                     opt.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 });
-            });
-            // .AddJsonOptions(
-            //     x => x.JsonSerializerOptions
-            //     .ReferenceHandler = ReferenceHandler.IgnoreCycles);
+            })
+             .AddJsonOptions(
+                 x => x.JsonSerializerOptions
+                 .ReferenceHandler = ReferenceHandler.IgnoreCycles);
             services.AddApplicationServices(_config);
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining<CreateToolingCommand>();
