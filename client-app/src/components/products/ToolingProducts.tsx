@@ -29,7 +29,7 @@ export default observer(function ToolingProducts() {
     productStore,
     userStore: { user },
   } = useStore();
-  const { loadTooling, loading } = toolingStore;
+  const { loadTooling, loading, singleTooling } = toolingStore;
   const { deleteProduct } = productStore;
   const { id } = useParams<{ id: string }>();
 
@@ -71,6 +71,9 @@ export default observer(function ToolingProducts() {
       width: 120,
       sortable: false,
       disableColumnMenu: true,
+      renderCell: (params: GridRenderEditCellParams) => {
+        return params.row.isAllergen === true ? "Yes" : "No";
+      },
     },
     {
       field: "col7",
@@ -83,7 +86,11 @@ export default observer(function ToolingProducts() {
         <>
           {user?.role === "Admin" ? (
             <ButtonGroup variant="contained" size="small">
-              <Button component={Link} to={`/products/${id}`} color="inherit">
+              <Button
+                component={Link}
+                to={`/products/${singleTooling?.id}`}
+                color="inherit"
+              >
                 Edit
               </Button>
               <Button
@@ -118,7 +125,7 @@ export default observer(function ToolingProducts() {
           <>
             <Button
               component={Link}
-              to={`/manage/products/${tooling.id}`}
+              to={`/manage/products/${singleTooling?.id}`}
               variant="text"
               color="primary"
               size="small"
@@ -131,7 +138,7 @@ export default observer(function ToolingProducts() {
               color="primary"
               sx={{ display: { xs: "flex", sm: "none" } }}
               component={Link}
-              to={`/manage/products/${tooling.id}`}
+              to={`/manage/products/${singleTooling?.id}`}
             >
               <AddIcon />
             </IconButton>
@@ -157,22 +164,31 @@ export default observer(function ToolingProducts() {
     );
 
   return (
-    <Stack sx={{ height: 400, width: "100%", mt: 10 }} height={"100%"}>
-      <Typography variant="h4" sx={{ textAlign: "center", mt: 3, mb: 3 }}>
-        Product List for {tooling.tNumber} {tooling.psNumber}
-      </Typography>
-      <DataGrid
-        autoHeight
-        columns={columns}
-        // rowHeight={120}
-        rows={tooling.products!}
-        components={{
-          Toolbar: CustomToolbar,
-        }}
-      />
-      <Button component={Link} to={`/toolings/${tooling.id}`} size="small">
-        Cancel
-      </Button>
-    </Stack>
+    <>
+      <Stack sx={{ height: 400, width: "100%", mt: 10 }} height={"100%"}>
+        <Typography variant="h4" sx={{ textAlign: "center", mt: 3, mb: 3 }}>
+          Product List for {tooling.tNumber} {tooling.psNumber}
+        </Typography>
+        <DataGrid
+          autoHeight
+          columns={columns}
+          // rowHeight={120}
+          rows={tooling.products!}
+          components={{
+            Toolbar: CustomToolbar,
+          }}
+        />
+      </Stack>
+      <Box textAlign="center" mt={2}>
+        <Button
+          component={Link}
+          to={`/toolings/${singleTooling?.id}`}
+          size="small"
+          variant="outlined"
+        >
+          Cancel
+        </Button>
+      </Box>
+    </>
   );
 });

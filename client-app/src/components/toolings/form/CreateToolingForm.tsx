@@ -67,9 +67,7 @@ export default function CreateToolingForm() {
         ...tooling,
         id: uuid(),
       };
-      createTooling(newTooling).then(() =>
-        router.navigate(`/toolings/${newTooling.id}`)
-      );
+      createTooling(newTooling).then(() => router.navigate(`/toolings`));
       openModal(
         <Alert>
           <AlertTitle>Success!!</AlertTitle>Tooling Created
@@ -175,7 +173,7 @@ export default function CreateToolingForm() {
               <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
                 <MyCheckBox name="isInProduction" label="In Use?" />
               </FormGroup>
-              
+
               {/* buttons */}
               <FormGroup row sx={{ justifyContent: "space-evenly" }}>
                 <ButtonGroup sx={{ mb: 2 }}>
