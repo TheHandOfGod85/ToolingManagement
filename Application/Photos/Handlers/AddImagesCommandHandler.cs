@@ -24,8 +24,16 @@ namespace Application.Photos.Handlers
                .FirstOrDefaultAsync(x => x.Id == request.ToolingId);
 
             if (tooling == null) return null;
+            await UploadToCloudinary(request, tooling);
 
+            var result = await _context.SaveChangesAsync() > 0;
 
+            if (result) return ErrorResult<List<Image>>.Success((List<Image>)tooling.Images);
+            return ErrorResult<List<Image>>.Failure("Problem adding image");
+        }
+
+        private async Task UploadToCloudinary(AddImagesCommand request, Tooling tooling)
+        {
             var photoUploadResults = await _photoAccessor.AddPhoto(request.Files);
 
             foreach (var photoUploadResult in photoUploadResults)
@@ -38,11 +46,6 @@ namespace Application.Photos.Handlers
                 };
                 tooling.Images.Add(image);
             }
-
-            var result = await _context.SaveChangesAsync() > 0;
-            
-            if (result) return ErrorResult<List<Image>>.Success((List<Image>)tooling.Images);
-            return ErrorResult<List<Image>>.Failure("Problem adding image");
         }
     }
 }

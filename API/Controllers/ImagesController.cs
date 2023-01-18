@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.ImageDTO;
+using Application.DTOs.Images;
 using Application.Photos.Commands;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,9 +24,17 @@ namespace API.Controllers
         }
 
         [HttpPost("setMain")]
-        public async Task<IActionResult> SetMain(DeleteImageDto setMain)
+        public async Task<IActionResult> SetMain(SetMainDto setMain)
         {
             var command = Mapper.Map<SetMainImageCommand>(setMain);
+            var result = await Mediator.Send(command);
+            return HandleResult(result);
+        }
+
+        [HttpPost("unsetMain")]
+        public async Task<IActionResult> UnSetMain(SetMainDto setMain)
+        {
+            var command = Mapper.Map<UnsetMainImageCommand>(setMain);
             var result = await Mediator.Send(command);
             return HandleResult(result);
         }

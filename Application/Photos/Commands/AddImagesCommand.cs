@@ -1,5 +1,4 @@
 ﻿using Application.Core;
-using Application.DTOs.ImageDTO;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 

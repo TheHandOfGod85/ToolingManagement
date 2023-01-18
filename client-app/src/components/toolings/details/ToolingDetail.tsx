@@ -75,31 +75,28 @@ export default observer(function ToolingDetail() {
           <Typography variant="h6">
             Punnet Number : {singleTooling?.punnetNumber}
           </Typography>
-          <Typography variant="h6">
-            Products :{" "}
-            <ul className="flex">
-              {singleTooling?.products.map((product: Product) => (
-                <li key={product.name}>
-                  {product.name}
-                  {" IS "}
-                  {product.isAllergen ? "Allergen" : "NOT Allergen"}
-                </li>
-              ))}
-            </ul>
-          </Typography>
         </CardContent>
         <CardActions>
           {user?.role === "Admin" ? (
-            <Button
-              component={Link}
-              to={`/manage/${singleTooling?.id}`}
-              size="small"
-            >
-              Edit
-            </Button>
+            <>
+              <Button
+                component={Link}
+                to={`/manage/${singleTooling?.id}`}
+                size="small"
+              >
+                Edit
+              </Button>
+            </>
           ) : null}
           <Button component={Link} to={"/toolings"} size="small">
             Cancel
+          </Button>
+          <Button
+            component={Link}
+            to={`/products/${singleTooling?.id}`}
+            size="small"
+          >
+            View Products
           </Button>
         </CardActions>
       </Card>

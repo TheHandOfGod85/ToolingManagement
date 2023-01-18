@@ -15,11 +15,8 @@ import {
   Button,
   ButtonGroup,
   IconButton,
-  List,
-  ListItem,
   Typography,
 } from "@mui/material";
-import { Product } from "../../../models/tooling";
 import AddIcon from "@mui/icons-material/Add";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
@@ -95,23 +92,6 @@ export default observer(function GridTable() {
       width: 130,
       sortable: false,
       disableColumnMenu: true,
-    },
-    {
-      field: "product",
-      sortable: false,
-      disableColumnMenu: true,
-      renderCell: (params: GridRenderEditCellParams) => (
-        <Box sx={{ maxHeight: 200, overflow: "auto" }}>
-          <List>
-            {params.row.products.map((product: Product) => (
-              <ListItem key={product.name}>{product.name}</ListItem>
-            ))}
-          </List>
-        </Box>
-      ),
-      type: "string",
-      headerName: "Product Name",
-      width: 200,
     },
     {
       field: "note",

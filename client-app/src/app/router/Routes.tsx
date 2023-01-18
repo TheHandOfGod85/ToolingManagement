@@ -4,6 +4,8 @@ import NotFound from "../../components/errors/NotFound";
 import ServerError from "../../components/errors/ServerError";
 import TestErrors from "../../components/errors/TestError";
 import Unauthorized from "../../components/errors/Unauthorized";
+import CreateProducts from "../../components/products/form/CreateProducts";
+import ToolingProducts from "../../components/products/ToolingProducts";
 import ToolingDashboard from "../../components/toolings/dashboard/ToolingDashboard";
 import ToolingDetail from "../../components/toolings/details/ToolingDetail";
 import ToolingImagesDetail from "../../components/toolings/details/ToolingImagesDetail";
@@ -21,9 +23,11 @@ export const routes: RouteObject[] = [
         children: [
           { path: "createTooling", element: <CreateToolingForm /> },
           { path: "manage/:id", element: <CreateToolingForm /> },
+          { path: "manage/products/:id", element: <CreateProducts /> },
         ],
       },
       { path: "toolings", element: <ToolingDashboard /> },
+      { path: "products/:id", element: <ToolingProducts /> },
       { path: "toolings/:id", element: <ToolingDetail /> },
       { path: "images/:id", element: <ToolingImagesDetail /> },
       { path: "not-found", element: <NotFound /> },

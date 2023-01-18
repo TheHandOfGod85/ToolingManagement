@@ -26,11 +26,14 @@ namespace Application.Photos.Handlers
 
             var mainImage = tooling.Images.FirstOrDefault(x => x.IsMain);
             if (mainImage != null) mainImage.IsMain = false;
+            if (image.IsMain == false)
+            {
+                image.IsMain = true;
+            }
 
-            image.IsMain = true;
             var success = await _context.SaveChangesAsync() > 0;
             if (success) return ErrorResult<Unit>.Success(Unit.Value);
-            return ErrorResult<Unit>.Failure("Problem setting the main image");
+            return ErrorResult<Unit>.Failure("Problem setting the main image or the image is already the main");
         }
     }
 }

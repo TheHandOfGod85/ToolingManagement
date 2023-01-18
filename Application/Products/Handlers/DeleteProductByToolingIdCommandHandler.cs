@@ -1,4 +1,3 @@
-using Application.Core;
 using Application.Products.Commands;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,15 +15,15 @@ namespace Application.Products.Handlers
         }
         public async Task<bool> Handle(DeleteProductByToolingIdCommand request, CancellationToken cancellationToken)
         {
-            var tooling = await _context.Toolings
-            .FirstOrDefaultAsync(x => x.Id == request.ToolingId);
-            if (tooling is null) return false;
+            // var tooling = await _context.Toolings
+            // .FirstOrDefaultAsync(x => x.Id == request.ToolingId);
+            // if (tooling is null) return false;
 
             var product = await _context.Products
             .FirstOrDefaultAsync(x => x.Id == request.ProductId);
             if (product is null) return false;
 
-            tooling.Products.Remove(product);
+            // tooling.Products.Remove(product);
             _context.Products.Remove(product);
 
             var result = await _context.SaveChangesAsync() > 0;

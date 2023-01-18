@@ -14,7 +14,8 @@ namespace API.Mappings
             CreateMap<PutPostToolingDto, UpdateToolingCommand>();
             CreateMap<Tooling, GetToolingDto>()
             .ForMember(x => x.Images, o => o.MapFrom(x => x.Images))
-            .ForMember(x => x.Products, o => o.MapFrom(x => x.Products));
+            .ForMember(x => x.Products, o => o.MapFrom(x => x.Products))
+            .ForMember(x => x.Image, o => o.MapFrom(x => x.Images.FirstOrDefault(x => x.IsMain).Url));
         }
     }
 }

@@ -46,13 +46,13 @@ export default observer(function ToolingImagesDetail() {
       mt={10}
       height={"100%"}
     >
-      {singleTooling?.images.length !== 0 ? (
+      {singleTooling?.images!.length !== 0 ? (
         <Typography color={"black"} variant="h4">
           IMAGES
         </Typography>
       ) : null}
 
-      {singleTooling?.images.length === 0 ? (
+      {singleTooling?.images!.length === 0 ? (
         <Stack
           direction={"row"}
           justifyContent={"center"}
@@ -68,7 +68,7 @@ export default observer(function ToolingImagesDetail() {
         <>
           <ImageList variant="standard" cols={5} sx={{ ml: 5 }}>
             {!!singleTooling &&
-              singleTooling?.images.map((img) => (
+              singleTooling?.images!.map((img) => (
                 <ImageListItem key={img.id}>
                   <img src={`${img.url}`} loading="lazy" />
                 </ImageListItem>

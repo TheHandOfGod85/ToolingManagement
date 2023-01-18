@@ -25,10 +25,10 @@ namespace API.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("deleteProductByToolingId")]
-        public async Task<IActionResult> DeleteProduct(DeleteProductByToolingIdDto deleteProduct)
+        [HttpDelete("deleteProductByToolingId/{productId}")]
+        public async Task<IActionResult> DeleteProduct([FromRoute] int productId)
         {
-            var command = Mapper.Map<DeleteProductByToolingIdCommand>(deleteProduct);
+            var command = new DeleteProductByToolingIdCommand(productId);
             var result = await Mediator.Send(command);
             return result ? NoContent() : NotFound();
         }

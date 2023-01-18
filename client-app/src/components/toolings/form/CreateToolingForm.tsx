@@ -3,13 +3,11 @@ import {
   AlertTitle,
   Button,
   ButtonGroup,
-  Dialog,
   FormGroup,
-  IconButton,
   Paper,
   Typography,
 } from "@mui/material";
-import { FieldArray, Form, Formik } from "formik";
+import { Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Tooling } from "../../../models/tooling";
@@ -20,18 +18,15 @@ import MyTextArea from "./common/MyTextArea";
 import MySelectInput from "./common/MySelectInput";
 import { departmentOptions } from "./common/options/DepartmentOptions";
 import MyCheckBox from "./common/MyCheckBox";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
 import { v4 as uuid } from "uuid";
 import { router } from "../../../app/router/Routes";
 import ModalContainer from "../../../app/common/modals/ModalContainer";
-import { AxiosResponse } from "axios";
-import MyImagesUpload from "./common/options/MyImagesUpload";
 
 export default function CreateToolingForm() {
-  const { toolingStore, modalStore } = useStore();
+  const { toolingStore, modalStore, productStore } = useStore();
 
   const { loadTooling, createTooling, updateTooling } = toolingStore;
+  const { loadProducts } = productStore;
   const { openModal, closeModal } = modalStore;
 
   const { id } = useParams<{ id: string }>();
@@ -60,11 +55,6 @@ export default function CreateToolingForm() {
     ),
     punnetNumber: Yup.string().required("The Punnet Number is required"),
     department: Yup.string().required("The Department is required"),
-    products: Yup.array().of(
-      Yup.object({
-        name: Yup.string().required("The name of the product is required"),
-      })
-    ),
   });
 
   useEffect(() => {
@@ -172,14 +162,6 @@ export default function CreateToolingForm() {
                   sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
                 />
               </FormGroup>
-              {/* image field */}
-              <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
-                <MyImagesUpload
-                  name="image"
-                  placeholder="Image"
-                  sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
-                />
-              </FormGroup>
 
               {/* note field */}
               <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
@@ -193,50 +175,7 @@ export default function CreateToolingForm() {
               <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
                 <MyCheckBox name="isInProduction" label="In Use?" />
               </FormGroup>
-              {/* Field array start */}
-              <FieldArray
-                name="products"
-                render={(arrayHelpers) => (
-                  <>
-                    <Typography textAlign={"center"} mb={2} variant="h5">
-                      Add Products{" "}
-                      <IconButton
-                        onClick={() =>
-                          arrayHelpers.push({
-                            name: "",
-                            isAllergen: false,
-                          })
-                        }
-                      >
-                        <AddIcon fontSize="small" />
-                      </IconButton>
-                    </Typography>
-
-                    {tooling.products.map((product, index) => (
-                      <FormGroup
-                        key={index}
-                        row
-                        sx={{ mb: 2, justifyContent: "center" }}
-                      >
-                        <MyTextInput
-                          name={`products[${index}].name`}
-                          placeholder={"Product Name"}
-                        />
-                        <MyCheckBox
-                          sx={{ ml: 1 }}
-                          name={`products[${index}].isAllergen`}
-                          label={"Allergen"}
-                        ></MyCheckBox>
-
-                        <IconButton onClick={() => arrayHelpers.remove(index)}>
-                          <RemoveIcon fontSize="small" />
-                        </IconButton>
-                      </FormGroup>
-                    ))}
-                  </>
-                )}
-              />
-              {/* Field array end */}
+              
               {/* buttons */}
               <FormGroup row sx={{ justifyContent: "space-evenly" }}>
                 <ButtonGroup sx={{ mb: 2 }}>

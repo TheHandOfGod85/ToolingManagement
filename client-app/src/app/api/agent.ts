@@ -1,7 +1,8 @@
+import { DeleteProductDto } from "./../../models/tooling";
 import { store } from "./../stores/store";
 import { UserFormValues } from "./../../models/user";
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { Tooling } from "../../models/tooling";
+import { Product, Tooling } from "../../models/tooling";
 import { User } from "../../models/user";
 import { router } from "../router/Routes";
 
@@ -88,9 +89,19 @@ const Account = {
   roles: () => requests.get<string[]>("/account/roles"),
 };
 
+const Products = {
+  list: (id: string) =>
+    requests.get<Product[]>(`/products/getProductsByToolingId/${id}`),
+  create: (product: Product) =>
+    requests.post<void>("/products/createProduct", product),
+  delete: (productId: number) =>
+    requests.del<void>(`/products/deleteProductByToolingId/${productId}`),
+};
+
 const agent = {
   Toolings,
   Account,
+  Products,
 };
 
 export default agent;

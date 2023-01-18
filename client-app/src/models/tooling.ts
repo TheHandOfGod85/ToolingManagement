@@ -9,19 +9,24 @@ export interface Tooling {
   numberOfImpressions: number;
   image?: string;
   punnetNumber: string;
-  products: Product[];
-  images: Image[];
+  products?: Product[];
+  images?: Image[];
 }
 
 export interface Product {
-  id: number;
+  id?: number;
   name: string;
   isAllergen: boolean;
-  tooling: Tooling;
+  toolingId?: string | undefined;
 }
 
 export interface Image {
   id: string;
   url: string;
   isMain: boolean;
+}
+
+export interface DeleteProductDto {
+  productId: number;
+  toolingId: string | undefined;
 }
