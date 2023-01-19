@@ -1,5 +1,4 @@
-import { Button } from "@mui/joy";
-import { Grid, Paper, Typography } from "@mui/material";
+import { Button, Grid, Paper, Typography } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -44,16 +43,33 @@ export default observer(function ImageUploadWidget() {
               {files &&
                 files.length > 0 &&
                 files.map((file: any) => (
-                  <img key={file.id} src={file.preview} alt="" />
+                  <img
+                    key={file.id}
+                    src={file.preview}
+                    style={{ width: "125px", height: "125px" }}
+                  />
                 ))}
             </Grid>
           </Grid>
-          <Button
-            onClick={() => handleImagesUpload(files, id!)}
-            variant="plain"
+          <Grid
+            container
+            direction={"column"}
+            alignItems={"center"}
+            mt={3}
+            mb={2}
           >
-            Upload
-          </Button>
+            <Grid>
+              <Button
+                size="small"
+                color="success"
+                disabled={files.length === 0}
+                onClick={() => handleImagesUpload(files, id!)}
+                variant="outlined"
+              >
+                Upload
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
       </Paper>
     </>
