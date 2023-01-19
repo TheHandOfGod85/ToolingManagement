@@ -86,8 +86,8 @@ export default observer(function NavBar() {
               id="menu-appbar"
               anchorEl={anchorEl}
               anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
+                vertical: "bottom",
+                horizontal: "center",
               }}
               keepMounted
               transformOrigin={{

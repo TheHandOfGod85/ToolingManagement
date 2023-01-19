@@ -5,20 +5,38 @@ import {
   CardActionArea,
   CardActions,
   CardContent,
+  CardHeader,
   CardMedia,
   CircularProgress,
+  Menu,
+  MenuItem,
   Stack,
   Typography,
 } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Product } from "../../../models/tooling";
 import { useStore } from "../../../app/stores/store";
+import IconButton from "@mui/material/IconButton";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import React from "react";
+import ImageUploadWidget from "../../images/ImageUploadWidget";
+import { router } from "../../../app/router/Routes";
 
 export default observer(function ToolingDetail() {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const {
     toolingStore,
+    modalStore,
     userStore: { user },
   } = useStore();
   const { loadTooling, loading, singleTooling } = toolingStore;
@@ -27,6 +45,11 @@ export default observer(function ToolingDetail() {
   useEffect(() => {
     if (id) loadTooling(id);
   }, [id, loadTooling]);
+
+  function goToImages() {
+    router.navigate(`/images/${singleTooling?.id}`);
+    window.location.reload();
+  }
 
   if (loading)
     return (
@@ -45,7 +68,38 @@ export default observer(function ToolingDetail() {
   return (
     <Stack direction={"row"} justifyContent={"center"} mt={10} height={"100%"}>
       <Card sx={{ maxWidth: 445 }}>
-        <CardActionArea component={Link} to={`/images/${singleTooling?.id}`}>
+        <CardHeader
+          title={`${singleTooling?.tNumber} --- ${singleTooling?.psNumber}`}
+          action={
+            <>
+              <IconButton aria-label="settings" onClick={handleMenu}>
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem
+                  onClick={() => modalStore.openModal(<ImageUploadWidget />)}
+                >
+                  Add Image
+                </MenuItem>
+              </Menu>
+            </>
+          }
+        />
+        <CardActionArea onClick={() => goToImages()}>
           <CardMedia
             component="img"
             height="140"
@@ -54,12 +108,6 @@ export default observer(function ToolingDetail() {
           />
         </CardActionArea>
         <CardContent>
-          <Typography variant="h6">
-            T Number : {singleTooling?.tNumber}
-          </Typography>
-          <Typography variant="h6">
-            PS Number : {singleTooling?.psNumber}
-          </Typography>
           <Typography variant="h6">
             Quantity : {singleTooling?.quantity}
           </Typography>

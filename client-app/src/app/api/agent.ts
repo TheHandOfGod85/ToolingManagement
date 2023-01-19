@@ -1,4 +1,3 @@
-import { DeleteProductDto } from "./../../models/tooling";
 import { store } from "./../stores/store";
 import { UserFormValues } from "./../../models/user";
 import axios, { AxiosError, AxiosResponse } from "axios";
@@ -98,10 +97,24 @@ const Products = {
     requests.del<void>(`/products/deleteProductByToolingId/${productId}`),
 };
 
+const Images = {
+  uploadImages: (file: Blob[], id: string) => {
+    let formData = new FormData();
+    formData.append("toolingId", id);
+    file.forEach((file) => {
+      formData.append("files", file);
+    });
+    return axios.post("images", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
+};
+
 const agent = {
   Toolings,
   Account,
   Products,
+  Images,
 };
 
 export default agent;

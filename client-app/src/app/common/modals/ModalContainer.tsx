@@ -8,7 +8,8 @@ export default observer(function ModalContainer() {
     <Dialog
       open={modalStore.modal.open}
       onClose={modalStore.closeModal}
-      maxWidth={"sm"}
+      maxWidth={"md"}
+      fullWidth
     >
       {modalStore.modal.body}
     </Dialog>
