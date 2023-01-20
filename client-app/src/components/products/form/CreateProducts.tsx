@@ -19,11 +19,9 @@ import { LoadingButton } from "@mui/lab";
 import { toast, ToastContainer } from "react-toastify";
 
 export default observer(function CreateProducts() {
-  const { toolingStore, modalStore, productStore } = useStore();
+  const { toolingStore, modalStore } = useStore();
 
-  const { singleTooling, loadTooling } = toolingStore;
-
-  const { createProduct } = productStore;
+  const { singleTooling, loadTooling, createProduct } = toolingStore;
 
   const { openModal, closeModal } = modalStore;
 

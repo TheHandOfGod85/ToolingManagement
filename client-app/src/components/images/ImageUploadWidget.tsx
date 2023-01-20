@@ -8,8 +8,8 @@ import { ImageDropzone } from "./ImageDropzone";
 export default observer(function ImageUploadWidget() {
   const [files, setFiles] = useState<any>([]);
   const { id } = useParams<{ id: string }>();
-  const { imageStore } = useStore();
-  const { uploadImage } = imageStore;
+  const { toolingStore } = useStore();
+  const { uploadImage } = toolingStore;
 
   function handleImagesUpload(files: Blob[], id: string) {
     uploadImage(files, id);

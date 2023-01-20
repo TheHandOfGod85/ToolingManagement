@@ -1,6 +1,4 @@
 import {
-  Alert,
-  AlertTitle,
   Button,
   ButtonGroup,
   FormGroup,
@@ -25,11 +23,9 @@ import { toast, ToastContainer } from "react-toastify";
 import { LoadingButton } from "@mui/lab";
 
 export default function CreateToolingForm() {
-  const { toolingStore, modalStore, productStore } = useStore();
+  const { toolingStore } = useStore();
 
-  const { loadTooling, createTooling, updateTooling } = toolingStore;
-  const { loadProducts } = productStore;
-  const { openModal, closeModal } = modalStore;
+  const { loadTooling, createTooling, updateTooling, loading } = toolingStore;
 
   const { id } = useParams<{ id: string }>();
 
@@ -44,8 +40,6 @@ export default function CreateToolingForm() {
     numberOfImpressions: 0,
     image: "",
     punnetNumber: "",
-    images: [],
-    products: [],
   });
 
   const validationSchema = Yup.object({
@@ -64,7 +58,7 @@ export default function CreateToolingForm() {
   }, [id, loadTooling]);
 
   function handleFormSubmit(tooling: Tooling) {
-    if (tooling.id.length === 0) {
+    if (!tooling.id) {
       let newTooling = {
         ...tooling,
         id: uuid(),
@@ -83,9 +77,19 @@ export default function CreateToolingForm() {
         theme: "dark",
       });
     } else {
-      updateTooling(tooling).then(() =>
-        router.navigate(`/toolings/${tooling.id}`)
-      );
+      updateTooling(tooling);
+      setTimeout(function () {
+        router.navigate(`/toolings`);
+      }, 3000);
+
+      toast("Tooling updated!", {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: true,
+        theme: "dark",
+      });
     }
   }
 
@@ -109,15 +113,9 @@ export default function CreateToolingForm() {
           validationSchema={validationSchema}
           enableReinitialize
           initialValues={tooling}
-          onSubmit={(values: Tooling) => handleFormSubmit(values)}
+          onSubmit={(values) => handleFormSubmit(values)}
         >
-          {({
-            values: tooling,
-            handleSubmit,
-            isValid,
-            isSubmitting,
-            dirty,
-          }) => (
+          {({ handleSubmit, isValid, isSubmitting, dirty }) => (
             <Form autoComplete="off" onSubmit={handleSubmit}>
               {/* Tnumber and ps number fields */}
               <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>

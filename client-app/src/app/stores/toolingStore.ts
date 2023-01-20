@@ -50,6 +50,7 @@ export default class ToolingStore {
         this.singleTooling = single!;
         this.loading = false;
       });
+      return this.singleTooling;
     } catch (error) {
       console.log(error);
       runInAction(() => {
@@ -118,7 +119,6 @@ export default class ToolingStore {
       runInAction(() => {
         this.singleTooling.products?.push(product);
       });
-      
     } catch (error) {
       console.log(error);
     }
@@ -129,6 +129,18 @@ export default class ToolingStore {
       await agent.Products.delete(productId);
       runInAction(() => {
         this.singleTooling.products?.filter((x) => x.id !== productId);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  uploadImage = async (file: Blob[], id: string) => {
+    try {
+      const response = await agent.Images.uploadImages(file, id);
+      const image = response.data;
+      runInAction(() => {
+        this.singleTooling.images!.push(image);
       });
     } catch (error) {
       console.log(error);

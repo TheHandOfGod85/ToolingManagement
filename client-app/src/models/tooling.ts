@@ -1,5 +1,5 @@
 export interface Tooling {
-  id: string;
+  id?: string | undefined;
   tNumber: string;
   psNumber: string;
   quantity: number;
@@ -9,7 +9,7 @@ export interface Tooling {
   numberOfImpressions: number;
   image?: string;
   punnetNumber: string;
-  products: Product[];
+  products?: Product[];
   images?: Image[];
 }
 
@@ -24,9 +24,4 @@ export interface Image {
   id: string;
   url: string;
   isMain: boolean;
-}
-
-export interface DeleteProductDto {
-  productId: number;
-  toolingId: string | undefined;
 }

@@ -26,7 +26,7 @@ export default observer(function ToolingDashboard() {
     toolingStore,
     userStore: { user },
   } = useStore();
-  const { toolings, deleteTooling, loading } = toolingStore;
+  const { toolings, deleteTooling, loadToolings, loading } = toolingStore;
 
   function handleDeleteTooling(id: string) {
     deleteTooling(id);
