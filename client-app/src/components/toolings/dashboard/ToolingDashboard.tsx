@@ -20,6 +20,7 @@ import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import { useEffect } from "react";
 
 export default observer(function ToolingDashboard() {
   const {
@@ -39,6 +40,10 @@ export default observer(function ToolingDashboard() {
       theme: "dark",
     });
   }
+
+  useEffect(() => {
+    loadToolings();
+  }, [loadToolings]);
 
   // columns set up for the grid table
   const columns = [

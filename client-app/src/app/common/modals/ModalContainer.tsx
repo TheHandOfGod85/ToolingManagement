@@ -7,7 +7,7 @@ export default observer(function ModalContainer() {
   return (
     <Dialog
       open={modalStore.modal.open}
-      onClose={modalStore.closeModal}
+      onClose={() => modalStore.closeModal()}
       maxWidth={"md"}
       fullWidth
     >

@@ -19,14 +19,12 @@ import { useStore } from "../stores/store";
 function App() {
   const location = useLocation();
   const { commonStore, userStore, toolingStore } = useStore();
-  const { loadToolings } = toolingStore;
   const { getUser, getRoles } = userStore;
 
   useEffect(() => {
     if (commonStore.token) {
       getUser();
       getRoles();
-      loadToolings();
     }
   }, [commonStore, getUser, getRoles]);
 

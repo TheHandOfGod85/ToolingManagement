@@ -11,6 +11,7 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useStore } from "../../../app/stores/store";
+import { Image } from "../../../models/tooling";
 
 export default observer(function ToolingImagesDetail() {
   const {
@@ -68,9 +69,9 @@ export default observer(function ToolingImagesDetail() {
         <>
           <ImageList variant="standard" cols={5} sx={{ ml: 5 }}>
             {!!singleTooling &&
-              singleTooling?.images!.map((img) => (
+              singleTooling.images!.map((img: Image) => (
                 <ImageListItem key={img.id}>
-                  <img src={`${img.url}`} loading="lazy" />
+                  <img key={img.id} src={`${img.url}`} loading="lazy" />
                 </ImageListItem>
               ))}
           </ImageList>
