@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Product, Tooling } from "../../models/tooling";
 import { v4 as uuid } from "uuid";
+import { ToastContainer, toast } from "react-toastify";
 
 export default class ToolingStore {
   toolings: Tooling[] = [];
@@ -112,34 +113,25 @@ export default class ToolingStore {
   };
 
   createProduct = async (product: Product) => {
-    // this.loading = true;
     try {
       await agent.Products.create(product);
       runInAction(() => {
         this.singleTooling.products?.push(product);
-        // this.loading = false;
       });
+      
     } catch (error) {
       console.log(error);
-      runInAction(() => {
-        // this.loading = false;
-      });
     }
   };
 
   deleteProduct = async (productId: number) => {
-    // this.loading = true;
     try {
       await agent.Products.delete(productId);
       runInAction(() => {
         this.singleTooling.products?.filter((x) => x.id !== productId);
-        // this.loading = false;
       });
     } catch (error) {
       console.log(error);
-      runInAction(() => {
-        // this.loading = false;
-      });
     }
   };
 }

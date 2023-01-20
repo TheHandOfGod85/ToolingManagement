@@ -16,6 +16,7 @@ import MyCheckBox from "../../toolings/form/common/MyCheckBox";
 import { observer } from "mobx-react-lite";
 import { router } from "../../../app/router/Routes";
 import { LoadingButton } from "@mui/lab";
+import { toast, ToastContainer } from "react-toastify";
 
 export default observer(function CreateProducts() {
   const { toolingStore, modalStore, productStore } = useStore();
@@ -46,7 +47,20 @@ export default observer(function CreateProducts() {
       ...product,
       toolingId: id,
     };
-    createProduct(newProduct).then(() => router.navigate(`/products/${id}`));
+    createProduct(newProduct);
+
+    setTimeout(function () {
+      router.navigate(`/products/${id}`);
+    }, 3000);
+
+    toast("Product created!", {
+      position: "top-center",
+      autoClose: 1500,
+      hideProgressBar: true,
+      closeOnClick: true,
+      draggable: true,
+      theme: "dark",
+    });
   }
 
   return (
@@ -54,6 +68,7 @@ export default observer(function CreateProducts() {
       <Typography textAlign={"center"} variant="h4" mb={3}>
         Create Products Form
       </Typography>
+      <ToastContainer />
       <Formik
         enableReinitialize
         validationSchema={validationSchema}

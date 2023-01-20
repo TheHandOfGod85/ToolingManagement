@@ -21,6 +21,8 @@ import MyCheckBox from "./common/MyCheckBox";
 import { v4 as uuid } from "uuid";
 import { router } from "../../../app/router/Routes";
 import ModalContainer from "../../../app/common/modals/ModalContainer";
+import { toast, ToastContainer } from "react-toastify";
+import { LoadingButton } from "@mui/lab";
 
 export default function CreateToolingForm() {
   const { toolingStore, modalStore, productStore } = useStore();
@@ -67,20 +69,22 @@ export default function CreateToolingForm() {
         ...tooling,
         id: uuid(),
       };
-      createTooling(newTooling).then(() => router.navigate(`/toolings`));
-      openModal(
-        <Alert>
-          <AlertTitle>Success!!</AlertTitle>Tooling Created
-        </Alert>
-      );
+      createTooling(newTooling);
+      setTimeout(function () {
+        router.navigate(`/toolings`);
+      }, 3000);
+
+      toast("Tooling created!", {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: true,
+        theme: "dark",
+      });
     } else {
       updateTooling(tooling).then(() =>
         router.navigate(`/toolings/${tooling.id}`)
-      );
-      openModal(
-        <Alert>
-          <AlertTitle>Success!!</AlertTitle>Tooling Modified
-        </Alert>
       );
     }
   }
@@ -122,6 +126,7 @@ export default function CreateToolingForm() {
                   name="tNumber"
                   placeholder="T Number"
                 />
+
                 <MyTextInput
                   sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
                   name="psNumber"
@@ -177,14 +182,15 @@ export default function CreateToolingForm() {
               {/* buttons */}
               <FormGroup row sx={{ justifyContent: "space-evenly" }}>
                 <ButtonGroup sx={{ mb: 2 }}>
-                  <Button
+                  <LoadingButton
+                    loading={isSubmitting}
                     disabled={isSubmitting || !dirty || !isValid}
                     type="submit"
                     variant="contained"
                     sx={{ mr: 1 }}
                   >
                     Submit
-                  </Button>
+                  </LoadingButton>
                   <Button
                     component={Link}
                     to={"/toolings"}
@@ -193,6 +199,7 @@ export default function CreateToolingForm() {
                   >
                     Cancel
                   </Button>
+                  <ToastContainer />
                 </ButtonGroup>
               </FormGroup>
             </Form>

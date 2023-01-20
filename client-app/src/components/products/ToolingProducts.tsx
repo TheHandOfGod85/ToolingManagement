@@ -21,7 +21,7 @@ import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useStore } from "../../app/stores/store";
 import AddIcon from "@mui/icons-material/Add";
-
+import { toast, ToastContainer } from "react-toastify";
 
 export default observer(function ToolingProducts() {
   const {
@@ -38,7 +38,18 @@ export default observer(function ToolingProducts() {
 
   function handleDeleteProduct(productId: number) {
     deleteProduct(productId);
-    window.location.reload();
+    setTimeout(function () {
+      window.location.reload();
+    }, 3000);
+
+    toast("Product deleted successfully!", {
+      position: "top-center",
+      autoClose: 1500,
+      hideProgressBar: true,
+      closeOnClick: true,
+      draggable: true,
+      theme: "dark",
+    });
   }
 
   const columns = [
@@ -125,20 +136,20 @@ export default observer(function ToolingProducts() {
     );
   }
 
-  if (loading)
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <CircularProgress size={20} />
-        <Typography ml={1}>Loading products...</Typography>
-      </Box>
-    );
+  // if (loading)
+  //   return (
+  //     <Box
+  //       sx={{
+  //         display: "flex",
+  //         justifyContent: "center",
+  //         alignItems: "center",
+  //         height: "100vh",
+  //       }}
+  //     >
+  //       <CircularProgress size={20} />
+  //       <Typography ml={1}>Loading products...</Typography>
+  //     </Box>
+  //   );
 
   return (
     <>
@@ -147,14 +158,15 @@ export default observer(function ToolingProducts() {
           Product List for {singleTooling.tNumber} {singleTooling.psNumber}
         </Typography>
         <DataGrid
+          loading={loading}
           autoHeight
           columns={columns}
-          // rowHeight={120}
           rows={singleTooling.products!}
           components={{
             Toolbar: CustomToolbar,
           }}
         />
+        <ToastContainer />
         <Box textAlign="center" mt={2}>
           <Button
             component={Link}
