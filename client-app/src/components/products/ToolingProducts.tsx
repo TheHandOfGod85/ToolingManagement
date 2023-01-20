@@ -22,6 +22,7 @@ import { Link, useParams } from "react-router-dom";
 import { useStore } from "../../app/stores/store";
 import AddIcon from "@mui/icons-material/Add";
 
+
 export default observer(function ToolingProducts() {
   const {
     toolingStore,
@@ -82,13 +83,6 @@ export default observer(function ToolingProducts() {
               >
                 Delete
               </Button>
-              {/* <Button
-                component={Link}
-                to={`/products/${params.row.id}`}
-                color="secondary"
-              >
-                View
-              </Button> */}
             </ButtonGroup>
           ) : null}
         </>

@@ -15,6 +15,7 @@ import MyTextInput from "../../toolings/form/common/MyTextInput";
 import MyCheckBox from "../../toolings/form/common/MyCheckBox";
 import { observer } from "mobx-react-lite";
 import { router } from "../../../app/router/Routes";
+import { LoadingButton } from "@mui/lab";
 
 export default observer(function CreateProducts() {
   const { toolingStore, modalStore, productStore } = useStore();
@@ -71,14 +72,15 @@ export default observer(function CreateProducts() {
             </FormGroup>
             <FormGroup row sx={{ justifyContent: "space-evenly" }}>
               <ButtonGroup sx={{ mb: 2 }}>
-                <Button
+                <LoadingButton
+                  loading={isSubmitting}
                   disabled={isSubmitting || !dirty || !isValid}
                   type="submit"
                   variant="contained"
                   sx={{ mr: 1 }}
                 >
                   Submit
-                </Button>
+                </LoadingButton>
                 <Button
                   component={Link}
                   to={`/products/${singleTooling.id}`}
