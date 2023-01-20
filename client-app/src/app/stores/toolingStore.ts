@@ -1,11 +1,24 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { Tooling } from "../../models/tooling";
+import { Product, Tooling } from "../../models/tooling";
 import { v4 as uuid } from "uuid";
 
 export default class ToolingStore {
   toolings: Tooling[] = [];
-  singleTooling: Tooling | undefined = undefined;
+  singleTooling: Tooling = {
+    id: "",
+    tNumber: "",
+    psNumber: "",
+    quantity: 0,
+    department: "",
+    note: "",
+    isInProduction: false,
+    numberOfImpressions: 0,
+    image: "",
+    punnetNumber: "",
+    images: ([] = []),
+    products: ([] = []),
+  };
   loading = false;
 
   constructor() {
@@ -29,35 +42,19 @@ export default class ToolingStore {
   };
 
   loadTooling = async (id: string) => {
-    let single = this.getTooling(id);
-    if (single) {
-      this.singleTooling = single;
-      return single;
-    } else {
-      this.loading = true;
-      try {
-        single = await agent.Toolings.detail(id);
-        this.setTooling(single);
-        runInAction(() => {
-          this.singleTooling = single;
-          this.loading = false;
-        });
-        return single;
-      } catch (error) {
-        console.log(error);
-        runInAction(() => {
-          this.loading = false;
-        });
-      }
+    this.loading = true;
+    try {
+      let single = await agent.Toolings.detail(id);
+      runInAction(() => {
+        this.singleTooling = single!;
+        this.loading = false;
+      });
+    } catch (error) {
+      console.log(error);
+      runInAction(() => {
+        this.loading = false;
+      });
     }
-  };
-
-  private setTooling = (tooling: Tooling) => {
-    this.toolings.push(tooling);
-  };
-
-  private getTooling = (id: string) => {
-    return this.toolings.find((x) => x.id === id);
   };
 
   deleteTooling = async (id: string) => {
@@ -110,6 +107,38 @@ export default class ToolingStore {
       console.log(error);
       runInAction(() => {
         this.loading = false;
+      });
+    }
+  };
+
+  createProduct = async (product: Product) => {
+    // this.loading = true;
+    try {
+      await agent.Products.create(product);
+      runInAction(() => {
+        this.singleTooling.products?.push(product);
+        // this.loading = false;
+      });
+    } catch (error) {
+      console.log(error);
+      runInAction(() => {
+        // this.loading = false;
+      });
+    }
+  };
+
+  deleteProduct = async (productId: number) => {
+    // this.loading = true;
+    try {
+      await agent.Products.delete(productId);
+      runInAction(() => {
+        this.singleTooling.products?.filter((x) => x.id !== productId);
+        // this.loading = false;
+      });
+    } catch (error) {
+      console.log(error);
+      runInAction(() => {
+        // this.loading = false;
       });
     }
   };

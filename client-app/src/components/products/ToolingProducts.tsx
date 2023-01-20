@@ -17,40 +17,23 @@ import {
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useStore } from "../../app/stores/store";
-import { Tooling } from "../../models/tooling";
 import AddIcon from "@mui/icons-material/Add";
 
 export default observer(function ToolingProducts() {
   const {
     toolingStore,
-    productStore,
     userStore: { user },
   } = useStore();
   const { loadTooling, loading, singleTooling } = toolingStore;
-  const { deleteProduct } = productStore;
+  const { deleteProduct } = toolingStore;
   const { id } = useParams<{ id: string }>();
 
-  const [tooling, setTooling] = useState<Tooling>({
-    id: "",
-    tNumber: "",
-    psNumber: "",
-    quantity: 0,
-    department: "",
-    note: "",
-    isInProduction: false,
-    numberOfImpressions: 0,
-    image: "",
-    punnetNumber: "",
-    images: [],
-    products: [],
-  });
-
   useEffect(() => {
-    if (id) loadTooling(id).then((tool) => setTooling(tool!));
-  }, [id, loadTooling, handleDeleteProduct]);
+    if (id) loadTooling(id);
+  }, [id, loadTooling, deleteProduct]);
 
   function handleDeleteProduct(productId: number) {
     deleteProduct(productId);
@@ -88,7 +71,7 @@ export default observer(function ToolingProducts() {
             <ButtonGroup variant="contained" size="small">
               <Button
                 component={Link}
-                to={`/products/${singleTooling?.id}`}
+                to={`/products/${singleTooling.id}`}
                 color="inherit"
               >
                 Edit
@@ -125,7 +108,7 @@ export default observer(function ToolingProducts() {
           <>
             <Button
               component={Link}
-              to={`/manage/products/${singleTooling?.id}`}
+              to={`/manage/products/${singleTooling.id}`}
               variant="text"
               color="primary"
               size="small"
@@ -138,7 +121,7 @@ export default observer(function ToolingProducts() {
               color="primary"
               sx={{ display: { xs: "flex", sm: "none" } }}
               component={Link}
-              to={`/manage/products/${singleTooling?.id}`}
+              to={`/manage/products/${singleTooling.id}`}
             >
               <AddIcon />
             </IconButton>
@@ -167,28 +150,28 @@ export default observer(function ToolingProducts() {
     <>
       <Stack sx={{ height: 400, width: "100%", mt: 10 }} height={"100%"}>
         <Typography variant="h4" sx={{ textAlign: "center", mt: 3, mb: 3 }}>
-          Product List for {tooling.tNumber} {tooling.psNumber}
+          Product List for {singleTooling.tNumber} {singleTooling.psNumber}
         </Typography>
         <DataGrid
           autoHeight
           columns={columns}
           // rowHeight={120}
-          rows={tooling.products!}
+          rows={singleTooling.products!}
           components={{
             Toolbar: CustomToolbar,
           }}
         />
+        <Box textAlign="center" mt={2}>
+          <Button
+            component={Link}
+            to={`/toolings/${singleTooling.id}`}
+            size="small"
+            variant="outlined"
+          >
+            Cancel
+          </Button>
+        </Box>
       </Stack>
-      <Box textAlign="center" mt={2}>
-        <Button
-          component={Link}
-          to={`/toolings/${singleTooling?.id}`}
-          size="small"
-          variant="outlined"
-        >
-          Cancel
-        </Button>
-      </Box>
     </>
   );
 });

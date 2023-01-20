@@ -9,7 +9,7 @@ export interface Tooling {
   numberOfImpressions: number;
   image?: string;
   punnetNumber: string;
-  products?: Product[];
+  products: Product[];
   images?: Image[];
 }
 

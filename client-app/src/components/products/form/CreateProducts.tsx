@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useStore } from "../../../app/stores/store";
 import { Product } from "../../../models/tooling";
@@ -45,9 +45,7 @@ export default observer(function CreateProducts() {
       ...product,
       toolingId: id,
     };
-    createProduct(newProduct)
-      .then(() => router.navigate(`/products/${id}`))
-      .then(() => window.location.reload());
+    createProduct(newProduct).then(() => router.navigate(`/products/${id}`));
   }
 
   return (
@@ -83,7 +81,7 @@ export default observer(function CreateProducts() {
                 </Button>
                 <Button
                   component={Link}
-                  to={`/products/${singleTooling?.id}`}
+                  to={`/products/${singleTooling.id}`}
                   variant="contained"
                   color="error"
                 >
