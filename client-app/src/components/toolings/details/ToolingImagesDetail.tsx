@@ -142,7 +142,13 @@ export default observer(function ToolingImagesDetail() {
                           HandleSetMainImage(img.id);
                         }}
                       >
-                        <StarIcon sx={{ color: color }} />
+                        <StarIcon
+                          sx={
+                            img.isMain === true
+                              ? { color: "yellow" }
+                              : { color: "grey" }
+                          }
+                        />
                       </IconButton>
                     </Popover>
                   )}
