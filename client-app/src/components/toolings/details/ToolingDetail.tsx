@@ -47,7 +47,7 @@ export default observer(function ToolingDetail() {
   }, [id, loadTooling]);
 
   function goToImages() {
-    router.navigate(`/images/${singleTooling?.id}`);
+    router.navigate(`/images/${singleTooling.id}`);
     window.location.reload();
   }
 
@@ -69,7 +69,7 @@ export default observer(function ToolingDetail() {
     <Stack direction={"row"} justifyContent={"center"} mt={10} height={"100%"}>
       <Card sx={{ maxWidth: 445 }}>
         <CardHeader
-          title={`${singleTooling?.tNumber} --- ${singleTooling?.psNumber}`}
+          title={`${singleTooling.tNumber} --- ${singleTooling.psNumber}`}
           action={
             <>
               <IconButton aria-label="settings" onClick={handleMenu}>

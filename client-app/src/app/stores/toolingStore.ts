@@ -146,4 +146,27 @@ export default class ToolingStore {
       console.log(error);
     }
   };
+
+  deleteImage = async (id: string) => {
+    try {
+      await agent.Images.deleteImage(id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  setMainImage = async (id: string) => {
+    try {
+      await agent.Images.setMainImage(id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  unSetMainImage = async (id: string) => {
+    try {
+      await agent.Images.unSetMainImage(id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }

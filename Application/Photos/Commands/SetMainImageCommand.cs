@@ -6,8 +6,11 @@ namespace Application.Photos.Commands
 {
     public class SetMainImageCommand : IRequest<ErrorResult<Unit>>
     {
+        public SetMainImageCommand(string imageId)
+        {
+            ImageId = imageId;
+        }
         public string ImageId { get; set; }
-        public Guid ToolingId { get; set; }
 
     }
 }

@@ -25,7 +25,7 @@ namespace API.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("deleteProductByToolingId/{productId}")]
+        [HttpDelete("deleteProduct/{productId}")]
         public async Task<IActionResult> DeleteProduct([FromRoute] int productId)
         {
             var command = new DeleteProductByToolingIdCommand(productId);

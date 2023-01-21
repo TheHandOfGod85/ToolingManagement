@@ -65,9 +65,10 @@ axios.interceptors.request.use((config) => {
 
 const requests = {
   get: <T>(url: string) => axios.get<T>(url).then(responseBody),
-  post: <T>(url: string, body: {}) =>
+  post: <T>(url: string, body?: {}) =>
     axios.post<T>(url, body).then(responseBody),
-  put: <T>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
+  put: <T>(url: string, body?: {}) =>
+    axios.put<T>(url, body).then(responseBody),
   del: <T>(url: string) => axios.delete<T>(url).then(responseBody),
 };
 
@@ -94,7 +95,7 @@ const Products = {
   create: (product: Product) =>
     requests.post<void>("/products/createProduct", product),
   delete: (productId: number) =>
-    requests.del<void>(`/products/deleteProductByToolingId/${productId}`),
+    requests.del<void>(`/products/deleteProduct/${productId}`),
 };
 
 const Images = {
@@ -108,6 +109,11 @@ const Images = {
       headers: { "Content-Type": "multipart/form-data" },
     });
   },
+  deleteImage: (imgId: string) => requests.del<void>(`/images/delete/${imgId}`),
+  setMainImage: (imgId: string) =>
+    requests.put<void>(`images/setMain/${imgId}`),
+  unSetMainImage: (imgId: string) =>
+    requests.put<void>(`images/unSetMain/${imgId}`),
 };
 
 const agent = {

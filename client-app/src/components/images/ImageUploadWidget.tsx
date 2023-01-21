@@ -16,9 +16,7 @@ export default observer(function ImageUploadWidget() {
 
   function handleImagesUpload(files: Blob[], id: string) {
     uploadImage(files, id);
-    runInAction(() => {
-      modalStore.modal.open = false;
-    });
+    modalStore.closeModal();
 
     setTimeout(function () {
       router.navigate(`/images/${id}`);

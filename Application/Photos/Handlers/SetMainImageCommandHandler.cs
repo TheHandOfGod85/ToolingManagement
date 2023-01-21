@@ -1,7 +1,6 @@
 ﻿using Application.Core;
 using Application.Photos.Commands;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Photos.Handlers
@@ -16,20 +15,13 @@ namespace Application.Photos.Handlers
         }
         public async Task<ErrorResult<Unit>> Handle(SetMainImageCommand request, CancellationToken cancellationToken)
         {
-            var tooling = await _context.Toolings
-                 .Include(x => x.Images)
-                 .FirstOrDefaultAsync(x => x.Id == request.ToolingId);
-            if (tooling == null) return null;
 
-            var image = tooling.Images.FirstOrDefault(x => x.Id == request.ImageId);
+            var image = _context.Images.FirstOrDefault(x => x.Id == request.ImageId);
             if (image == null) return null;
 
-            var mainImage = tooling.Images.FirstOrDefault(x => x.IsMain);
+            var mainImage = _context.Images.FirstOrDefault(x => x.IsMain);
             if (mainImage != null) mainImage.IsMain = false;
-            if (image.IsMain == false)
-            {
-                image.IsMain = true;
-            }
+            image.IsMain = true;
 
             var success = await _context.SaveChangesAsync() > 0;
             if (success) return ErrorResult<Unit>.Success(Unit.Value);
