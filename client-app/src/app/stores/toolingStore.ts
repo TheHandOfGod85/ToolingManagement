@@ -49,7 +49,7 @@ export default class ToolingStore {
         this.singleTooling = single!;
         this.loading = false;
       });
-      // return this.singleTooling;
+      return this.singleTooling;
     } catch (error) {
       console.log(error);
       runInAction(() => {
