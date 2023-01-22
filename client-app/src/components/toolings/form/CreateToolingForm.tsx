@@ -1,6 +1,7 @@
 import {
   Button,
   ButtonGroup,
+  CircularProgress,
   FormGroup,
   Paper,
   Typography,
@@ -20,12 +21,14 @@ import { v4 as uuid } from "uuid";
 import { router } from "../../../app/router/Routes";
 import ModalContainer from "../../../app/common/modals/ModalContainer";
 import { toast, ToastContainer } from "react-toastify";
-import { LoadingButton } from "@mui/lab";
+import { LoadingButton, treeItemClasses } from "@mui/lab";
 
 export default function CreateToolingForm() {
   const { toolingStore } = useStore();
 
   const { loadTooling, createTooling, updateTooling, loading } = toolingStore;
+
+  const [spin, setSpin] = useState(false);
 
   const { id } = useParams<{ id: string }>();
 
@@ -54,7 +57,13 @@ export default function CreateToolingForm() {
   });
 
   useEffect(() => {
+    setSpin(true);
     if (id) loadTooling(id).then((tool) => setTooling(tool!));
+
+    console.log(spin);
+    return () => {
+      setSpin(false);
+    };
   }, [id, loadTooling]);
 
   function handleFormSubmit(tooling: Tooling) {
@@ -69,12 +78,12 @@ export default function CreateToolingForm() {
       }, 3000);
 
       toast("Tooling created!", {
-        position: "top-center",
+        position: "bottom-right",
         autoClose: 1500,
         hideProgressBar: true,
         closeOnClick: true,
         draggable: true,
-        theme: "dark",
+        theme: "light",
       });
     } else {
       updateTooling(tooling);
@@ -123,12 +132,18 @@ export default function CreateToolingForm() {
                   sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
                   name="tNumber"
                   placeholder="T Number"
+                  InputProps={{
+                    endAdornment: loading && <CircularProgress size={18} />,
+                  }}
                 />
 
                 <MyTextInput
                   sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
                   name="psNumber"
                   placeholder="PS Number"
+                  InputProps={{
+                    endAdornment: loading && <CircularProgress size={18} />,
+                  }}
                 />
               </FormGroup>
               {/* quantity and number of impressions fields */}
@@ -139,6 +154,9 @@ export default function CreateToolingForm() {
                   name="quantity"
                   placeholder="Quantity"
                   label="Quantity"
+                  InputProps={{
+                    endAdornment: loading && <CircularProgress size={18} />,
+                  }}
                 />
                 <MyTextInput
                   sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
@@ -146,6 +164,9 @@ export default function CreateToolingForm() {
                   name="numberOfImpressions"
                   placeholder="Impressions"
                   label="Number Of Impressions"
+                  InputProps={{
+                    endAdornment: loading && <CircularProgress size={18} />,
+                  }}
                 />
               </FormGroup>
               {/* department and punnet number fields */}
@@ -156,11 +177,17 @@ export default function CreateToolingForm() {
                   placeholder="Department"
                   label="Department"
                   options={departmentOptions}
+                  InputProps={{
+                    endAdornment: loading && <CircularProgress size={18} />,
+                  }}
                 />
                 <MyTextInput
                   name="punnetNumber"
                   placeholder="Punnet Number"
                   sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
+                  InputProps={{
+                    endAdornment: loading && <CircularProgress size={18} />,
+                  }}
                 />
               </FormGroup>
 

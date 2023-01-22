@@ -1,10 +1,6 @@
 import {
-  FormHelperText,
-  InputLabel,
   ListItemText,
   MenuItem,
-  Select,
-  Stack,
   TextField,
 } from "@mui/material";
 import { useField } from "formik";
@@ -15,6 +11,7 @@ interface Props {
   options: any;
   label?: string;
   sx?: {};
+  InputProps?:{};
 }
 
 export default function MySelectInput(props: Props) {

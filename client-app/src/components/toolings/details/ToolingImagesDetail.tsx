@@ -53,12 +53,21 @@ export default observer(function ToolingImagesDetail() {
     newAnchorElArray[index] = null;
     setAnchorElArray(newAnchorElArray);
   };
+  const [spin, setSpin] = useState(false);
 
   function HandleDeleteImage(id: string) {
     deleteImage(id);
     setTimeout(function () {
       window.location.reload();
-    }, 1500);
+    }, 3000);
+    toast("Image deleted", {
+      position: "bottom-right",
+      autoClose: 1500,
+      hideProgressBar: true,
+      closeOnClick: true,
+      draggable: true,
+      theme: "light",
+    });
   }
 
   function HandleSetMainImage(id: string) {
@@ -75,7 +84,12 @@ export default observer(function ToolingImagesDetail() {
   }
 
   useEffect(() => {
+    setSpin(true);
     if (id) loadTooling(id);
+    console.log(spin);
+    return () => {
+      setSpin(false);
+    };
   }, [id, loadTooling]);
 
   if (loading)
@@ -141,12 +155,12 @@ export default observer(function ToolingImagesDetail() {
                         onClick={() =>
                           img.isMain === true
                             ? toast("Main Image cannot be deleted", {
-                                position: "top-center",
+                                position: "bottom-right",
                                 autoClose: 1500,
                                 hideProgressBar: true,
                                 closeOnClick: true,
                                 draggable: true,
-                                theme: "dark",
+                                theme: "light",
                               })
                             : HandleDeleteImage(img.id)
                         }

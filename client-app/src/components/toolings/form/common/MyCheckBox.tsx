@@ -5,6 +5,7 @@ interface Props {
   name: string;
   label?: string;
   sx?: {};
+  inputProps?: {};
 }
 
 export default function MyCheckBox(props: Props) {
@@ -16,7 +17,9 @@ export default function MyCheckBox(props: Props) {
       {...props}
       checked={field.value}
       control={
-        <Checkbox onChange={(e) => helpers.setValue(e.target.checked)} />
+        <Checkbox
+          onChange={(e) => helpers.setValue(e.target.checked)}
+        />
       }
       label={props.label}
     ></FormControlLabel>

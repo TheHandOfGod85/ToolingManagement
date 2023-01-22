@@ -14,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useStore } from "../../../app/stores/store";
 import IconButton from "@mui/material/IconButton";
@@ -41,9 +41,15 @@ export default observer(function ToolingDetail() {
   } = useStore();
   const { loadTooling, loading, singleTooling } = toolingStore;
   const { id } = useParams<{ id: string }>();
+  const [spin, setSpin] = useState(false);
 
   useEffect(() => {
+    setSpin(true);
     if (id) loadTooling(id);
+    console.log(spin);
+    return () => {
+      setSpin(false);
+    };
   }, [id, loadTooling]);
 
   function goToImages() {

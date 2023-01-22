@@ -73,7 +73,13 @@ export default observer(function EditProduct() {
         {({ isValid, isSubmitting, dirty }) => (
           <Form autoComplete="off">
             <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
-              <MyTextInput name="name" placeholder="Product Name" />
+              <MyTextInput
+                InputProps={{
+                  endAdornment: loading && <CircularProgress size={18} />,
+                }}
+                name="name"
+                placeholder="Product Name"
+              />
               <MyCheckBox
                 sx={{ ml: 1 }}
                 name={"isAllergen"}

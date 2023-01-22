@@ -43,12 +43,12 @@ export default observer(function ToolingProducts() {
     }, 3000);
 
     toast("Product deleted successfully!", {
-      position: "top-center",
+      position: "bottom-right",
       autoClose: 1500,
       hideProgressBar: true,
       closeOnClick: true,
       draggable: true,
-      theme: "dark",
+      theme: "light",
     });
   }
 
