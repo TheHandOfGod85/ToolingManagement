@@ -14,7 +14,7 @@ export interface Tooling {
 }
 
 export interface Product {
-  id?: number;
+  id: number;
   name: string;
   isAllergen: boolean;
   toolingId?: string | undefined;

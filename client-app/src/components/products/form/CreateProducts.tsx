@@ -4,8 +4,10 @@ import { useStore } from "../../../app/stores/store";
 import { Product } from "../../../models/tooling";
 import * as Yup from "yup";
 import {
+  Box,
   Button,
   ButtonGroup,
+  CircularProgress,
   FormGroup,
   Paper,
   Typography,
@@ -19,15 +21,14 @@ import { LoadingButton } from "@mui/lab";
 import { toast, ToastContainer } from "react-toastify";
 
 export default observer(function CreateProducts() {
-  const { toolingStore, modalStore } = useStore();
+  const { toolingStore } = useStore();
 
-  const { singleTooling, loadTooling, createProduct } = toolingStore;
-
-  const { openModal, closeModal } = modalStore;
+  const { singleTooling, loadTooling, createProduct, loading } = toolingStore;
 
   const { id } = useParams<{ id: string }>();
 
   const [product, setProduct] = useState<Product>({
+    id: 0,
     name: "",
     isAllergen: false,
   });
@@ -61,6 +62,21 @@ export default observer(function CreateProducts() {
     });
   }
 
+  if (loading)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress size={20} />
+        <Typography ml={1}>Loading Images...</Typography>
+      </Box>
+    );
+
   return (
     <Paper sx={{ alignItems: "center", m: 3, mt: 10, height: "100%" }}>
       <Typography textAlign={"center"} variant="h4" mb={3}>
@@ -73,7 +89,7 @@ export default observer(function CreateProducts() {
         initialValues={product}
         onSubmit={(values: Product) => handleFormSubmit(values)}
       >
-        {({ handleSubmit, isValid, isSubmitting, dirty }) => (
+        {({ isValid, isSubmitting, dirty }) => (
           <Form autoComplete="off">
             <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
               <MyTextInput name="name" placeholder="Product Name" />

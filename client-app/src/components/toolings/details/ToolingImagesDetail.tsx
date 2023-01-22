@@ -18,6 +18,7 @@ import { useStore } from "../../../app/stores/store";
 import { Image } from "../../../models/tooling";
 import DeleteIcon from "@mui/icons-material/Delete";
 import StarIcon from "@mui/icons-material/Star";
+import { toast, ToastContainer } from "react-toastify";
 
 export default observer(function ToolingImagesDetail() {
   const {
@@ -68,9 +69,9 @@ export default observer(function ToolingImagesDetail() {
   function HandleSetMainImage(id: string) {
     setMainImage(id);
   }
-  // function HandleUnSetMainImage(id: string) {
-  //   unSetMainImage(id);
-  // }
+  function HandleUnSetMainImage(id: string) {
+    unSetMainImage(id);
+  }
 
   useEffect(() => {
     if (id) loadTooling(id);
@@ -134,12 +135,27 @@ export default observer(function ToolingImagesDetail() {
                       onClose={() => handleClose(index)}
                       anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
                     >
-                      <IconButton onClick={() => HandleDeleteImage(img.id)}>
+                      <IconButton
+                        onClick={() =>
+                          img.isMain === true
+                            ? toast("Main Image cannot be deleted", {
+                                position: "top-center",
+                                autoClose: 1500,
+                                hideProgressBar: true,
+                                closeOnClick: true,
+                                draggable: true,
+                                theme: "dark",
+                              })
+                            : HandleDeleteImage(img.id)
+                        }
+                      >
                         <DeleteIcon />
                       </IconButton>
                       <IconButton
                         onClick={() => {
-                          HandleSetMainImage(img.id);
+                          img.isMain === false
+                            ? HandleSetMainImage(img.id)
+                            : HandleUnSetMainImage(img.id);
                         }}
                       >
                         <StarIcon
@@ -155,6 +171,7 @@ export default observer(function ToolingImagesDetail() {
                 </ImageListItem>
               ))}
           </ImageList>
+          <ToastContainer/>
         </>
       )}
 
