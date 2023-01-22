@@ -2,7 +2,6 @@ import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Product, Tooling } from "../../models/tooling";
 import { v4 as uuid } from "uuid";
-import { ToastContainer, toast } from "react-toastify";
 
 export default class ToolingStore {
   toolings: Tooling[] = [];
@@ -17,8 +16,8 @@ export default class ToolingStore {
     numberOfImpressions: 0,
     image: "",
     punnetNumber: "",
-    images: ([] = []),
-    products: ([] = []),
+    images: [],
+    products: [],
   };
   loading = false;
 

@@ -5,13 +5,12 @@ import {
   IconButton,
   ImageList,
   ImageListItem,
-  Paper,
   Popover,
   Stack,
   Typography,
 } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import React, { useRef, useState } from "react";
+import { useState } from "react";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useStore } from "../../../app/stores/store";
@@ -21,10 +20,7 @@ import StarIcon from "@mui/icons-material/Star";
 import { toast, ToastContainer } from "react-toastify";
 
 export default observer(function ToolingImagesDetail() {
-  const {
-    toolingStore,
-    userStore: { user },
-  } = useStore();
+  const { toolingStore } = useStore();
   const {
     loadTooling,
     loading,
@@ -34,7 +30,7 @@ export default observer(function ToolingImagesDetail() {
     unSetMainImage,
   } = toolingStore;
   const { id } = useParams<{ id: string }>();
-  const [color, setColor] = useState<string>("");
+  // const [color, setColor] = useState<string>("");
   const [openArray, setOpenArray] = useState<Array<boolean>>(
     new Array(singleTooling.images!.length).fill(false)
   );
@@ -127,6 +123,7 @@ export default observer(function ToolingImagesDetail() {
                     src={img.url}
                     onClick={(e) => handleClick(e, index)}
                     loading="lazy"
+                    alt=""
                   />
                   {openArray[index] !== undefined && (
                     <Popover
@@ -171,7 +168,7 @@ export default observer(function ToolingImagesDetail() {
                 </ImageListItem>
               ))}
           </ImageList>
-          <ToastContainer/>
+          <ToastContainer />
         </>
       )}
 
