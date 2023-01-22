@@ -48,7 +48,6 @@ export default observer(function ToolingDetail() {
 
   function goToImages() {
     router.navigate(`/images/${singleTooling.id}`);
-    window.location.reload();
   }
 
   if (loading)

@@ -30,7 +30,6 @@ export default observer(function ToolingImagesDetail() {
     unSetMainImage,
   } = toolingStore;
   const { id } = useParams<{ id: string }>();
-  // const [color, setColor] = useState<string>("");
   const [openArray, setOpenArray] = useState<Array<boolean>>(
     new Array(singleTooling.images!.length).fill(false)
   );
@@ -64,9 +63,15 @@ export default observer(function ToolingImagesDetail() {
 
   function HandleSetMainImage(id: string) {
     setMainImage(id);
+    setTimeout(function () {
+      window.location.reload();
+    }, 1500);
   }
   function HandleUnSetMainImage(id: string) {
     unSetMainImage(id);
+    setTimeout(function () {
+      window.location.reload();
+    }, 1500);
   }
 
   useEffect(() => {
