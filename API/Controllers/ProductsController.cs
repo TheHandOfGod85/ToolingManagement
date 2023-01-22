@@ -1,6 +1,8 @@
+using API.DTOs.Products;
 using Application.DTOs.ProductDTO;
 using Application.Products.Commands;
 using Application.Products.Queries;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -32,5 +34,23 @@ namespace API.Controllers
             var result = await Mediator.Send(command);
             return result ? NoContent() : NotFound();
         }
+
+        [HttpPut("editProduct/{id}")]
+        public async Task<IActionResult> EditProduct(int id, [FromBody] EditProductDto editProduct)
+        {
+            var command = Mapper.Map<EditProductCommand>(editProduct);
+            command.Id = id;
+            var result = await Mediator.Send(command);
+            return HandleResult(result);
+        }
+
+        [HttpGet("getProductById/{id}")]
+        public async Task<IActionResult> GetProductById([FromRoute] string id)
+        {
+            var result = await Mediator.Send(new GetProductByIdQuery(id));
+            var mappedResult = Mapper.Map<ProductDto>(result);
+            return mappedResult is not null ? Ok(mappedResult) : NotFound();
+        }
+
     }
 }

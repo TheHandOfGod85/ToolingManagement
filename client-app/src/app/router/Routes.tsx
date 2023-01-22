@@ -5,6 +5,7 @@ import ServerError from "../../components/errors/ServerError";
 import TestErrors from "../../components/errors/TestError";
 import Unauthorized from "../../components/errors/Unauthorized";
 import CreateProducts from "../../components/products/form/CreateProducts";
+import EditProduct from "../../components/products/form/EditProduct";
 import ToolingProducts from "../../components/products/ToolingProducts";
 import ToolingDashboard from "../../components/toolings/dashboard/ToolingDashboard";
 import ToolingDetail from "../../components/toolings/details/ToolingDetail";
@@ -24,6 +25,7 @@ export const routes: RouteObject[] = [
           { path: "createTooling", element: <CreateToolingForm /> },
           { path: "manage/:id", element: <CreateToolingForm /> },
           { path: "manage/products/:id", element: <CreateProducts /> },
+          { path: "manage/products/edit/:id", element: <EditProduct /> },
         ],
       },
       { path: "toolings", element: <ToolingDashboard /> },

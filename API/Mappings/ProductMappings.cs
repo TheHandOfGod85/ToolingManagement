@@ -1,5 +1,7 @@
-﻿using Application.DTOs.ProductDTO;
+﻿using API.DTOs.Products;
+using Application.DTOs.ProductDTO;
 using Application.Products.Commands;
+using Application.Products.Queries;
 using AutoMapper;
 using Domain;
 
@@ -12,6 +14,8 @@ namespace API.Mappings
             CreateMap<Product, ProductDto>();
             CreateMap<CreateProductDto, CreateProductCommand>();
             CreateMap<DeleteProductByToolingIdDto, DeleteProductByToolingIdCommand>();
+            CreateMap<EditProductDto, EditProductCommand>();
+            CreateMap<ProductDto, GetProductByIdQuery>();
         }
     }
 }

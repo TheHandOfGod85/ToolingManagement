@@ -20,10 +20,10 @@ import { router } from "../../../app/router/Routes";
 import { LoadingButton } from "@mui/lab";
 import { toast, ToastContainer } from "react-toastify";
 
-export default observer(function CreateProducts() {
+export default observer(function EditProduct() {
   const { toolingStore } = useStore();
 
-  const { singleTooling, loadTooling, createProduct, loading } = toolingStore;
+  const { loading, editProduct, getProduct } = toolingStore;
 
   const { id } = useParams<{ id: string }>();
 
@@ -31,6 +31,7 @@ export default observer(function CreateProducts() {
     id: 0,
     name: "",
     isAllergen: false,
+    toolingId: "",
   });
 
   const validationSchema = Yup.object({
@@ -38,21 +39,16 @@ export default observer(function CreateProducts() {
   });
 
   useEffect(() => {
-    if (id) loadTooling(id);
-  }, [id, loadTooling]);
+    if (id) getProduct(id).then((prodt) => setProduct(prodt));
+  }, [id, getProduct]);
 
-  function handleFormSubmit(product: Product) {
-    let newProduct = {
-      ...product,
-      toolingId: id,
-    };
-    createProduct(newProduct);
-
+  function handleFormSubmit(newProduct: Product) {
+    editProduct(newProduct);
     setTimeout(function () {
-      router.navigate(`/products/${id}`);
+      router.navigate(`/products/${product!.toolingId}`);
     }, 3000);
 
-    toast("Product created!", {
+    toast("Product edited!", {
       position: "bottom-right",
       autoClose: 1500,
       hideProgressBar: true,
@@ -62,25 +58,10 @@ export default observer(function CreateProducts() {
     });
   }
 
-  if (loading)
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <CircularProgress size={20} />
-        <Typography ml={1}>Loading Images...</Typography>
-      </Box>
-    );
-
   return (
     <Paper sx={{ alignItems: "center", m: 3, mt: 10, height: "100%" }}>
       <Typography textAlign={"center"} variant="h4" mb={3}>
-        Create Products Form
+        Edit Product Form
       </Typography>
       <ToastContainer />
       <Formik
@@ -112,7 +93,7 @@ export default observer(function CreateProducts() {
                 </LoadingButton>
                 <Button
                   component={Link}
-                  to={`/products/${singleTooling.id}`}
+                  to={`/products/${product!.toolingId}`}
                   variant="contained"
                   color="error"
                 >

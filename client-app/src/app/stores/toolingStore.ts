@@ -20,6 +20,11 @@ export default class ToolingStore {
     products: [],
   };
   loading = false;
+  singleProduct: Product = {
+    id: 0,
+    name: "",
+    isAllergen: false,
+  };
 
   constructor() {
     makeAutoObservable(this);
@@ -166,6 +171,41 @@ export default class ToolingStore {
       await agent.Images.unSetMainImage(id);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  editProduct = async (product: Product) => {
+    this.loading = true;
+    try {
+      await agent.Products.edit(product);
+      runInAction(() => {
+        this.singleTooling.products = [
+          ...this.singleTooling.products!.filter((a) => a.id !== product.id),
+          product,
+        ];
+        this.loading = false;
+      });
+    } catch (error) {
+      console.log(error);
+      runInAction(() => {
+        this.loading = false;
+      });
+    }
+  };
+  getProduct = async (id: string) => {
+    this.loading = true;
+    try {
+      var single = await agent.Products.current(id);
+      runInAction(() => {
+        this.singleProduct = single;
+        this.loading = false;
+      });
+      return this.singleProduct;
+    } catch (error) {
+      console.log(error);
+      runInAction(() => {
+        this.loading = false;
+      });
     }
   };
 }

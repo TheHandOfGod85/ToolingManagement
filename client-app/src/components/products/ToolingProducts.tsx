@@ -83,7 +83,7 @@ export default observer(function ToolingProducts() {
             <ButtonGroup variant="contained" size="small">
               <Button
                 component={Link}
-                to={`/products/${singleTooling.id}`}
+                to={`/manage/products/edit/${params.row.id}`}
                 color="inherit"
               >
                 Edit

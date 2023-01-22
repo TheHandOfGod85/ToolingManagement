@@ -32,7 +32,7 @@ namespace API.Controllers
         }
         // creating a tooling
         [HttpPost]
-        //[Authorize(Roles = Roles.Admin)]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> CreateTooling([FromBody] PutPostToolingDto toolingDto)
         {
             var command = Mapper.Map<CreateToolingCommand>(toolingDto);
@@ -51,8 +51,8 @@ namespace API.Controllers
         }
         //deleting a tooling
         [HttpDelete("{id}")]
-        //[Authorize(Roles = Roles.Admin)]
-        public async Task<IActionResult> DeleteTooling([FromRoute]Guid id)
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> DeleteTooling([FromRoute] Guid id)
         {
             var result = await Mediator.Send(new DeleteSingleToolingCommand(id));
             return Ok(result);

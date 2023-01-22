@@ -92,10 +92,13 @@ const Account = {
 const Products = {
   list: (id: string) =>
     requests.get<Product[]>(`/products/getProductsByToolingId/${id}`),
+  current: (id: string) => requests.get<Product>(`/products/getProductById/${id}`),
   create: (product: Product) =>
     requests.post<void>("/products/createProduct", product),
   delete: (productId: number) =>
     requests.del<void>(`/products/deleteProduct/${productId}`),
+  edit: (product: Product) =>
+    requests.put<void>(`/products/editProduct/${product.id}`, product),
 };
 
 const Images = {

@@ -1,5 +1,4 @@
 import { Button, Grid, Paper, Typography } from "@mui/material";
-import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
