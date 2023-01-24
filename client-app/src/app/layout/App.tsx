@@ -18,7 +18,7 @@ import { useStore } from "../stores/store";
 
 function App() {
   const location = useLocation();
-  const { commonStore, userStore, toolingStore } = useStore();
+  const { commonStore, userStore } = useStore();
   const { getUser, getRoles } = userStore;
 
   useEffect(() => {

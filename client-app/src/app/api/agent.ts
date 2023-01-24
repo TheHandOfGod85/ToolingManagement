@@ -1,7 +1,7 @@
 import { store } from "./../stores/store";
 import { UserFormValues } from "./../../models/user";
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { Product, Tooling } from "../../models/tooling";
+import { Image, Product, Tooling } from "../../models/tooling";
 import { User } from "../../models/user";
 import { router } from "../router/Routes";
 
@@ -92,7 +92,8 @@ const Account = {
 const Products = {
   list: (id: string) =>
     requests.get<Product[]>(`/products/getProductsByToolingId/${id}`),
-  current: (id: string) => requests.get<Product>(`/products/getProductById/${id}`),
+  current: (id: string) =>
+    requests.get<Product>(`/products/getProductById/${id}`),
   create: (product: Product) =>
     requests.post<void>("/products/createProduct", product),
   delete: (productId: number) =>
@@ -108,7 +109,7 @@ const Images = {
     file.forEach((file) => {
       formData.append("files", file);
     });
-    return axios.post("images", formData, {
+    return axios.post<Image[]>("images", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   },

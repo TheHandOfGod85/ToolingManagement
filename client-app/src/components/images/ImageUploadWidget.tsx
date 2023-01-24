@@ -16,28 +16,17 @@ export default observer(function ImageUploadWidget() {
   function handleImagesUpload(files: Blob[], id: string) {
     uploadImage(files, id);
     modalStore.closeModal();
-
     setTimeout(function () {
       router.navigate(`/images/${id}`);
     }, 3000);
-
-    toast("Images uploaded!", {
-      position: "top-center",
-      autoClose: 1500,
-      hideProgressBar: true,
-      closeOnClick: true,
-      draggable: true,
-      theme: "dark",
-    });
   }
 
   //clean preview of files
   useEffect(() => {
-    console.log(modalStore.modal.open);
     return () => {
       files.forEach((file: any) => URL.revokeObjectURL(file.preview));
     };
-  }, [files]);
+  }, [files, uploadImage]);
   return (
     <>
       <Paper sx={{ width: "100%", height: "100%" }}>
@@ -52,7 +41,6 @@ export default observer(function ImageUploadWidget() {
             <Grid item xs={4}>
               <Typography textAlign={"center"}>Step 1 - Add Images</Typography>
               <ImageDropzone setFiles={setFiles} />
-              <ToastContainer />
             </Grid>
           </Grid>
           <Grid container direction={"column"} alignItems={"center"} mt={3}>

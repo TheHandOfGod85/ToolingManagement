@@ -92,12 +92,12 @@ export default function CreateToolingForm() {
       }, 3000);
 
       toast("Tooling updated!", {
-        position: "top-center",
+        position: "bottom-right",
         autoClose: 1500,
         hideProgressBar: true,
         closeOnClick: true,
         draggable: true,
-        theme: "dark",
+        theme: "light",
       });
     }
   }
@@ -178,7 +178,12 @@ export default function CreateToolingForm() {
                   label="Department"
                   options={departmentOptions}
                   InputProps={{
-                    endAdornment: loading && <CircularProgress size={18} />,
+                    endAdornment: loading && (
+                      <CircularProgress
+                        size={20}
+                        sx={{ position: "relative", right: "15px" }}
+                      />
+                    ),
                   }}
                 />
                 <MyTextInput
@@ -197,6 +202,9 @@ export default function CreateToolingForm() {
                   name="note"
                   placeholder="Please type a comment..."
                   rows={3}
+                  InputProps={{
+                    endAdornment: loading && <CircularProgress size={18} />,
+                  }}
                 />
               </FormGroup>
               {/* checkbox */}

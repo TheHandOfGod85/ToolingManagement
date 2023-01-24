@@ -9,6 +9,7 @@ interface Props {
   rows: number;
   fullwidth?: string;
   sx?: {};
+  InputProps?: {};
 }
 
 export default function MyTextArea(props: Props) {

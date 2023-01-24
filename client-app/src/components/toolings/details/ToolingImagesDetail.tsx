@@ -10,14 +10,15 @@ import {
   Typography,
 } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useLayoutEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useStore } from "../../../app/stores/store";
 import { Image } from "../../../models/tooling";
 import DeleteIcon from "@mui/icons-material/Delete";
 import StarIcon from "@mui/icons-material/Star";
 import { toast, ToastContainer } from "react-toastify";
+import { useMemo } from "react";
 
 export default observer(function ToolingImagesDetail() {
   const { toolingStore } = useStore();
@@ -83,10 +84,9 @@ export default observer(function ToolingImagesDetail() {
     }, 1500);
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setSpin(true);
     if (id) loadTooling(id);
-    console.log(spin);
     return () => {
       setSpin(false);
     };

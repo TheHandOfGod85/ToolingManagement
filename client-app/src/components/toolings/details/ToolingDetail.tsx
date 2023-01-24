@@ -14,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useStore } from "../../../app/stores/store";
 import IconButton from "@mui/material/IconButton";
@@ -43,7 +43,7 @@ export default observer(function ToolingDetail() {
   const { id } = useParams<{ id: string }>();
   const [spin, setSpin] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setSpin(true);
     if (id) loadTooling(id);
     console.log(spin);

@@ -10,11 +10,11 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useStore } from "../../../app/stores/store";
 import LoginForm from "../../users/LoginForm";
-import RegisterForm from "../../users/RegisterForm";
 import { HomePageContainer } from "./styles";
 
 export default observer(function HomePage() {
   const { commonStore, userStore, modalStore } = useStore();
+  const token = localStorage.getItem("jwt");
   useEffect(() => {
     if (commonStore.token) {
       userStore.getUser().finally(() => commonStore.setAppLoaded());
@@ -33,7 +33,7 @@ export default observer(function HomePage() {
               TOOLING MANAGEMENT SYSTEM
             </Typography>
           </Grid>
-          {userStore.isLoggedIn ? (
+          {token ? (
             <>
               <Grid
                 container
@@ -60,11 +60,11 @@ export default observer(function HomePage() {
                   <Button onClick={() => modalStore.openModal(<LoginForm />)}>
                     Login
                   </Button>
-                  <Button
+                  {/* <Button
                     onClick={() => modalStore.openModal(<RegisterForm />)}
                   >
                     Register
-                  </Button>
+                  </Button> */}
                 </ButtonGroup>
               </Grid>
             </Grid>
