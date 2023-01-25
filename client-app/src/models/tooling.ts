@@ -25,3 +25,8 @@ export interface Image {
   url: string;
   isMain: boolean;
 }
+
+export interface ImageUpload {
+  files: Blob[];
+  id: string;
+}

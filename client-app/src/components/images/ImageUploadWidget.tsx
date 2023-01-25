@@ -1,24 +1,51 @@
 import { Button, Grid, Paper, Typography } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import { uploadImages } from "../../app/api/imageApi";
+import { getTooling } from "../../app/api/toolingApi";
 import { router } from "../../app/router/Routes";
 import { useStore } from "../../app/stores/store";
+import { Tooling } from "../../models/tooling";
 import { ImageDropzone } from "./ImageDropzone";
 
 export default observer(function ImageUploadWidget() {
-  const [files, setFiles] = useState<any>([]);
   const { id } = useParams<{ id: string }>();
-  const { toolingStore, modalStore } = useStore();
-  const { uploadImage } = toolingStore;
+  const {
+    isLoading: loading,
+    isError,
+    data: toolings,
+    error,
+    refetch,
+  } = useQuery<Tooling>(["tooling", id], () => getTooling(id!));
+
+  const [files, setFiles] = useState<any>([]);
+
+  const { modalStore } = useStore();
+
+  const queryClient = useQueryClient();
+
+  const uploadImageMutation = useMutation(uploadImages, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("tooling");
+      toast("Image uploaded", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: true,
+        theme: "light",
+      });
+      modalStore.closeModal();
+      router.navigate(`/images/${id}`);
+      refetch();
+    },
+  });
 
   function handleImagesUpload(files: Blob[], id: string) {
-    uploadImage(files, id);
-    modalStore.closeModal();
-    setTimeout(function () {
-      router.navigate(`/images/${id}`);
-    }, 3000);
+    uploadImageMutation.mutate({ files: files, id: id });
   }
 
   //clean preview of files
@@ -26,7 +53,7 @@ export default observer(function ImageUploadWidget() {
     return () => {
       files.forEach((file: any) => URL.revokeObjectURL(file.preview));
     };
-  }, [files, uploadImage]);
+  }, [files]);
   return (
     <>
       <Paper sx={{ width: "100%", height: "100%" }}>

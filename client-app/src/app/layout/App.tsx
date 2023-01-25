@@ -15,6 +15,7 @@ import Unauthorized from "../../components/errors/Unauthorized";
 import Forbidden from "../../components/errors/Forbidden";
 import { useEffect } from "react";
 import { useStore } from "../stores/store";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const location = useLocation();
@@ -30,6 +31,7 @@ function App() {
 
   return (
     <>
+      <ToastContainer />
       <ModalContainer />
       {location.pathname === "/" ? (
         <HomePage />

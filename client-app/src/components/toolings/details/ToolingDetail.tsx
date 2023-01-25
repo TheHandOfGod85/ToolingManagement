@@ -14,7 +14,6 @@ import {
   Typography,
 } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { useLayoutEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useStore } from "../../../app/stores/store";
 import IconButton from "@mui/material/IconButton";
@@ -22,6 +21,9 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import React from "react";
 import ImageUploadWidget from "../../images/ImageUploadWidget";
 import { router } from "../../../app/router/Routes";
+import { useQuery, useQueryClient, UseQueryResult } from "react-query";
+import { Tooling } from "../../../models/tooling";
+import { getTooling } from "../../../app/api/toolingApi";
 
 export default observer(function ToolingDetail() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -33,27 +35,20 @@ export default observer(function ToolingDetail() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const { id } = useParams<{ id: string }>();
+  const { modalStore, userStore } = useStore();
+  const { user } = userStore;
 
   const {
-    toolingStore,
-    modalStore,
-    userStore: { user },
-  } = useStore();
-  const { loadTooling, loading, singleTooling } = toolingStore;
-  const { id } = useParams<{ id: string }>();
-  const [spin, setSpin] = useState(false);
-
-  useLayoutEffect(() => {
-    setSpin(true);
-    if (id) loadTooling(id);
-    console.log(spin);
-    return () => {
-      setSpin(false);
-    };
-  }, [id, loadTooling]);
+    isLoading: loading,
+    isError,
+    data: singleTooling,
+    error,
+    refetch,
+  } = useQuery<Tooling>(["tooling", id], () => getTooling(id!));
 
   function goToImages() {
-    router.navigate(`/images/${singleTooling.id}`);
+    router.navigate(`/images/${singleTooling?.id}`);
   }
 
   if (loading)
@@ -74,7 +69,7 @@ export default observer(function ToolingDetail() {
     <Stack direction={"row"} justifyContent={"center"} mt={10} height={"100%"}>
       <Card sx={{ maxWidth: 445 }}>
         <CardHeader
-          title={`${singleTooling.tNumber} --- ${singleTooling.psNumber}`}
+          title={`${singleTooling?.tNumber} --- ${singleTooling?.psNumber}`}
           action={
             <>
               <IconButton aria-label="settings" onClick={handleMenu}>

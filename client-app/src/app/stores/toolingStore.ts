@@ -144,9 +144,7 @@ export default class ToolingStore {
       const response = await agent.Images.uploadImages(file, id);
       const image = response.data;
       runInAction(() => {
-        image.forEach((img) => {
-          this.singleTooling.images?.push(img);
-        });
+        this.singleTooling.images?.push(image);
       });
       return image;
     } catch (error) {

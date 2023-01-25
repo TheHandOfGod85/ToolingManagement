@@ -3,12 +3,20 @@ import "./app/layout/style.css";
 import { store, StoreContext } from "./app/stores/store";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./app/router/Routes";
+import React from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
+const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <StoreContext.Provider value={store}>
-    <RouterProvider router={router} />
-  </StoreContext.Provider>
+  <React.StrictMode>
+    <StoreContext.Provider value={store}>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} /> <ReactQueryDevtools initialIsOpen />
+      </QueryClientProvider>
+    </StoreContext.Provider>
+  </React.StrictMode>
 );

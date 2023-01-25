@@ -109,7 +109,7 @@ const Images = {
     file.forEach((file) => {
       formData.append("files", file);
     });
-    return axios.post<Image[]>("images", formData, {
+    return axios.post("images", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   },

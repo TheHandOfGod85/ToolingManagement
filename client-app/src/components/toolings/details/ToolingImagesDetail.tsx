@@ -10,32 +10,38 @@ import {
   Typography,
 } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
-import { useLayoutEffect } from "react";
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useStore } from "../../../app/stores/store";
-import { Image } from "../../../models/tooling";
+import { Image, Tooling } from "../../../models/tooling";
 import DeleteIcon from "@mui/icons-material/Delete";
 import StarIcon from "@mui/icons-material/Star";
 import { toast, ToastContainer } from "react-toastify";
-import { useMemo } from "react";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { getTooling } from "../../../app/api/toolingApi";
+import {
+  deleteImage,
+  setMainImage,
+  unSetMainImage,
+} from "../../../app/api/imageApi";
 
 export default observer(function ToolingImagesDetail() {
-  const { toolingStore } = useStore();
-  const {
-    loadTooling,
-    loading,
-    singleTooling,
-    deleteImage,
-    setMainImage,
-    unSetMainImage,
-  } = toolingStore;
   const { id } = useParams<{ id: string }>();
+  const {
+    isLoading: loading,
+    isError,
+    data: singleTooling,
+    error,
+    refetch,
+  } = useQuery<Tooling>(["tooling", id], () => getTooling(id!));
+
+  const queryClient = useQueryClient();
+
   const [openArray, setOpenArray] = useState<Array<boolean>>(
-    new Array(singleTooling.images!.length).fill(false)
+    new Array(singleTooling?.images!.length).fill(false)
   );
   const [anchorElArray, setAnchorElArray] = useState<any[]>(
-    new Array(singleTooling.images!.length).fill(null)
+    new Array(singleTooling?.images!.length).fill(null)
   );
 
   const handleClick = (event: any, index: number) => {
@@ -54,43 +60,41 @@ export default observer(function ToolingImagesDetail() {
     newAnchorElArray[index] = null;
     setAnchorElArray(newAnchorElArray);
   };
-  const [spin, setSpin] = useState(false);
+
+  const deleteImageMutation = useMutation(deleteImage, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("tooling");
+      toast("Image deleted", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: true,
+        theme: "light",
+      });
+    },
+  });
+  const setMainImageMutation = useMutation(setMainImage, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("tooling");
+    },
+  });
+  const unSetMainImageMutation = useMutation(unSetMainImage, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("tooling");
+    },
+  });
 
   function HandleDeleteImage(id: string) {
-    deleteImage(id);
-    setTimeout(function () {
-      window.location.reload();
-    }, 3000);
-    toast("Image deleted", {
-      position: "bottom-right",
-      autoClose: 1500,
-      hideProgressBar: true,
-      closeOnClick: true,
-      draggable: true,
-      theme: "light",
-    });
+    deleteImageMutation.mutate(id);
   }
 
   function HandleSetMainImage(id: string) {
-    setMainImage(id);
-    setTimeout(function () {
-      window.location.reload();
-    }, 1500);
+    setMainImageMutation.mutate(id);
   }
   function HandleUnSetMainImage(id: string) {
-    unSetMainImage(id);
-    setTimeout(function () {
-      window.location.reload();
-    }, 1500);
+    unSetMainImageMutation.mutate(id);
   }
-
-  useLayoutEffect(() => {
-    setSpin(true);
-    if (id) loadTooling(id);
-    return () => {
-      setSpin(false);
-    };
-  }, [id, loadTooling]);
 
   if (loading)
     return (
@@ -114,13 +118,13 @@ export default observer(function ToolingImagesDetail() {
       mt={10}
       height={"100%"}
     >
-      {singleTooling.images!.length !== 0 ? (
+      {singleTooling?.images!.length !== 0 ? (
         <Typography color={"black"} variant="h4">
           IMAGES
         </Typography>
       ) : null}
 
-      {singleTooling.images!.length === 0 ? (
+      {singleTooling?.images!.length === 0 ? (
         <Stack
           direction={"row"}
           justifyContent={"center"}
@@ -135,8 +139,8 @@ export default observer(function ToolingImagesDetail() {
       ) : (
         <>
           <ImageList variant="standard" cols={5} sx={{ ml: 5, mr: 5 }}>
-            {singleTooling &&
-              singleTooling.images!.map((img: Image, index) => (
+            {!!singleTooling &&
+              singleTooling?.images!.map((img: Image, index) => (
                 <ImageListItem key={index}>
                   <img
                     src={img.url}
@@ -191,7 +195,7 @@ export default observer(function ToolingImagesDetail() {
         </>
       )}
 
-      <Button component={Link} to={`/toolings/${singleTooling.id}`}>
+      <Button component={Link} to={`/toolings/${singleTooling?.id}`}>
         Go Back
       </Button>
     </Stack>
