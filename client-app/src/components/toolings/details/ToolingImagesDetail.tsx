@@ -17,7 +17,7 @@ import { Image, Tooling } from "../../../models/tooling";
 import DeleteIcon from "@mui/icons-material/Delete";
 import StarIcon from "@mui/icons-material/Star";
 import { toast, ToastContainer } from "react-toastify";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getTooling } from "../../../app/api/toolingApi";
 import {
   deleteImage,
@@ -63,7 +63,7 @@ export default observer(function ToolingImagesDetail() {
 
   const deleteImageMutation = useMutation(deleteImage, {
     onSuccess: () => {
-      queryClient.invalidateQueries("tooling");
+      queryClient.invalidateQueries(["tooling"]);
       toast("Image deleted", {
         position: "bottom-right",
         autoClose: 3000,
@@ -76,12 +76,12 @@ export default observer(function ToolingImagesDetail() {
   });
   const setMainImageMutation = useMutation(setMainImage, {
     onSuccess: () => {
-      queryClient.invalidateQueries("tooling");
+      queryClient.invalidateQueries(["tooling"]);
     },
   });
   const unSetMainImageMutation = useMutation(unSetMainImage, {
     onSuccess: () => {
-      queryClient.invalidateQueries("tooling");
+      queryClient.invalidateQueries(["tooling"]);
     },
   });
 

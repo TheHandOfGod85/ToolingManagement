@@ -4,8 +4,7 @@ import { store, StoreContext } from "./app/stores/store";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./app/router/Routes";
 import React from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(
@@ -15,7 +14,7 @@ root.render(
   <React.StrictMode>
     <StoreContext.Provider value={store}>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} /> <ReactQueryDevtools initialIsOpen />
+        <RouterProvider router={router} />
       </QueryClientProvider>
     </StoreContext.Provider>
   </React.StrictMode>

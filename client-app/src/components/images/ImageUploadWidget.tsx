@@ -1,7 +1,7 @@
 import { Button, Grid, Paper, Typography } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { uploadImages } from "../../app/api/imageApi";
@@ -29,7 +29,7 @@ export default observer(function ImageUploadWidget() {
 
   const uploadImageMutation = useMutation(uploadImages, {
     onSuccess: () => {
-      queryClient.invalidateQueries("tooling");
+      queryClient.invalidateQueries(["tooling"]);
       toast("Image uploaded", {
         position: "bottom-right",
         autoClose: 3000,

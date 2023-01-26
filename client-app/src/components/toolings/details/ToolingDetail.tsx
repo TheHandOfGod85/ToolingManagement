@@ -21,7 +21,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import React from "react";
 import ImageUploadWidget from "../../images/ImageUploadWidget";
 import { router } from "../../../app/router/Routes";
-import { useQuery, useQueryClient, UseQueryResult } from "react-query";
+import { useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
 import { Tooling } from "../../../models/tooling";
 import { getTooling } from "../../../app/api/toolingApi";
 
