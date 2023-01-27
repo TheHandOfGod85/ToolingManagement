@@ -60,7 +60,6 @@ export default function CreateToolingForm() {
     setSpin(true);
     if (id) loadTooling(id).then((tool) => setTooling(tool!));
 
-    console.log(spin);
     return () => {
       setSpin(false);
     };

@@ -14,7 +14,7 @@ export interface Tooling {
 }
 
 export interface Product {
-  id: number;
+  id?: number;
   name: string;
   isAllergen: boolean;
   toolingId?: string | undefined;
@@ -28,5 +28,5 @@ export interface Image {
 
 export interface ImageUpload {
   files: Blob[];
-  id: string;
+  id: string | undefined;
 }

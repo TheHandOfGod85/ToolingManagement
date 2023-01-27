@@ -5,7 +5,7 @@ export const uploadImages = async ({
   files,
   id,
 }: ImageUpload): Promise<void> => {
-  await agent.Images.uploadImages(files, id);
+  await agent.Images.uploadImages(files, id!);
 };
 
 export const deleteImage = async (id: string) => {

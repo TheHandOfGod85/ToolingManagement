@@ -12,7 +12,6 @@ import {
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useStore } from "../../../app/stores/store";
 import { Image, Tooling } from "../../../models/tooling";
 import DeleteIcon from "@mui/icons-material/Delete";
 import StarIcon from "@mui/icons-material/Star";
@@ -24,16 +23,17 @@ import {
   setMainImage,
   unSetMainImage,
 } from "../../../app/api/imageApi";
+import useDeleteImage from "../../../app/hooks/image/useDeleteImage";
+import useSetMainImage from "../../../app/hooks/image/useSetMainImage";
+import useTooling from "../../../app/hooks/tooling/useTooling";
+import useUnSetMainImage from "../../../app/hooks/image/useUnSetMainImage";
 
 export default observer(function ToolingImagesDetail() {
   const { id } = useParams<{ id: string }>();
-  const {
-    isLoading: loading,
-    isError,
-    data: singleTooling,
-    error,
-    refetch,
-  } = useQuery<Tooling>(["tooling", id], () => getTooling(id!));
+  const { data: singleTooling, isLoading: loading } = useTooling(id!);
+  const deleteImage = useDeleteImage();
+  const setMainImage = useSetMainImage();
+  const unSetImage = useUnSetMainImage();
 
   const queryClient = useQueryClient();
 
@@ -60,41 +60,6 @@ export default observer(function ToolingImagesDetail() {
     newAnchorElArray[index] = null;
     setAnchorElArray(newAnchorElArray);
   };
-
-  const deleteImageMutation = useMutation(deleteImage, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["tooling"]);
-      toast("Image deleted", {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        draggable: true,
-        theme: "light",
-      });
-    },
-  });
-  const setMainImageMutation = useMutation(setMainImage, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["tooling"]);
-    },
-  });
-  const unSetMainImageMutation = useMutation(unSetMainImage, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["tooling"]);
-    },
-  });
-
-  function HandleDeleteImage(id: string) {
-    deleteImageMutation.mutate(id);
-  }
-
-  function HandleSetMainImage(id: string) {
-    setMainImageMutation.mutate(id);
-  }
-  function HandleUnSetMainImage(id: string) {
-    unSetMainImageMutation.mutate(id);
-  }
 
   if (loading)
     return (
@@ -155,27 +120,14 @@ export default observer(function ToolingImagesDetail() {
                       onClose={() => handleClose(index)}
                       anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
                     >
-                      <IconButton
-                        onClick={() =>
-                          img.isMain === true
-                            ? toast("Main Image cannot be deleted", {
-                                position: "bottom-right",
-                                autoClose: 1500,
-                                hideProgressBar: true,
-                                closeOnClick: true,
-                                draggable: true,
-                                theme: "light",
-                              })
-                            : HandleDeleteImage(img.id)
-                        }
-                      >
+                      <IconButton onClick={() => deleteImage.mutate(img.id)}>
                         <DeleteIcon />
                       </IconButton>
                       <IconButton
                         onClick={() => {
                           img.isMain === false
-                            ? HandleSetMainImage(img.id)
-                            : HandleUnSetMainImage(img.id);
+                            ? setMainImage.mutate(img.id)
+                            : unSetImage.mutate(img.id);
                         }}
                       >
                         <StarIcon

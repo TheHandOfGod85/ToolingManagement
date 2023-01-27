@@ -19,31 +19,16 @@ import AddIcon from "@mui/icons-material/Add";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
-import { useEffect } from "react";
+import useToolings from "../../../app/hooks/tooling/useToolings";
+import useDeleteTooling from "../../../app/hooks/tooling/useDeleteTooling";
 
 export default observer(function ToolingDashboard() {
+  const { data: toolings, isLoading: loading } = useToolings();
+  const { mutate: deleteTooling } = useDeleteTooling();
+
   const {
-    toolingStore,
     userStore: { user },
   } = useStore();
-  const { toolings, deleteTooling, loadToolings, loading } = toolingStore;
-
-  function handleDeleteTooling(id: string) {
-    deleteTooling(id);
-    toast("Tooling deleted!", {
-      position: "top-center",
-      autoClose: 1500,
-      hideProgressBar: true,
-      closeOnClick: true,
-      draggable: true,
-      theme: "dark",
-    });
-  }
-
-  useEffect(() => {
-    loadToolings();
-  }, [loadToolings]);
 
   // columns set up for the grid table
   const columns = [
@@ -133,7 +118,7 @@ export default observer(function ToolingDashboard() {
                 Edit
               </Button>
               <Button
-                onClick={() => handleDeleteTooling(params.row.id)}
+                onClick={() => deleteTooling(params.row.id)}
                 color="warning"
               >
                 Delete
@@ -198,7 +183,6 @@ export default observer(function ToolingDashboard() {
 
   return (
     <div>
-      <ToastContainer />
       <Box sx={{ width: "100%", mt: 10 }} height={"100%"}>
         <Typography
           variant="h3"
@@ -214,7 +198,7 @@ export default observer(function ToolingDashboard() {
         autoHeight
         columns={columns}
         rowHeight={120}
-        rows={toolings}
+        rows={toolings || []}
         components={{
           Toolbar: CustomToolbar,
         }}

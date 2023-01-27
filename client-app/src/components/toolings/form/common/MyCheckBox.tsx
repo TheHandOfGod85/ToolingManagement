@@ -15,11 +15,9 @@ export default function MyCheckBox(props: Props) {
     <FormControlLabel
       {...field}
       {...props}
-      checked={field.value}
+      checked={field.value == null ? false : field.value}
       control={
-        <Checkbox
-          onChange={(e) => helpers.setValue(e.target.checked)}
-        />
+        <Checkbox onChange={(e) => helpers.setValue(e.target.checked)} />
       }
       label={props.label}
     ></FormControlLabel>

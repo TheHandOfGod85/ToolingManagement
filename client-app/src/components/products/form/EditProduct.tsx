@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useStore } from "../../../app/stores/store";
 import { Product } from "../../../models/tooling";
 import * as Yup from "yup";
 import {
-  Box,
   Button,
   ButtonGroup,
   CircularProgress,
@@ -18,17 +16,16 @@ import MyCheckBox from "../../toolings/form/common/MyCheckBox";
 import { observer } from "mobx-react-lite";
 import { router } from "../../../app/router/Routes";
 import { LoadingButton } from "@mui/lab";
-import { toast, ToastContainer } from "react-toastify";
+import useGetProduct from "./useGetProduct";
+import useEditProduct from "../../../app/hooks/product/useEditProduct";
 
 export default observer(function EditProduct() {
-  const { toolingStore } = useStore();
-
-  const { loading, editProduct, getProduct } = toolingStore;
-
   const { id } = useParams<{ id: string }>();
+  const { data, isLoading: loading } = useGetProduct(id!);
 
-  const [product, setProduct] = useState<Product | undefined>({
-    id: 0,
+  const editProduct = useEditProduct();
+
+  const [product, setProduct] = useState<Product>({
     name: "",
     isAllergen: false,
     toolingId: "",
@@ -39,23 +36,12 @@ export default observer(function EditProduct() {
   });
 
   useEffect(() => {
-    if (id) getProduct(id).then((prodt) => setProduct(prodt));
-  }, [id, getProduct]);
+    if (id) setProduct(data!);
+  }, [data]);
 
   function handleFormSubmit(newProduct: Product) {
-    editProduct(newProduct);
-    setTimeout(function () {
-      router.navigate(`/products/${product!.toolingId}`);
-    }, 3000);
-
-    toast("Product edited!", {
-      position: "bottom-right",
-      autoClose: 1500,
-      hideProgressBar: true,
-      closeOnClick: true,
-      draggable: true,
-      theme: "light",
-    });
+    editProduct.mutate(newProduct);
+    router.navigate(`/products/${product?.toolingId}`);
   }
 
   return (
@@ -63,7 +49,6 @@ export default observer(function EditProduct() {
       <Typography textAlign={"center"} variant="h4" mb={3}>
         Edit Product Form
       </Typography>
-      <ToastContainer />
       <Formik
         enableReinitialize
         validationSchema={validationSchema}
@@ -99,7 +84,7 @@ export default observer(function EditProduct() {
                 </LoadingButton>
                 <Button
                   component={Link}
-                  to={`/products/${product!.toolingId}`}
+                  to={`/products/${product?.toolingId}`}
                   variant="contained"
                   color="error"
                 >

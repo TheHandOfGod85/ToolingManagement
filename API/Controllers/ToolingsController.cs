@@ -47,7 +47,7 @@ namespace API.Controllers
             var command = Mapper.Map<UpdateToolingCommand>(toolingDto);
             command.Id = id;
             var result = await Mediator.Send(command);
-            return result ? NoContent() : NotFound();
+            return HandleResult(result);
         }
         //deleting a tooling
         [HttpDelete("{id}")]

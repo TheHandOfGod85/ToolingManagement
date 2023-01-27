@@ -1,51 +1,22 @@
 import { Button, Grid, Paper, Typography } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { toast } from "react-toastify";
-import { uploadImages } from "../../app/api/imageApi";
-import { getTooling } from "../../app/api/toolingApi";
+import { ImageDropzone } from "./ImageDropzone";
+import useUploadImages from "../../app/hooks/image/useUploadImages";
 import { router } from "../../app/router/Routes";
 import { useStore } from "../../app/stores/store";
-import { Tooling } from "../../models/tooling";
-import { ImageDropzone } from "./ImageDropzone";
 
 export default observer(function ImageUploadWidget() {
   const { id } = useParams<{ id: string }>();
-  const {
-    isLoading: loading,
-    isError,
-    data: toolings,
-    error,
-    refetch,
-  } = useQuery<Tooling>(["tooling", id], () => getTooling(id!));
-
+  const uploadImages = useUploadImages();
   const [files, setFiles] = useState<any>([]);
-
   const { modalStore } = useStore();
 
-  const queryClient = useQueryClient();
-
-  const uploadImageMutation = useMutation(uploadImages, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["tooling"]);
-      toast("Image uploaded", {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        draggable: true,
-        theme: "light",
-      });
-      modalStore.closeModal();
-      router.navigate(`/images/${id}`);
-      refetch();
-    },
-  });
-
-  function handleImagesUpload(files: Blob[], id: string) {
-    uploadImageMutation.mutate({ files: files, id: id });
+  function handleUploadImages(files: Blob[], id: string) {
+    uploadImages.mutate({ files: files, id: id });
+    modalStore.closeModal();
+    router.navigate(`/images/${id}`);
   }
 
   //clean preview of files
@@ -96,7 +67,7 @@ export default observer(function ImageUploadWidget() {
                 size="small"
                 color="success"
                 disabled={files.length === 0}
-                onClick={() => handleImagesUpload(files, id!)}
+                onClick={() => handleUploadImages(files, id!)}
                 variant="outlined"
               >
                 Upload

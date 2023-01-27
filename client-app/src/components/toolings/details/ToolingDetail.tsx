@@ -21,11 +21,12 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import React from "react";
 import ImageUploadWidget from "../../images/ImageUploadWidget";
 import { router } from "../../../app/router/Routes";
-import { useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
-import { Tooling } from "../../../models/tooling";
-import { getTooling } from "../../../app/api/toolingApi";
+import useTooling from "../../../app/hooks/tooling/useTooling";
 
 export default observer(function ToolingDetail() {
+  const { id } = useParams<{ id: string }>();
+  const { data: singleTooling, isLoading: loading } = useTooling(id!);
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -35,21 +36,9 @@ export default observer(function ToolingDetail() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const { id } = useParams<{ id: string }>();
+
   const { modalStore, userStore } = useStore();
   const { user } = userStore;
-
-  const {
-    isLoading: loading,
-    isError,
-    data: singleTooling,
-    error,
-    refetch,
-  } = useQuery<Tooling>(["tooling", id], () => getTooling(id!));
-
-  function goToImages() {
-    router.navigate(`/images/${singleTooling?.id}`);
-  }
 
   if (loading)
     return (
@@ -99,7 +88,7 @@ export default observer(function ToolingDetail() {
             </>
           }
         />
-        <CardActionArea onClick={() => goToImages()}>
+        <CardActionArea component={Link} to={`/images/${singleTooling?.id}`}>
           <CardMedia
             component="img"
             height="140"

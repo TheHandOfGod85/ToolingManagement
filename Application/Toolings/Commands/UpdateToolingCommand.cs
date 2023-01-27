@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.Toolings.Commands
 {
-    public class UpdateToolingCommand : IRequest<bool>
+    public class UpdateToolingCommand : IRequest<ErrorResult<Tooling>>
     {
         public Guid Id { get; set; }
         public string TNumber { get; set; }
@@ -16,6 +16,6 @@ namespace Application.Toolings.Commands
         public int NumberOfImpressions { get; set; }
         public string PunnetNumber { get; set; }
 
-       
+
     }
 }

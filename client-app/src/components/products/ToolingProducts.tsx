@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   ButtonGroup,
-  CircularProgress,
   IconButton,
   Stack,
   Typography,
@@ -17,40 +16,19 @@ import {
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useStore } from "../../app/stores/store";
 import AddIcon from "@mui/icons-material/Add";
-import { toast, ToastContainer } from "react-toastify";
+import useTooling from "../../app/hooks/tooling/useTooling";
+import useDeleteProduct from "../../app/hooks/product/useDeleteProduct";
 
 export default observer(function ToolingProducts() {
+  const { id } = useParams<{ id: string }>();
+  const { data: singleTooling, isLoading: loading } = useTooling(id!);
+  const deleteProduct = useDeleteProduct();
   const {
-    toolingStore,
     userStore: { user },
   } = useStore();
-  const { loadTooling, loading, singleTooling } = toolingStore;
-  const { deleteProduct } = toolingStore;
-  const { id } = useParams<{ id: string }>();
-
-  useEffect(() => {
-    if (id) loadTooling(id);
-  }, [id, loadTooling, deleteProduct]);
-
-  function handleDeleteProduct(productId: number) {
-    deleteProduct(productId);
-    setTimeout(function () {
-      window.location.reload();
-    }, 3000);
-
-    toast("Product deleted successfully!", {
-      position: "bottom-right",
-      autoClose: 1500,
-      hideProgressBar: true,
-      closeOnClick: true,
-      draggable: true,
-      theme: "light",
-    });
-  }
 
   const columns = [
     {
@@ -89,7 +67,7 @@ export default observer(function ToolingProducts() {
                 Edit
               </Button>
               <Button
-                onClick={() => handleDeleteProduct(params.row.id)}
+                onClick={() => deleteProduct.mutate(params.row.id)}
                 color="warning"
               >
                 Delete
@@ -113,7 +91,7 @@ export default observer(function ToolingProducts() {
           <>
             <Button
               component={Link}
-              to={`/manage/products/${singleTooling.id}`}
+              to={`/manage/products/${singleTooling?.id}`}
               variant="text"
               color="primary"
               size="small"
@@ -126,7 +104,7 @@ export default observer(function ToolingProducts() {
               color="primary"
               sx={{ display: { xs: "flex", sm: "none" } }}
               component={Link}
-              to={`/manage/products/${singleTooling.id}`}
+              to={`/manage/products/${singleTooling?.id}`}
             >
               <AddIcon />
             </IconButton>
@@ -136,41 +114,25 @@ export default observer(function ToolingProducts() {
     );
   }
 
-  // if (loading)
-  //   return (
-  //     <Box
-  //       sx={{
-  //         display: "flex",
-  //         justifyContent: "center",
-  //         alignItems: "center",
-  //         height: "100vh",
-  //       }}
-  //     >
-  //       <CircularProgress size={20} />
-  //       <Typography ml={1}>Loading products...</Typography>
-  //     </Box>
-  //   );
-
   return (
     <>
       <Stack sx={{ height: 400, width: "100%", mt: 10 }} height={"100%"}>
         <Typography variant="h4" sx={{ textAlign: "center", mt: 3, mb: 3 }}>
-          Product List for {singleTooling.tNumber} {singleTooling.psNumber}
+          Product List for {singleTooling?.tNumber} {singleTooling?.psNumber}
         </Typography>
         <DataGrid
           loading={loading}
           autoHeight
           columns={columns}
-          rows={singleTooling.products!}
+          rows={singleTooling?.products! || []}
           components={{
             Toolbar: CustomToolbar,
           }}
         />
-        <ToastContainer />
         <Box textAlign="center" mt={2}>
           <Button
             component={Link}
-            to={`/toolings/${singleTooling.id}`}
+            to={`/toolings/${singleTooling?.id}`}
             size="small"
             variant="outlined"
           >

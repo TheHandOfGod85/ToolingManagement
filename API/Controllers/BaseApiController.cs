@@ -11,7 +11,7 @@ namespace API.Controllers
     {
         // injecting the Mediator in the base controller so other controller wiil reuse it
         private IMediator _mediator;
-         private IMapper _mapper;
+        private IMapper _mapper;
 
         // getting the mediator from the hhtpcontext requesting the service
         protected IMediator Mediator => _mediator ??= HttpContext.RequestServices
@@ -21,11 +21,11 @@ namespace API.Controllers
         // error handling for the controllers
         protected ActionResult HandleResult<T>(ErrorResult<T> result)
         {
-            if (result == null) return NotFound();
+            if (result == null) return NoContent();
             if (result.IsSuccess && result.Value != null)
                 return Ok(result.Value);
             if (result.IsSuccess && result.Value == null)
-                return NotFound();
+                return NoContent();
             return BadRequest(result.Error);
         }
 

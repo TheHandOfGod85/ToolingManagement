@@ -1,7 +1,9 @@
+import { toast } from "react-toastify";
+import { queryKeys } from "./../../api/constants";
 import agent from "../../api/agent";
-import { useQuery, QueryCache } from "@tanstack/react-query";
-
-const queryCache = QueryCache;
+import { useQuery } from "@tanstack/react-query";
+import { Tooling } from "../../../models/tooling";
+import { AxiosError, AxiosResponse } from "axios";
 
 export const getTooling = async (id: string) => {
   const tooling = await agent.Toolings.detail(id);
@@ -9,5 +11,8 @@ export const getTooling = async (id: string) => {
 };
 
 export default function useTooling(id: string) {
-  return useQuery(["tooling", id], () => getTooling(id), {});
+  return useQuery<Tooling, Error>(
+    [queryKeys.tooling, id],
+    () => getTooling(id),
+  );
 }

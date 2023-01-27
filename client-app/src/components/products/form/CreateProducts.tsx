@@ -19,16 +19,15 @@ import { observer } from "mobx-react-lite";
 import { router } from "../../../app/router/Routes";
 import { LoadingButton } from "@mui/lab";
 import { toast, ToastContainer } from "react-toastify";
+import useTooling from "../../../app/hooks/tooling/useTooling";
+import useCreateProduct from "../../../app/hooks/product/useCreateProduct";
 
 export default observer(function CreateProducts() {
-  const { toolingStore } = useStore();
-
-  const { singleTooling, loadTooling, createProduct, loading } = toolingStore;
-
   const { id } = useParams<{ id: string }>();
+  const { data: singleTooling, isLoading: loading } = useTooling(id!);
+  const createProduct = useCreateProduct();
 
   const [product, setProduct] = useState<Product | undefined>({
-    id: 0,
     name: "",
     isAllergen: false,
   });
@@ -37,29 +36,13 @@ export default observer(function CreateProducts() {
     name: Yup.string().required("The name is required"),
   });
 
-  useEffect(() => {
-    if (id) loadTooling(id);
-  }, [id, loadTooling]);
-
   function handleFormSubmit(product: Product) {
     let newProduct = {
       ...product,
       toolingId: id,
     };
-    createProduct(newProduct);
-
-    setTimeout(function () {
-      router.navigate(`/products/${id}`);
-    }, 3000);
-
-    toast("Product created!", {
-      position: "bottom-right",
-      autoClose: 1500,
-      hideProgressBar: true,
-      closeOnClick: true,
-      draggable: true,
-      theme: "light",
-    });
+    createProduct.mutate(newProduct);
+    router.navigate(`/products/${id}`);
   }
 
   if (loading)
@@ -73,7 +56,7 @@ export default observer(function CreateProducts() {
         }}
       >
         <CircularProgress size={20} />
-        <Typography ml={1}>Loading Images...</Typography>
+        <Typography ml={1}>Loading...</Typography>
       </Box>
     );
 
@@ -112,7 +95,7 @@ export default observer(function CreateProducts() {
                 </LoadingButton>
                 <Button
                   component={Link}
-                  to={`/products/${singleTooling.id}`}
+                  to={`/products/${singleTooling?.id}`}
                   variant="contained"
                   color="error"
                 >
