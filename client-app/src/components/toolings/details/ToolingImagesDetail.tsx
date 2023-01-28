@@ -35,8 +35,6 @@ export default observer(function ToolingImagesDetail() {
   const setMainImage = useSetMainImage();
   const unSetImage = useUnSetMainImage();
 
-  const queryClient = useQueryClient();
-
   const [openArray, setOpenArray] = useState<Array<boolean>>(
     new Array(singleTooling?.images!.length).fill(false)
   );

@@ -31,6 +31,7 @@ namespace API.Controllers
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
             if (user == null)
             {
+                // return BadRequest("Email was not found or incorrect");
                 ModelState.AddModelError("email", "Email was not found or incorrect");
                 return ValidationProblem();
             }

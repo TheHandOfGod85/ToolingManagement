@@ -1,13 +1,16 @@
 import { LoadingButton } from "@mui/lab";
 import { ErrorMessage, Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
-import { useStore } from "../../app/stores/store";
 import MyTextInput from "../toolings/form/common/MyTextInput";
 import LoginIcon from "@mui/icons-material/Login";
 import { Alert, Box, FormGroup, Paper, Typography } from "@mui/material";
+import useLogin from "../../app/hooks/user/useLogin";
+import * as Yup from "yup";
 
 export default observer(function LoginForm() {
-  const { userStore } = useStore();
+  const login = useLogin();
+  const { isLoading: loading } = login;
+
   return (
     <Box
       sx={{
@@ -16,12 +19,20 @@ export default observer(function LoginForm() {
     >
       <Paper>
         <Formik
-          initialValues={{ email: "", password: "", error: null }}
-          onSubmit={(values, { setErrors }) =>
-            userStore.login(values).catch((error) => setErrors({ error }))
-          }
+          initialValues={{
+            email: "",
+            password: "",
+            error: [],
+          }}
+          onSubmit={async (values, { setErrors }) => {
+            login.mutateAsync(values).catch((error) => setErrors({ error }));
+          }}
+          validationSchema={Yup.object({
+            email: Yup.string().required(),
+            password: Yup.string().required(),
+          })}
         >
-          {({ handleSubmit, isSubmitting, errors }) => (
+          {({ handleSubmit, isSubmitting, errors, isValid }) => (
             <Form onSubmit={handleSubmit} autoComplete="off">
               <Typography textAlign={"center"} variant="h6">
                 Login to Toolings
@@ -45,7 +56,9 @@ export default observer(function LoginForm() {
               >
                 <ErrorMessage
                   name="error"
-                  render={() => <Alert severity="error">{errors.error}</Alert>}
+                  render={() => {
+                    return <Alert severity="error">{errors.error}</Alert>;
+                  }}
                 />
               </Box>
               <FormGroup
@@ -53,7 +66,8 @@ export default observer(function LoginForm() {
                 sx={{ padding: 2, justifyContent: "space-between" }}
               >
                 <LoadingButton
-                  loading={isSubmitting}
+                  disabled={!isValid}
+                  loading={isSubmitting || loading}
                   variant="contained"
                   type="submit"
                   loadingPosition="start"

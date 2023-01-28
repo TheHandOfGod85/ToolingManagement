@@ -13,14 +13,14 @@ export default function useCreateProduct() {
   const queryClient = useQueryClient();
   return useMutation(createProduct, {
     onSuccess: async () => {
-     await queryClient.invalidateQueries([queryKeys.tooling]);
+      await queryClient.invalidateQueries([queryKeys.tooling]);
       toast.success("Product created", {
         position: "bottom-center",
       });
     },
     onError: (error: AxiosError) => {
       const { data } = error.response as AxiosResponse;
-      toast.error(data, { position: "bottom-center" });
+      toast.error(data.errors, { position: "bottom-center" });
     },
   });
 }
