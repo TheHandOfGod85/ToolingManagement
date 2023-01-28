@@ -16,7 +16,7 @@ import MyCheckBox from "../../toolings/form/common/MyCheckBox";
 import { observer } from "mobx-react-lite";
 import { router } from "../../../app/router/Routes";
 import { LoadingButton } from "@mui/lab";
-import useGetProduct from "./useGetProduct";
+import useGetProduct from "../../../app/hooks/product/useGetProduct";
 import useEditProduct from "../../../app/hooks/product/useEditProduct";
 
 export default observer(function EditProduct() {
