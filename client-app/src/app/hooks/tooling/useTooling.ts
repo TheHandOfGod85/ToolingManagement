@@ -14,5 +14,6 @@ export default function useTooling(id: string) {
   return useQuery<Tooling, Error>(
     [queryKeys.tooling, id],
     () => getTooling(id),
+    { enabled: id ? true : false }
   );
 }

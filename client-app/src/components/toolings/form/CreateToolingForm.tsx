@@ -10,27 +10,24 @@ import { Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Tooling } from "../../../models/tooling";
-import { useStore } from "../../../app/stores/store";
 import MyTextInput from "./common/MyTextInput";
 import * as Yup from "yup";
 import MyTextArea from "./common/MyTextArea";
 import MySelectInput from "./common/MySelectInput";
 import { departmentOptions } from "./common/options/DepartmentOptions";
 import MyCheckBox from "./common/MyCheckBox";
-import { v4 as uuid } from "uuid";
-import { router } from "../../../app/router/Routes";
 import ModalContainer from "../../../app/common/modals/ModalContainer";
-import { toast, ToastContainer } from "react-toastify";
-import { LoadingButton, treeItemClasses } from "@mui/lab";
+import { ToastContainer } from "react-toastify";
+import { LoadingButton } from "@mui/lab";
+import useTooling from "../../../app/hooks/tooling/useTooling";
+import useCreateTooling from "../../../app/hooks/tooling/useCreateTooling";
+import useUpdateTooling from "../../../app/hooks/tooling/useUpdateTooling";
 
 export default function CreateToolingForm() {
-  const { toolingStore } = useStore();
-
-  const { loadTooling, createTooling, updateTooling, loading } = toolingStore;
-
-  const [spin, setSpin] = useState(false);
-
   const { id } = useParams<{ id: string }>();
+  const { data, isFetching: loading } = useTooling(id!);
+  const createTooling = useCreateTooling();
+  const updateTooling = useUpdateTooling();
 
   const [tooling, setTooling] = useState<Tooling>({
     id: "",
@@ -57,53 +54,24 @@ export default function CreateToolingForm() {
   });
 
   useEffect(() => {
-    setSpin(true);
-    if (id) loadTooling(id).then((tool) => setTooling(tool!));
-
-    return () => {
-      setSpin(false);
-    };
-  }, [id, loadTooling]);
+    if (id) {
+      setTooling(data!);
+    }
+  }, [data]);
 
   function handleFormSubmit(tooling: Tooling) {
     if (!tooling.id) {
       let newTooling = {
         ...tooling,
-        id: uuid(),
       };
-      createTooling(newTooling);
-      setTimeout(function () {
-        router.navigate(`/toolings`);
-      }, 3000);
-
-      toast("Tooling created!", {
-        position: "bottom-right",
-        autoClose: 1500,
-        hideProgressBar: true,
-        closeOnClick: true,
-        draggable: true,
-        theme: "light",
-      });
+      createTooling.mutate(newTooling);
     } else {
-      updateTooling(tooling);
-      setTimeout(function () {
-        router.navigate(`/toolings`);
-      }, 3000);
-
-      toast("Tooling updated!", {
-        position: "bottom-right",
-        autoClose: 1500,
-        hideProgressBar: true,
-        closeOnClick: true,
-        draggable: true,
-        theme: "light",
-      });
+      updateTooling.mutate(tooling);
     }
   }
 
   return (
     <>
-      //Main grid container
       <Paper sx={{ alignItems: "center", m: 3, mt: 10, height: "100%" }}>
         {!id ? (
           <Typography textAlign={"center"} variant="h4" mb={3}>
@@ -132,7 +100,9 @@ export default function CreateToolingForm() {
                   name="tNumber"
                   placeholder="T Number"
                   InputProps={{
-                    endAdornment: loading && <CircularProgress size={18} />,
+                    endAdornment: loading && !tooling?.tNumber && (
+                      <CircularProgress size={18} />
+                    ),
                   }}
                 />
 
@@ -141,7 +111,9 @@ export default function CreateToolingForm() {
                   name="psNumber"
                   placeholder="PS Number"
                   InputProps={{
-                    endAdornment: loading && <CircularProgress size={18} />,
+                    endAdornment: loading && !tooling?.psNumber! && (
+                      <CircularProgress size={18} />
+                    ),
                   }}
                 />
               </FormGroup>
@@ -154,7 +126,9 @@ export default function CreateToolingForm() {
                   placeholder="Quantity"
                   label="Quantity"
                   InputProps={{
-                    endAdornment: loading && <CircularProgress size={18} />,
+                    endAdornment: loading && !tooling?.quantity && (
+                      <CircularProgress size={18} />
+                    ),
                   }}
                 />
                 <MyTextInput
@@ -164,7 +138,9 @@ export default function CreateToolingForm() {
                   placeholder="Impressions"
                   label="Number Of Impressions"
                   InputProps={{
-                    endAdornment: loading && <CircularProgress size={18} />,
+                    endAdornment: loading && !tooling?.numberOfImpressions && (
+                      <CircularProgress size={18} />
+                    ),
                   }}
                 />
               </FormGroup>
@@ -177,7 +153,7 @@ export default function CreateToolingForm() {
                   label="Department"
                   options={departmentOptions}
                   InputProps={{
-                    endAdornment: loading && (
+                    endAdornment: loading && !tooling?.department && (
                       <CircularProgress
                         size={20}
                         sx={{ position: "relative", right: "15px" }}
@@ -190,7 +166,9 @@ export default function CreateToolingForm() {
                   placeholder="Punnet Number"
                   sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
                   InputProps={{
-                    endAdornment: loading && <CircularProgress size={18} />,
+                    endAdornment: loading && !tooling?.punnetNumber && (
+                      <CircularProgress size={18} />
+                    ),
                   }}
                 />
               </FormGroup>
@@ -202,7 +180,9 @@ export default function CreateToolingForm() {
                   placeholder="Please type a comment..."
                   rows={3}
                   InputProps={{
-                    endAdornment: loading && <CircularProgress size={18} />,
+                    endAdornment: loading && !tooling?.note && (
+                      <CircularProgress size={18} />
+                    ),
                   }}
                 />
               </FormGroup>

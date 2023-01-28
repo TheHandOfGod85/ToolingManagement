@@ -13,7 +13,7 @@ export default function useEditProduct() {
   const queryClient = useQueryClient();
   return useMutation(editProduct, {
     onSuccess: async () => {
-      queryClient.invalidateQueries([queryKeys.tooling]);
+      await queryClient.invalidateQueries([queryKeys.tooling]);
       toast.success("Product edited", {
         position: "bottom-center",
       });

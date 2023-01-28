@@ -75,7 +75,7 @@ const requests = {
 const Toolings = {
   list: () => requests.get<Tooling[]>("/toolings"),
   detail: (id: string) => requests.get<Tooling>(`/toolings/${id}`),
-  create: (tooling: Tooling) => requests.post<void>("/toolings", tooling),
+  create: (tooling: Tooling) => requests.post<Tooling>("/toolings", tooling),
   update: (tooling: Tooling) =>
     requests.put<void>(`/toolings/${tooling.id}`, tooling),
   delete: (id: string) => requests.del<void>(`/toolings/${id}`),

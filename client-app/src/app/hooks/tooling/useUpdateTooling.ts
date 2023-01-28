@@ -1,20 +1,22 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
-import { Product } from "../../../models/tooling";
+import { Tooling } from "../../../models/tooling";
 import agent from "../../api/agent";
 import { queryKeys } from "../../api/constants";
+import { router } from "../../router/Routes";
 
-export const createProduct = async (product: Product) => {
-  return await agent.Products.create(product);
+export const updateTooling = async (tooling: Tooling) => {
+  return await agent.Toolings.update(tooling);
 };
 
-export default function useCreateProduct() {
+export default function useUpdateTooling() {
   const queryClient = useQueryClient();
-  return useMutation(createProduct, {
+  return useMutation(updateTooling, {
     onSuccess: async () => {
-     await queryClient.invalidateQueries([queryKeys.tooling]);
-      toast.success("Product created", {
+      await queryClient.invalidateQueries([queryKeys.tooling]);
+      router.navigate("toolings");
+      toast.success("Tooling edited", {
         position: "bottom-center",
       });
     },
