@@ -3,8 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import agent from "../../api/agent";
 
 export const getRoles = async () => {
-  const roles = await agent.Account.roles();
-  return roles;
+  return await agent.Account.roles();
 };
 
 export default function useGetRoles() {

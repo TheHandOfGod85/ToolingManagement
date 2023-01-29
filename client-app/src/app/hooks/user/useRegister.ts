@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { User, UserFormValues } from "../../../models/user";
 import agent from "../../api/agent";
 import { router } from "../../router/Routes";
@@ -9,8 +9,7 @@ export const register = async (creds: UserFormValues) => {
 };
 
 export default function useRegister() {
-  const queryClient = useQueryClient();
-  return useMutation<User>(useRegister, {
+  return useMutation(register, {
     onSuccess: async (data: User) => {
       if (data?.role === "Admin") {
         router.navigate("/toolings");

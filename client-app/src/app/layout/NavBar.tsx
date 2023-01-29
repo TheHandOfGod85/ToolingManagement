@@ -15,10 +15,12 @@ import { useStore } from "../stores/store";
 import React from "react";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import RegisterForm from "../../components/users/RegisterForm";
+import useUser from "../hooks/user/useUser";
 
 export default observer(function NavBar() {
+  const { data: user } = useUser();
   const { userStore, modalStore } = useStore();
-  const { user, logout } = userStore;
+  const { logout } = userStore;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {

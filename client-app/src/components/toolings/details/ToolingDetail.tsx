@@ -20,12 +20,13 @@ import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import React from "react";
 import ImageUploadWidget from "../../images/ImageUploadWidget";
-import { router } from "../../../app/router/Routes";
 import useTooling from "../../../app/hooks/tooling/useTooling";
+import useUser from "../../../app/hooks/user/useUser";
 
 export default observer(function ToolingDetail() {
   const { id } = useParams<{ id: string }>();
   const { data: singleTooling, isLoading: loading } = useTooling(id!);
+  const { data: user } = useUser();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -37,8 +38,7 @@ export default observer(function ToolingDetail() {
     setAnchorEl(null);
   };
 
-  const { modalStore, userStore } = useStore();
-  const { user } = userStore;
+  const { modalStore } = useStore();
 
   if (loading)
     return (

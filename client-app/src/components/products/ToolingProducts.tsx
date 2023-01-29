@@ -21,14 +21,13 @@ import { useStore } from "../../app/stores/store";
 import AddIcon from "@mui/icons-material/Add";
 import useTooling from "../../app/hooks/tooling/useTooling";
 import useDeleteProduct from "../../app/hooks/product/useDeleteProduct";
+import useUser from "../../app/hooks/user/useUser";
 
 export default observer(function ToolingProducts() {
   const { id } = useParams<{ id: string }>();
   const { data: singleTooling, isLoading: loading } = useTooling(id!);
+  const { data: user } = useUser();
   const deleteProduct = useDeleteProduct();
-  const {
-    userStore: { user },
-  } = useStore();
 
   const columns = [
     {

@@ -6,16 +6,16 @@ import agent from "../api/agent";
 import { store } from "./store";
 
 export default class UserStore {
-  user: User | null = null;
-  userRoles: string[] = [];
+  // user: User | null = null;
+  // userRoles: string[] = [];
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  get isLoggedIn() {
-    return !!this.user;
-  }
+  // get isLoggedIn() {
+  //   return !!this.user;
+  // }
 
   // login = async (creds: UserFormValues) => {
   //   try {
@@ -33,7 +33,6 @@ export default class UserStore {
 
   logout = () => {
     store.commonStore.setToken(null);
-    this.user = null;
     router.navigate("/");
   };
 
@@ -49,32 +48,32 @@ export default class UserStore {
   //   }
   // };
 
-  register = async (creds: UserFormValues) => {
-    try {
-      var user = await agent.Account.register(creds);
-      runInAction(() => {
-        if (this.user?.role === "Admin") {
-          router.navigate("/toolings");
-        } else {
-          this.user = user;
-          router.navigate("/");
-        }
+  // register = async (creds: UserFormValues) => {
+  //   try {
+  //     var user = await agent.Account.register(creds);
+  //     runInAction(() => {
+  //       if (this.user?.role === "Admin") {
+  //         router.navigate("/toolings");
+  //       } else {
+  //         this.user = user;
+  //         router.navigate("/");
+  //       }
 
-        store.modalStore.closeModal();
-      });
-    } catch (error) {
-      throw error;
-    }
-  };
+  //       store.modalStore.closeModal();
+  //     });
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // };
 
-  getRoles = async () => {
-    try {
-      const roles = await agent.Account.roles();
-      runInAction(() => {
-        this.userRoles = roles;
-      });
-    } catch (error) {
-      throw error;
-    }
-  };
+  // getRoles = async () => {
+  //   try {
+  //     const roles = await agent.Account.roles();
+  //     runInAction(() => {
+  //       this.userRoles = roles;
+  //     });
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // };
 }

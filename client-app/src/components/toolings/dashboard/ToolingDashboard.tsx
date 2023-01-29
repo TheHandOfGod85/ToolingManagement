@@ -16,19 +16,17 @@ import {
   Typography,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
 import useToolings from "../../../app/hooks/tooling/useToolings";
 import useDeleteTooling from "../../../app/hooks/tooling/useDeleteTooling";
+import useUser from "../../../app/hooks/user/useUser";
 
 export default observer(function ToolingDashboard() {
+  const { data: user } = useUser();
   const { data: toolings, isLoading: loading } = useToolings();
   const { mutate: deleteTooling } = useDeleteTooling();
 
-  const {
-    userStore: { user },
-  } = useStore();
 
   // columns set up for the grid table
   const columns = [

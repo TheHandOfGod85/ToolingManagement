@@ -1,17 +1,20 @@
 import { LoadingButton } from "@mui/lab";
 import { ErrorMessage, Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
-import { useStore } from "../../app/stores/store";
 import MyTextInput from "../toolings/form/common/MyTextInput";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import { Autocomplete, Box, FormGroup, Paper, Typography } from "@mui/material";
 
 import * as Yup from "yup";
 import ValidationErrors from "../errors/ValidationErrors";
+import useGetRoles from "../../app/hooks/user/useGetRoles";
+import useUser from "../../app/hooks/user/useUser";
+import useRegister from "../../app/hooks/user/useRegister";
 
 export default observer(function RegisterForm() {
-  const { userStore } = useStore();
-  const { user } = userStore;
+  const { data: roles } = useGetRoles();
+  const { data: user } = useUser();
+  const register = useRegister();
 
   return (
     <Box
@@ -22,15 +25,15 @@ export default observer(function RegisterForm() {
       <Paper>
         <Formik
           initialValues={{
-            displeyName: "",
+            displayName: "",
             username: "",
             email: "",
             password: "",
             role: "",
             error: [],
           }}
-          onSubmit={(values, { setErrors }) =>
-            userStore.register(values).catch((error) => setErrors({ error }))
+          onSubmit={async (values, { setErrors }) =>
+            register.mutateAsync(values).catch((error) => setErrors({ error }))
           }
           validationSchema={Yup.object({
             displayName: Yup.string().required(),
@@ -83,7 +86,7 @@ export default observer(function RegisterForm() {
               {user?.role === "Admin" ? (
                 <FormGroup row sx={{ padding: 2 }}>
                   <Autocomplete
-                    options={userStore.userRoles}
+                    options={roles!}
                     renderInput={(params) => {
                       return (
                         <MyTextInput

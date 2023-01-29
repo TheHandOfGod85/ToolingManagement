@@ -6,22 +6,16 @@ import {
   Typography,
 } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import useUser from "../../../app/hooks/user/useUser";
 import { useStore } from "../../../app/stores/store";
 import LoginForm from "../../users/LoginForm";
 import { HomePageContainer } from "./styles";
 
 export default observer(function HomePage() {
-  const { commonStore, userStore, modalStore } = useStore();
+  const { data } = useUser();
+  const { modalStore } = useStore();
   const token = localStorage.getItem("jwt");
-  useEffect(() => {
-    if (commonStore.token) {
-      userStore.getUser().finally(() => commonStore.setAppLoaded());
-    } else {
-      commonStore.setAppLoaded();
-    }
-  }, [commonStore, userStore]);
 
   return (
     <>
