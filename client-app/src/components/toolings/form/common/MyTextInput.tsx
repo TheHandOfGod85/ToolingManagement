@@ -8,7 +8,8 @@ interface Props {
   type?: string;
   fullWidth?: boolean;
   sx?: {};
-  InputProps?:{};
+  InputProps?: {};
+  options?: string[] | undefined;
 }
 
 export default function MyTextInput(props: Props) {

@@ -1,5 +1,7 @@
 using System.Text;
 using API.Services;
+using Application.Services.Implementations;
+using Application.Services.Interfaces;
 using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -34,6 +36,8 @@ namespace API.Extensions
                 };
             });
             services.AddScoped<TokenService>();
+            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IUserService, UserService>();
             return services;
         }
     }

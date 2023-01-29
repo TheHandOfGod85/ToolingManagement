@@ -7,5 +7,5 @@ export const getRoles = async () => {
 };
 
 export default function useGetRoles() {
-  return useQuery([queryKeys.roles], () => getRoles());
+  return useQuery<string[]>([queryKeys.roles], () => getRoles());
 }

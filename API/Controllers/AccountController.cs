@@ -1,8 +1,12 @@
 using System.Security.Claims;
+using API.Attributes.ExceptionsAttributes;
 using API.DTOs;
 using API.Services;
 using API.Utilities;
+using Application.Users.Commands;
+using AutoMapper;
 using Domain;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +22,14 @@ namespace API.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly TokenService _tokenService;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public AccountController(UserManager<AppUser> userManager, TokenService tokenService, RoleManager<IdentityRole> roleManager)
+        public AccountController(UserManager<AppUser> userManager, TokenService tokenService, RoleManager<IdentityRole> roleManager, IMapper mapper, IMediator mediator)
         {
             _roleManager = roleManager;
+            _mapper = mapper;
+            _mediator = mediator;
             _userManager = userManager;
             _tokenService = tokenService;
         }
@@ -31,7 +39,6 @@ namespace API.Controllers
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
             if (user == null)
             {
-                // return BadRequest("Email was not found or incorrect");
                 ModelState.AddModelError("email", "Email was not found or incorrect");
                 return ValidationProblem();
             }
@@ -45,43 +52,14 @@ namespace API.Controllers
             return ValidationProblem();
         }
 
-
+        [UserException]
         [HttpPost("register")]
-        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
+        public async Task<ActionResult> Register(RegisterDto registerDto)
         {
-            CreateRoles();
-            if (await _userManager.Users.AnyAsync(x => x.UserName == registerDto.Username))
-            {
-                ModelState.AddModelError("username", "Username taken");
-                return ValidationProblem();
-            }
-            if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
-            {
-                ModelState.AddModelError("email", "Email taken");
-                return ValidationProblem();
-            }
 
-            var user = new AppUser
-            {
-                DisplayName = registerDto.DisplayName,
-                Email = registerDto.Email,
-                UserName = registerDto.Username
-            };
-            var result = await _userManager.CreateAsync(user, registerDto.Password);
-            if (user.Role == null)
-            {
-                await _userManager.AddToRoleAsync(user, Roles.Basic);
-            }
-            else
-            {
-                await _userManager.AddToRoleAsync(user, registerDto.Role);
-            }
-
-            if (result.Succeeded)
-            {
-                return CreateUserObject(user);
-            }
-            return BadRequest(result.Errors);
+            var command = _mapper.Map<RegisterUserCommand>(registerDto);
+            var result = await _mediator.Send(command);
+            return Ok(result);
         }
 
         [HttpGet]

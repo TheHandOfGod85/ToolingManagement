@@ -86,7 +86,7 @@ export default observer(function RegisterForm() {
               {user?.role === "Admin" ? (
                 <FormGroup row sx={{ padding: 2 }}>
                   <Autocomplete
-                    options={roles!}
+                    options={roles ? roles : []}
                     renderInput={(params) => {
                       return (
                         <MyTextInput
