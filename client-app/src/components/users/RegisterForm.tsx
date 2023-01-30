@@ -95,7 +95,6 @@ export default observer(function RegisterForm() {
                 <FormGroup row sx={{ padding: 2 }}>
                   <Autocomplete
                     options={data || []}
-                    value={values.role}
                     onChange={(e, newValue) => {
                       setFieldValue("role", newValue);
                     }}
