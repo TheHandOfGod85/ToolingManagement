@@ -60,32 +60,34 @@ export default observer(function ToolingDetail() {
         <CardHeader
           title={`${singleTooling?.tNumber} --- ${singleTooling?.psNumber}`}
           action={
-            <>
-              <IconButton aria-label="settings" onClick={handleMenu}>
-                <MoreVertIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem
-                  onClick={() => modalStore.openModal(<ImageUploadWidget />)}
+            user?.role === "Admin" ? (
+              <>
+                <IconButton aria-label="settings" onClick={handleMenu}>
+                  <MoreVertIcon />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
+                  }}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
                 >
-                  Add Image
-                </MenuItem>
-              </Menu>
-            </>
+                  <MenuItem
+                    onClick={() => modalStore.openModal(<ImageUploadWidget />)}
+                  >
+                    Add Image
+                  </MenuItem>
+                </Menu>
+              </>
+            ) : null
           }
         />
         <CardActionArea component={Link} to={`/images/${singleTooling?.id}`}>

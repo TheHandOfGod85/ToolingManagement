@@ -12,7 +12,7 @@ import useUser from "../../app/hooks/user/useUser";
 import useRegister from "../../app/hooks/user/useRegister";
 
 export default observer(function RegisterForm() {
-  const { data: roles } = useGetRoles();
+  const { data } = useGetRoles();
   const { data: user } = useUser();
   const register = useRegister();
 
@@ -42,7 +42,15 @@ export default observer(function RegisterForm() {
             password: Yup.string().required(),
           })}
         >
-          {({ handleSubmit, isSubmitting, errors, isValid, dirty }) => (
+          {({
+            handleSubmit,
+            isSubmitting,
+            errors,
+            isValid,
+            dirty,
+            values,
+            setFieldValue,
+          }) => (
             <Form onSubmit={handleSubmit} autoComplete="off" className="error">
               {user?.role === "Admin" ? (
                 <Typography textAlign={"center"} variant="h6">
@@ -86,7 +94,11 @@ export default observer(function RegisterForm() {
               {user?.role === "Admin" ? (
                 <FormGroup row sx={{ padding: 2 }}>
                   <Autocomplete
-                    options={roles ? roles : []}
+                    options={data || []}
+                    value={values.role}
+                    onChange={(e, newValue) => {
+                      setFieldValue("role", newValue);
+                    }}
                     renderInput={(params) => {
                       return (
                         <MyTextInput

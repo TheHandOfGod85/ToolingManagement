@@ -12,21 +12,15 @@ import {
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Image, Tooling } from "../../../models/tooling";
+import { Image } from "../../../models/tooling";
 import DeleteIcon from "@mui/icons-material/Delete";
 import StarIcon from "@mui/icons-material/Star";
-import { toast, ToastContainer } from "react-toastify";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getTooling } from "../../../app/api/toolingApi";
-import {
-  deleteImage,
-  setMainImage,
-  unSetMainImage,
-} from "../../../app/api/imageApi";
+import { ToastContainer } from "react-toastify";
 import useDeleteImage from "../../../app/hooks/image/useDeleteImage";
 import useSetMainImage from "../../../app/hooks/image/useSetMainImage";
 import useTooling from "../../../app/hooks/tooling/useTooling";
 import useUnSetMainImage from "../../../app/hooks/image/useUnSetMainImage";
+import useUser from "../../../app/hooks/user/useUser";
 
 export default observer(function ToolingImagesDetail() {
   const { id } = useParams<{ id: string }>();
@@ -34,6 +28,7 @@ export default observer(function ToolingImagesDetail() {
   const deleteImage = useDeleteImage();
   const setMainImage = useSetMainImage();
   const unSetImage = useUnSetMainImage();
+  const { data: user } = useUser();
 
   const [openArray, setOpenArray] = useState<Array<boolean>>(
     new Array(singleTooling?.images!.length).fill(false)
@@ -111,7 +106,7 @@ export default observer(function ToolingImagesDetail() {
                     loading="lazy"
                     alt=""
                   />
-                  {openArray[index] !== undefined && (
+                  {openArray[index] !== undefined && user?.role === "Admin" && (
                     <Popover
                       open={openArray[index]}
                       anchorEl={anchorElArray[index]}

@@ -3,9 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import agent from "../../api/agent";
 
 export const getRoles = async () => {
-  return await agent.Account.roles();
+  var roles = await agent.Account.roles();
+  return roles;
 };
 
 export default function useGetRoles() {
-  return useQuery<string[]>([queryKeys.roles], () => getRoles());
+  return useQuery<string[], Error>([queryKeys.roles], () => getRoles());
 }
