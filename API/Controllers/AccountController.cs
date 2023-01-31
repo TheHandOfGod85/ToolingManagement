@@ -1,8 +1,8 @@
 using System.Security.Claims;
 using API.Attributes.ExceptionsAttributes;
 using API.DTOs;
-using API.Services;
-using API.Utilities;
+using Application.DTOs.User;
+using Application.Implementations.Services;
 using Application.Users.Commands;
 using AutoMapper;
 using Domain;
@@ -19,37 +19,27 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly TokenService _tokenService;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly TokenService _tokenService;
 
-        public AccountController(UserManager<AppUser> userManager, TokenService tokenService, RoleManager<IdentityRole> roleManager, IMapper mapper, IMediator mediator)
+        public AccountController(IMapper mapper, IMediator mediator, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, TokenService tokenService)
         {
-            _roleManager = roleManager;
             _mapper = mapper;
             _mediator = mediator;
             _userManager = userManager;
+            _roleManager = roleManager;
             _tokenService = tokenService;
         }
+        [UserException]
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await _userManager.FindByEmailAsync(loginDto.Email);
-            if (user == null)
-            {
-                ModelState.AddModelError("email", "Email was not found or incorrect");
-                return ValidationProblem();
-            }
-
-            var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
-            if (result)
-            {
-                return CreateUserObject(user);
-            }
-            ModelState.AddModelError("password", "Password was incorrect");
-            return ValidationProblem();
+            var command = _mapper.Map<LoginCommand>(loginDto);
+            var result = await _mediator.Send(command);
+            return Ok(result);
         }
 
         [UserException]
@@ -66,11 +56,6 @@ namespace API.Controllers
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {
             var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
-            return CreateUserObject(user);
-        }
-
-        private UserDto CreateUserObject(AppUser user)
-        {
             return new UserDto
             {
                 DisplayName = user.DisplayName,
@@ -80,14 +65,6 @@ namespace API.Controllers
             };
         }
 
-        private async void CreateRoles()
-        {
-            if (!_roleManager.RoleExistsAsync(Roles.Admin).GetAwaiter().GetResult())
-            {
-                await _roleManager.CreateAsync(new IdentityRole(Roles.Admin));
-                await _roleManager.CreateAsync(new IdentityRole(Roles.Basic));
-            }
-        }
 
         [HttpGet("roles")]
         public async Task<ActionResult<List<string>>> GetRoles()
