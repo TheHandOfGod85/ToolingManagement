@@ -136,7 +136,6 @@ export default observer(function ToolingImagesDetail() {
                 </ImageListItem>
               ))}
           </ImageList>
-          <ToastContainer />
         </>
       )}
 

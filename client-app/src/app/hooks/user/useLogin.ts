@@ -17,7 +17,7 @@ export default function useLogin() {
       store.commonStore.setToken(data.token);
       store.modalStore.closeModal();
       router.navigate("toolings");
-      await queryClient.invalidateQueries([queryKeys.user]);
+      await queryClient.resetQueries([queryKeys.user]);
       toast.success("You are logged in", { position: "bottom-center" });
     },
   });
