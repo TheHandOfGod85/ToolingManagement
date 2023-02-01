@@ -3,7 +3,14 @@ import { ErrorMessage, Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
 import MyTextInput from "../toolings/form/common/MyTextInput";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
-import { Autocomplete, Box, FormGroup, Paper, Typography } from "@mui/material";
+import {
+  Alert,
+  Autocomplete,
+  Box,
+  FormGroup,
+  Paper,
+  Typography,
+} from "@mui/material";
 
 import * as Yup from "yup";
 import ValidationErrors from "../errors/ValidationErrors";
@@ -32,14 +39,21 @@ export default observer(function RegisterForm() {
             role: "",
             error: [],
           }}
-          onSubmit={async (values, { setErrors }) =>
-            register.mutateAsync(values).catch((error) => setErrors({ error }))
-          }
+          onSubmit={async (values, { setErrors }) => {
+            register.mutateAsync(values).catch((error) => {
+              if (error.response) {
+                setErrors({ error: error.response.data.details });
+              } else {
+                setErrors({ error: error });
+              }
+            });
+          }}
           validationSchema={Yup.object({
             displayName: Yup.string().required(),
             username: Yup.string().required(),
             email: Yup.string().required(),
             password: Yup.string().required(),
+            role: Yup.string().required().nullable(),
           })}
         >
           {({
@@ -48,7 +62,6 @@ export default observer(function RegisterForm() {
             errors,
             isValid,
             dirty,
-            values,
             setFieldValue,
           }) => (
             <Form onSubmit={handleSubmit} autoComplete="off" className="error">
@@ -124,9 +137,9 @@ export default observer(function RegisterForm() {
               >
                 <ErrorMessage
                   name="error"
-                  render={() => (
-                    <ValidationErrors errors={errors.error}></ValidationErrors>
-                  )}
+                  render={() => {
+                    return <Alert severity="error">{errors.error}</Alert>;
+                  }}
                 />
               </Box>
               <FormGroup

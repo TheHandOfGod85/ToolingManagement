@@ -25,7 +25,13 @@ export default observer(function LoginForm() {
             error: [],
           }}
           onSubmit={async (values, { setErrors }) => {
-            login.mutateAsync(values).catch((error) => setErrors({ error }));
+            login.mutateAsync(values).catch((error) => {
+              if (error.response) {
+                setErrors({ error: error.response.data.details });
+              } else {
+                setErrors({ error: error });
+              }
+            });
           }}
           validationSchema={Yup.object({
             email: Yup.string().required(),

@@ -41,7 +41,6 @@ namespace API.Controllers
             var result = await _mediator.Send(command);
             return Ok(result);
         }
-
         [UserException]
         [HttpPost("register")]
         public async Task<ActionResult> Register(RegisterDto registerDto)
