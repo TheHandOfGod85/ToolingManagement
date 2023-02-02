@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { useMutation } from "@tanstack/react-query";
 import { User, UserFormValues } from "../../../models/user";
 import agent from "../../api/agent";
@@ -11,12 +12,16 @@ export const register = async (creds: UserFormValues) => {
 export default function useRegister() {
   return useMutation(register, {
     onSuccess: async (data: User) => {
-      if (data?.role === "Admin") {
-        router.navigate("/toolings");
-      } else {
-        router.navigate("/");
-      }
+      router.navigate("/toolings");
       store.modalStore.closeModal();
+      toast.success(`The user: ${data.displayName} was created`, {
+        position: "bottom-center",
+      });
+    },
+    onError: (error: any) => {
+      toast.error(error, {
+        position: "bottom-center",
+      });
     },
   });
 }

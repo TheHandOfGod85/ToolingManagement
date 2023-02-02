@@ -13,15 +13,10 @@ import NotFound from "../../components/errors/NotFound";
 import ServerError from "../../components/errors/ServerError";
 import Unauthorized from "../../components/errors/Unauthorized";
 import Forbidden from "../../components/errors/Forbidden";
-import { useEffect } from "react";
-import { useStore } from "../stores/store";
 import { ToastContainer } from "react-toastify";
-import useUser from "../hooks/user/useUser";
 
 function App() {
-  // const getUser = useUser();
   const location = useLocation();
-  // const { commonStore, userStore } = useStore();
 
   return (
     <>

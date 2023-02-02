@@ -2,7 +2,7 @@ using MediatR;
 
 namespace Application.Users.Commands
 {
-    public class RegisterUserCommand : IRequest<bool>
+    public class RegisterUserCommand : IRequest<AppUser>
     {
         public string Email { get; set; }
         public string Password { get; set; }

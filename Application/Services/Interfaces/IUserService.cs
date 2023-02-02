@@ -4,7 +4,7 @@ namespace Application.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<bool> RegisterUser(AppUser user, string password);
+        Task<AppUser> RegisterUser(AppUser user, string password);
         Task<UserDto> Login(string email, string password);
     }
 }

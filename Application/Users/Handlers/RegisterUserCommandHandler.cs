@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Application.Users.Handlers
 {
-    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, bool>
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, AppUser>
     {
         private readonly IRoleService _roleService;
         private readonly IUserService _userService;
@@ -20,15 +20,14 @@ namespace Application.Users.Handlers
         }
 
 
-        public async Task<bool> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<AppUser> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             var user = _mapper.Map<AppUser>(request);
             var isRegistered = await _userService.RegisterUser(user, request.Password);
-            if (isRegistered)
+            if (isRegistered is not null)
             {
                 var isRoleAssigned = await _roleService.AssignRole(user, request.Role);
-                if (isRoleAssigned) return true;
-                throw new UserException("Role not assigned");
+                return isRegistered;
             }
             throw new UserException("User is not registered");
         }

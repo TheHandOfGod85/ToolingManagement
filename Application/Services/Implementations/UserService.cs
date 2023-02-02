@@ -28,7 +28,7 @@ namespace Application.Services.Implementations
             var result = await _userManager.CheckPasswordAsync(user, password);
             if (result)
             {
-               return CreateUserObject(user);
+                return CreateUserObject(user);
             }
             else
             {
@@ -36,7 +36,7 @@ namespace Application.Services.Implementations
             }
         }
 
-        public async Task<bool> RegisterUser(AppUser user, string password)
+        public async Task<AppUser> RegisterUser(AppUser user, string password)
         {
             if (!_userManager.Users.Any(x => x.Email == user.Email))
             {
@@ -45,7 +45,7 @@ namespace Application.Services.Implementations
                 {
                     throw new UserException($"{result.Errors.FirstOrDefault().Description}");
                 }
-                return result.Succeeded;
+                return user;
             }
             throw new UserException("Email does already exist!");
         }
