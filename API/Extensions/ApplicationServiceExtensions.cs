@@ -1,6 +1,5 @@
 ﻿using API.Mappings;
-using Application.Core;
-using Application.Interfaces;
+using Application.Services.Interfaces;
 using Application.Toolings.Handlers;
 using Infrastructure.Photos;
 using MediatR;

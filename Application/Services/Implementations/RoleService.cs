@@ -2,6 +2,7 @@ using Application.Constants;
 using Application.Exceptions;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services.Implementations
 {
@@ -21,6 +22,15 @@ namespace Application.Services.Implementations
             var result = await _userManager.AddToRoleAsync(user, role);
             if (result.Succeeded) return true;
             throw new UserException($"Role not assigned. Reason:{result.Errors.FirstOrDefault().Description}");
+        }
+
+        public async Task<List<string>> GetRoles()
+        {
+            var RolesList = await _roleManager.Roles.Select(x => x.Name).ToListAsync();
+
+            if (RolesList == null) return new List<string>();
+
+            return RolesList;
         }
 
         public async Task InitiateRoles()

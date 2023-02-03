@@ -4,6 +4,7 @@ using API.DTOs;
 using Application.DTOs.User;
 using Application.Implementations.Services;
 using Application.Users.Commands;
+using Application.Users.Queries;
 using AutoMapper;
 using Domain;
 using MediatR;
@@ -21,17 +22,11 @@ namespace API.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
-        private readonly UserManager<AppUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly TokenService _tokenService;
 
-        public AccountController(IMapper mapper, IMediator mediator, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, TokenService tokenService)
+        public AccountController(IMapper mapper, IMediator mediator)
         {
             _mapper = mapper;
             _mediator = mediator;
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _tokenService = tokenService;
         }
         [UserException]
         [HttpPost("login")]
@@ -54,29 +49,26 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {
-            var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
-            return new UserDto
-            {
-                DisplayName = user.DisplayName,
-                Token = _tokenService.CreateToken(user),
-                UserName = user.UserName,
-                Role = user.Role
-            };
+            var query = new GetCurrentUserQuery(User);
+            var result = await _mediator.Send(query);
+            return Ok(result);
         }
 
 
         [HttpGet("roles")]
         public async Task<ActionResult<List<string>>> GetRoles()
         {
-            var RolesList = await _roleManager.Roles.Select(x => x.Name).ToListAsync();
-
-            if (RolesList == null)
-            {
-                ModelState.AddModelError("roles", "No roles were set");
-                return ValidationProblem();
-            }
-
-            return RolesList;
+            var query = new GetRolesQuery();
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+        [Authorize]
+        [HttpPost("refreshToken")]
+        public async Task<ActionResult<UserDto>> RefreshToken()
+        {
+            var query = new RefreshTokenQuery(User);
+            var result = await _mediator.Send(query);
+            return Ok(result);
         }
 
     }

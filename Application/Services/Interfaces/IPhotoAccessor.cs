@@ -1,6 +1,6 @@
 ﻿using Application.Photos;
 using Microsoft.AspNetCore.Http;
-namespace Application.Interfaces
+namespace Application.Services.Interfaces
 {
     public interface IPhotoAccessor
     {

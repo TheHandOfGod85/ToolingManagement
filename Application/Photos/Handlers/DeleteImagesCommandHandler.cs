@@ -1,6 +1,6 @@
 ﻿using Application.Core;
-using Application.Interfaces;
 using Application.Photos.Commands;
+using Application.Services.Interfaces;
 using MediatR;
 using Persistence;
 

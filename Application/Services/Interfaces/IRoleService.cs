@@ -4,5 +4,6 @@ namespace Application.Services.Interfaces
     {
         Task<bool> AssignRole(AppUser user, string role);
         Task InitiateRoles();
+        Task<List<string>> GetRoles();
     }
 }

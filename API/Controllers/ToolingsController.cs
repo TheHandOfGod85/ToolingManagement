@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [AllowAnonymous]
+    // [AllowAnonymous]
+    [Authorize]
     [Route("api/toolings")]
     [ApiController]
     public class ToolingsController : BaseApiController

@@ -5,6 +5,7 @@ using Application.Services.Interfaces;
 using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Persistence;
 
@@ -33,6 +34,8 @@ namespace API.Extensions
                     IssuerSigningKey = key,
                     ValidateIssuer = false,
                     ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
                 };
             });
             services.AddScoped<TokenService>();
