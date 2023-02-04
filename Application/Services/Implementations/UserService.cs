@@ -54,13 +54,12 @@ namespace Application.Services.Implementations
         public async Task<UserDto> RefreshToken(ClaimsPrincipal user)
         {
             var refreshToken = _httpContextAccessor.HttpContext.Request.Cookies["refreshToken"];
-            var appUser = await _userManager.Users
-            .Include(r => r.RefreshTokens)
-            .FirstOrDefaultAsync(x => x.UserName == user.FindFirstValue(ClaimTypes.Name));
-            if (user == null) throw new UserException("Please log in again");
-
+            var email = user.FindFirstValue(ClaimTypes.Email);
+            var appUser = await _userManager.FindByEmailAsync(email);
+            if (appUser == null) throw new UserException("Please log in again");
             var oldToken = appUser.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken);
             if (oldToken != null && !oldToken.IsActive) throw new UserException("Please log in again");
+            if (oldToken != null) oldToken.Revoked = DateTime.UtcNow;
             return CreateUserObject(appUser);
         }
 

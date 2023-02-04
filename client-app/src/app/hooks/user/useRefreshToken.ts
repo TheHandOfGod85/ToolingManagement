@@ -20,6 +20,8 @@ export default function useRefreshToken() {
       store.commonStore.setToken(data.token);
       startRefreshTokenTimer(data);
     },
+    onMutate: () => {
+      store.userStore.stopRefreshTokenTimer();
+    },
   });
 }
-

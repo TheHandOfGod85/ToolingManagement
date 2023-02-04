@@ -179,6 +179,27 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RefreshToken",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    appUserId = table.Column<string>(type: "TEXT", nullable: true),
+                    Token = table.Column<string>(type: "TEXT", nullable: true),
+                    Expires = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Revoked = table.Column<DateTime>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshToken", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RefreshToken_AspNetUsers_appUserId",
+                        column: x => x.appUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Images",
                 columns: table => new
                 {
@@ -265,6 +286,11 @@ namespace Persistence.Migrations
                 name: "IX_Products_ToolingId",
                 table: "Products",
                 column: "ToolingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshToken_appUserId",
+                table: "RefreshToken",
+                column: "appUserId");
         }
 
         /// <inheritdoc />
@@ -292,13 +318,16 @@ namespace Persistence.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
+                name: "RefreshToken");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Toolings");
 
             migrationBuilder.DropTable(
-                name: "Toolings");
+                name: "AspNetUsers");
         }
     }
 }

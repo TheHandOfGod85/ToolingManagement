@@ -142,7 +142,7 @@ namespace Persistence.Migrations
                     b.Property<DateTime>("Expires")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("Revoked")
+                    b.Property<DateTime?>("Revoked")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Token")

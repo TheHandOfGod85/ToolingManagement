@@ -17,10 +17,10 @@ namespace Application.Users.Handlers
             _userService = userService;
 
         }
-        public Task<UserDto> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<UserDto> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var user = _mapper.Map<LoginCommand>(request);
-            var userLoggedIn = _userService.Login(request.Email, request.Password);
+            var userLoggedIn = await _userService.Login(request.Email, request.Password);
             if (userLoggedIn == null) throw new UserException("Problem logging in, check your credentials");
             return userLoggedIn;
         }

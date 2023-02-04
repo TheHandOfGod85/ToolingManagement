@@ -22,7 +22,8 @@ export default function useLogin() {
       toast.success("You are logged in", { position: "bottom-center" });
     },
     onError: (error: any) => {
-      // console.log(error.response);
+      console.log(error.response.data.message);
+      toast.error(error.response.data.message, { position: "bottom-right" });
       queryClient.removeQueries([queryKeys.toolings]);
     },
     onMutate: () => {
