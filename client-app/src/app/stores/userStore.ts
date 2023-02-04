@@ -3,6 +3,7 @@ import { makeAutoObservable } from "mobx";
 import { store } from "./store";
 
 export default class UserStore {
+  refreshTokenTimeout: any;
   constructor() {
     makeAutoObservable(this);
   }
@@ -10,5 +11,9 @@ export default class UserStore {
   logout = () => {
     store.commonStore.setToken(null);
     router.navigate("/");
+  };
+
+  stopRefreshTokenTimer = () => {
+    clearTimeout(this.refreshTokenTimeout);
   };
 }

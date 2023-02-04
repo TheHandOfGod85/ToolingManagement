@@ -5,6 +5,7 @@ import agent from "../../api/agent";
 import { router } from "../../router/Routes";
 import { store } from "../../stores/store";
 import { toast } from "react-toastify";
+import { startRefreshTokenTimer } from "./useRefreshToken";
 
 export const login = async (creds: UserFormValues) => {
   return await agent.Account.login(creds);
@@ -15,12 +16,13 @@ export default function useLogin() {
   return useMutation(login, {
     onSuccess: async (data: User) => {
       store.commonStore.setToken(data.token);
+      startRefreshTokenTimer(data);
       store.modalStore.closeModal();
       router.navigate("toolings");
       toast.success("You are logged in", { position: "bottom-center" });
     },
-    onError: (error) => {
-      console.log(error);
+    onError: (error: any) => {
+      // console.log(error.response);
       queryClient.removeQueries([queryKeys.toolings]);
     },
     onMutate: () => {
