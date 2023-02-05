@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
-import { Button, ButtonGroup, Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import ValidationErrors from "./ValidationErrors";
 
 export default function TestErrors() {
-  const baseUrl = "http://localhost:5000/api/";
+  const baseUrl = process.env.REACT_APP_API_URL;
   const [errors, setErrors] = useState(null);
 
   function handleNotFound() {
