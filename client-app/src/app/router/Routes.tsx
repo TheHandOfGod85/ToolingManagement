@@ -2,7 +2,6 @@ import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
 import Forbidden from "../../components/errors/Forbidden";
 import NotFound from "../../components/errors/NotFound";
 import ServerError from "../../components/errors/ServerError";
-import TestErrors from "../../components/errors/TestError";
 import Unauthorized from "../../components/errors/Unauthorized";
 import CreateProducts from "../../components/products/form/CreateProducts";
 import EditProduct from "../../components/products/form/EditProduct";
@@ -36,7 +35,6 @@ export const routes: RouteObject[] = [
       { path: "server-error", element: <ServerError /> },
       { path: "unauthorized", element: <Unauthorized /> },
       { path: "forbidden", element: <Forbidden /> },
-      { path: "errors", element: <TestErrors /> },
       { path: "*", element: <Navigate replace to={"/not-found"} /> },
     ],
   },
