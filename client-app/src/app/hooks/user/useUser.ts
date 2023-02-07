@@ -1,5 +1,5 @@
 import { queryKeys } from "./../../api/constants";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { User } from "../../../models/user";
 import agent from "../../api/agent";
 import { useStore } from "../../stores/store";
@@ -11,7 +11,8 @@ export const getUser = async () => {
 };
 
 export default function useUser() {
-  const { commonStore } = useStore();
+  const { commonStore, userStore } = useStore();
+  const queryClient = useQueryClient();
   return useQuery<User, Error>([queryKeys.user], () => getUser(), {
     enabled: commonStore.token ? true : false,
     onSuccess: (data: User) => {

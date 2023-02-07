@@ -46,10 +46,11 @@ axios.interceptors.response.use(
           headers["www-authenticate"].startsWith(`Bearer error="invalid_token"`)
         ) {
           store.userStore.logout();
-          router.navigate("/unauthorized");
+          router.navigate("/");
           toast.error("Session expired - please login again");
+        } else {
+          router.navigate("/unauthorized");
         }
-        router.navigate("/unauthorized");
         break;
       case 403:
         router.navigate("/forbidden");
@@ -58,7 +59,7 @@ axios.interceptors.response.use(
         router.navigate("/not-found");
         break;
       case 500:
-        if (status === 500 && store.commonStore.token) {
+        if (status === 500 && !store.commonStore.token) {
           store.userStore.logout();
         }
         // else {
