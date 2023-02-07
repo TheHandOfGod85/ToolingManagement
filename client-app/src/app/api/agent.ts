@@ -60,10 +60,11 @@ axios.interceptors.response.use(
       case 500:
         if (status === 500 && store.commonStore.token) {
           store.userStore.logout();
-        } else {
-          store.commonStore.setServerError(data);
-          router.navigate("/server-error");
         }
+        // else {
+        //   store.commonStore.setServerError(data);
+        //   router.navigate("/server-error");
+        // }
         break;
     }
     return Promise.reject(error);
