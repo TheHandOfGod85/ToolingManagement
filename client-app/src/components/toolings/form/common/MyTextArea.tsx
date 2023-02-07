@@ -1,5 +1,4 @@
-import { Textarea } from "@mui/joy";
-import { Grid, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { useField } from "formik";
 
 interface Props {
@@ -25,7 +24,6 @@ export default function MyTextArea(props: Props) {
       variant={"outlined"}
       helperText={meta.touched && meta.error ? meta.error : null}
       multiline
-      sx={{ minWidth: 300 }}
     ></TextField>
   );
 }

@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 
 import * as Yup from "yup";
-import ValidationErrors from "../errors/ValidationErrors";
 import useGetRoles from "../../app/hooks/user/useGetRoles";
 import useUser from "../../app/hooks/user/useUser";
 import useRegister from "../../app/hooks/user/useRegister";
@@ -76,29 +75,16 @@ export default observer(function RegisterForm() {
               )}
 
               <FormGroup row sx={{ padding: 2 }}>
-                <MyTextInput
-                  sx={{ minWidth: 300 }}
-                  name="displayName"
-                  placeholder="Display Name"
-                />
+                <MyTextInput name="displayName" placeholder="Display Name" />
+              </FormGroup>
+              <FormGroup row sx={{ padding: 2 }}>
+                <MyTextInput name="username" placeholder="Username" />
+              </FormGroup>
+              <FormGroup row sx={{ padding: 2 }}>
+                <MyTextInput name="email" placeholder="Email" />
               </FormGroup>
               <FormGroup row sx={{ padding: 2 }}>
                 <MyTextInput
-                  sx={{ minWidth: 300 }}
-                  name="username"
-                  placeholder="Username"
-                />
-              </FormGroup>
-              <FormGroup row sx={{ padding: 2 }}>
-                <MyTextInput
-                  sx={{ minWidth: 300 }}
-                  name="email"
-                  placeholder="Email"
-                />
-              </FormGroup>
-              <FormGroup row sx={{ padding: 2 }}>
-                <MyTextInput
-                  sx={{ minWidth: 300 }}
                   name="password"
                   placeholder="Password"
                   type="password"
@@ -107,6 +93,7 @@ export default observer(function RegisterForm() {
               {user?.role === "Admin" ? (
                 <FormGroup row sx={{ padding: 2 }}>
                   <Autocomplete
+                    fullWidth
                     options={data || []}
                     onChange={(e, newValue) => {
                       setFieldValue("role", newValue);
@@ -114,7 +101,6 @@ export default observer(function RegisterForm() {
                     renderInput={(params) => {
                       return (
                         <MyTextInput
-                          sx={{ minWidth: 300 }}
                           name="role"
                           placeholder="Role"
                           {...params}

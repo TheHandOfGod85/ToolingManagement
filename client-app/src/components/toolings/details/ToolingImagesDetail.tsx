@@ -99,7 +99,7 @@ export default observer(function ToolingImagesDetail() {
           <ImageList variant="standard" cols={5} sx={{ ml: 5, mr: 5 }}>
             {!!singleTooling &&
               singleTooling?.images!.map((img: Image, index) => (
-                <ImageListItem key={index}>
+                <ImageListItem key={index} sx={{ width: { xs: 80, md: 200 } }}>
                   <img
                     src={img.url}
                     onClick={(e) => handleClick(e, index)}

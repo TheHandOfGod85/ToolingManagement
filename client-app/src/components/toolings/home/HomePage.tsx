@@ -24,7 +24,7 @@ export default observer(function HomePage() {
         <Grid container direction={"row"} justifyContent={"center"}>
           <Grid item>
             <Typography color={"white"} variant="h5" ml={2}>
-              TOOLING MANAGEMENT SYSTEM
+              TOOLING SYSTEM
             </Typography>
           </Grid>
           {token ? (

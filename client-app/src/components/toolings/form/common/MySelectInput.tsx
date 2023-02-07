@@ -1,8 +1,4 @@
-import {
-  ListItemText,
-  MenuItem,
-  TextField,
-} from "@mui/material";
+import { ListItemText, MenuItem, TextField } from "@mui/material";
 import { useField } from "formik";
 
 interface Props {
@@ -11,7 +7,7 @@ interface Props {
   options: any;
   label?: string;
   sx?: {};
-  InputProps?:{};
+  InputProps?: {};
 }
 
 export default function MySelectInput(props: Props) {

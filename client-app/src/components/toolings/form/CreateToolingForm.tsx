@@ -96,7 +96,7 @@ export default function CreateToolingForm() {
               {/* Tnumber and ps number fields */}
               <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
                 <MyTextInput
-                  sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
+                  sx={{ minWidth: { xs: 250, md: 300 }, mb: { xs: 2, md: 0 } }}
                   name="tNumber"
                   placeholder="T Number"
                   InputProps={{
@@ -107,7 +107,7 @@ export default function CreateToolingForm() {
                 />
 
                 <MyTextInput
-                  sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
+                  sx={{  minWidth: { xs: 250, md: 300 }, mb: { xs: 2, md: 0 } }}
                   name="psNumber"
                   placeholder="PS Number"
                   InputProps={{
@@ -120,7 +120,7 @@ export default function CreateToolingForm() {
               {/* quantity and number of impressions fields */}
               <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
                 <MyTextInput
-                  sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
+                  sx={{  minWidth: { xs: 250, md: 300 }, mb: { xs: 2, md: 0 } }}
                   type="number"
                   name="quantity"
                   placeholder="Quantity"
@@ -132,7 +132,7 @@ export default function CreateToolingForm() {
                   }}
                 />
                 <MyTextInput
-                  sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
+                  sx={{ minWidth: { xs: 250, md: 300 }, mb: { xs: 2, md: 0 } }}
                   type="number"
                   name="numberOfImpressions"
                   placeholder="Impressions"
@@ -147,7 +147,7 @@ export default function CreateToolingForm() {
               {/* department and punnet number fields */}
               <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
                 <MySelectInput
-                  sx={{ minWidth: 300, mb: { xs: 2 } }}
+                  sx={{  minWidth: { xs: 250, md: 300 }, mb: { xs: 2 } }}
                   name="department"
                   placeholder="Department"
                   label="Department"
@@ -164,7 +164,7 @@ export default function CreateToolingForm() {
                 <MyTextInput
                   name="punnetNumber"
                   placeholder="Punnet Number"
-                  sx={{ minWidth: 300, mb: { xs: 2, md: 0 } }}
+                  sx={{  minWidth: { xs: 250, md: 300 }, mb: { xs: 2, md: 0 } }}
                   InputProps={{
                     endAdornment: loading && !tooling?.punnetNumber && (
                       <CircularProgress size={18} />

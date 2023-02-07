@@ -1,9 +1,11 @@
 import {
   AppBar,
   IconButton,
+  makeStyles,
   Menu,
   MenuItem,
   Stack,
+  styled,
   Tab,
   Tabs,
   Toolbar,
@@ -16,12 +18,18 @@ import React from "react";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import RegisterForm from "../../components/users/RegisterForm";
 import useUser from "../hooks/user/useUser";
+import HomeIcon from "@mui/icons-material/Home";
+import CategoryIcon from "@mui/icons-material/Category";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 
 export default observer(function NavBar() {
   const { data: user } = useUser();
   const { userStore, modalStore } = useStore();
   const { logout } = userStore;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const StyledTypography = styled(Typography)((props) => ({
+    "&:hover": { cursor: "pointer" },
+  }));
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -46,29 +54,56 @@ export default observer(function NavBar() {
             color: "white",
             textDecoration: "none",
             mr: 2,
+            display: { xs: "none", sm: "block" },
           }}
         >
           Home
         </Typography>
-        <Tabs value={false}>
-          <Tab
-            component={Link}
-            to={"/toolings"}
-            label="Toolings"
-            sx={{
-              color: "white",
-            }}
+        <IconButton component={Link} to={"/"}>
+          <HomeIcon
+            fontSize={"small"}
+            sx={{ display: { xs: "block", sm: "none" }, color: "white" }}
           />
-          {user?.role === "Admin" ? (
-            <Tab
-              label="Create user"
+        </IconButton>
+        <IconButton component={Link} to={"/toolings"}>
+          <CategoryIcon
+            fontSize={"small"}
+            sx={{ display: { xs: "block", sm: "none" }, color: "white" }}
+          />
+        </IconButton>
+        <Typography
+          component={Link}
+          to={"/toolings"}
+          variant="button"
+          sx={{
+            color: "white",
+            textDecoration: "none",
+            mr: 2,
+            display: { xs: "none", sm: "block" },
+          }}
+        >
+          Toolings
+        </Typography>
+        {user?.role === "Admin" ? (
+          <>
+            <StyledTypography
+              variant="button"
               onClick={() => modalStore.openModal(<RegisterForm />)}
               sx={{
                 color: "white",
+                display: { xs: "none", sm: "block" },
               }}
-            />
-          ) : null}
-        </Tabs>
+            >
+              Create User
+            </StyledTypography>
+            <IconButton onClick={() => modalStore.openModal(<RegisterForm />)}>
+              <PersonAddAlt1Icon
+                fontSize={"small"}
+                sx={{ display: { xs: "block", sm: "none" }, color: "white" }}
+              />
+            </IconButton>
+          </>
+        ) : null}
         {user && (
           <Stack direction={"row"} ml={"auto"} alignItems={"center"}>
             <Typography component={"div"} color={"white"} variant="h6">

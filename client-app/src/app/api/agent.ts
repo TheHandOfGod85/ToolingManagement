@@ -58,9 +58,8 @@ axios.interceptors.response.use(
         router.navigate("/not-found");
         break;
       case 500:
-        if (status === 500 && !store.commonStore.token) {
-          router.navigate("/");
-          // store.userStore.logout();
+        if (status === 500 && store.commonStore.token) {
+          store.userStore.logout();
         } else {
           store.commonStore.setServerError(data);
           router.navigate("/server-error");
