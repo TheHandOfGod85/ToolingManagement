@@ -22,7 +22,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: danely85/toolingmanagement:responsive
+          tags: danely85/toolingmanagement:latest
   deploy:
     needs: docker
     name: Deploy app
