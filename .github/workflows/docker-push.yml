@@ -24,7 +24,7 @@ jobs:
           push: true
           tags: danely85/toolingmanagement:latest
   deploy:
-    needs: Docker
+    needs: docker
     name: Deploy app
     runs-on: ubuntu-latest
     steps:
