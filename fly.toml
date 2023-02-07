@@ -6,7 +6,7 @@ kill_timeout = 5
 processes = []
 
 [build]
-  image = "danely85/toolingmanagement"
+  image = "danely85/toolingmanagement:latest"
 
 [env]
  ASPNETCORE_URLS="http://+:8080"
