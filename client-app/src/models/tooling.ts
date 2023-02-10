@@ -2,11 +2,11 @@ export interface Tooling {
   id?: string | undefined;
   tNumber: string;
   psNumber: string;
-  quantity: number;
+  quantity: number | undefined;
   department: string;
   note?: string;
   isInProduction: boolean;
-  numberOfImpressions: number;
+  numberOfImpressions: number | undefined;
   image?: string;
   punnetNumber: string;
   products?: Product[];

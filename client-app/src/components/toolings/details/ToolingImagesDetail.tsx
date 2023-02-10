@@ -77,7 +77,7 @@ export default observer(function ToolingImagesDetail() {
       height={"100%"}
     >
       {singleTooling?.images!.length !== 0 ? (
-        <Typography color={"black"} variant="h4">
+        <Typography color={"#1976D2"} variant="h4" fontFamily={"anton"}>
           IMAGES
         </Typography>
       ) : null}
@@ -90,7 +90,12 @@ export default observer(function ToolingImagesDetail() {
           width={"100%"}
           height={"60vh"}
         >
-          <Typography textAlign={"center"} variant="h6">
+          <Typography
+            textAlign={"center"}
+            variant="h6"
+            fontFamily={"anton"}
+            color={"#1976D2"}
+          >
             No Images
           </Typography>
         </Stack>

@@ -33,11 +33,11 @@ export default function CreateToolingForm() {
     id: "",
     tNumber: "",
     psNumber: "",
-    quantity: 0,
+    quantity: undefined,
     department: "",
     note: "",
     isInProduction: false,
-    numberOfImpressions: 0,
+    numberOfImpressions: undefined,
     image: "",
     punnetNumber: "",
   });
@@ -74,11 +74,21 @@ export default function CreateToolingForm() {
     <>
       <Paper sx={{ alignItems: "center", m: 3, mt: 10, height: "100%" }}>
         {!id ? (
-          <Typography textAlign={"center"} variant="h4" mb={3}>
+          <Typography
+            textAlign={"center"}
+            variant="h4"
+            mb={3}
+            fontFamily={"anton"}
+          >
             Create Tooling Form
           </Typography>
         ) : (
-          <Typography textAlign={"center"} variant="h4" mb={3}>
+          <Typography
+            textAlign={"center"}
+            variant="h4"
+            mb={3}
+            fontFamily={"anton"}
+          >
             Edit Tooling Form
           </Typography>
         )}
@@ -107,7 +117,7 @@ export default function CreateToolingForm() {
                 />
 
                 <MyTextInput
-                  sx={{  minWidth: { xs: 250, md: 300 }, mb: { xs: 2, md: 0 } }}
+                  sx={{ minWidth: { xs: 250, md: 300 }, mb: { xs: 2, md: 0 } }}
                   name="psNumber"
                   placeholder="PS Number"
                   InputProps={{
@@ -120,12 +130,13 @@ export default function CreateToolingForm() {
               {/* quantity and number of impressions fields */}
               <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
                 <MyTextInput
-                  sx={{  minWidth: { xs: 250, md: 300 }, mb: { xs: 2, md: 0 } }}
+                  sx={{ minWidth: { xs: 250, md: 300 }, mb: { xs: 2, md: 0 } }}
                   type="number"
                   name="quantity"
                   placeholder="Quantity"
                   label="Quantity"
                   InputProps={{
+                    inputProps: { min: 0 },
                     endAdornment: loading && !tooling?.quantity && (
                       <CircularProgress size={18} />
                     ),
@@ -138,6 +149,7 @@ export default function CreateToolingForm() {
                   placeholder="Impressions"
                   label="Number Of Impressions"
                   InputProps={{
+                    inputProps: { min: 0 },
                     endAdornment: loading && !tooling?.numberOfImpressions && (
                       <CircularProgress size={18} />
                     ),
@@ -147,7 +159,7 @@ export default function CreateToolingForm() {
               {/* department and punnet number fields */}
               <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
                 <MySelectInput
-                  sx={{  minWidth: { xs: 250, md: 300 }, mb: { xs: 2 } }}
+                  sx={{ minWidth: { xs: 250, md: 300 }, mb: { xs: 2 } }}
                   name="department"
                   placeholder="Department"
                   label="Department"
@@ -164,7 +176,7 @@ export default function CreateToolingForm() {
                 <MyTextInput
                   name="punnetNumber"
                   placeholder="Punnet Number"
-                  sx={{  minWidth: { xs: 250, md: 300 }, mb: { xs: 2, md: 0 } }}
+                  sx={{ minWidth: { xs: 250, md: 300 }, mb: { xs: 2, md: 0 } }}
                   InputProps={{
                     endAdornment: loading && !tooling?.punnetNumber && (
                       <CircularProgress size={18} />

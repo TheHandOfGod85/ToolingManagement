@@ -7,13 +7,11 @@ import {
 } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
-import useUser from "../../../app/hooks/user/useUser";
 import { useStore } from "../../../app/stores/store";
 import LoginForm from "../../users/LoginForm";
 import { HomePageContainer } from "./styles";
 
 export default observer(function HomePage() {
-  const { data } = useUser();
   const { modalStore } = useStore();
   const token = localStorage.getItem("jwt");
 
@@ -24,6 +22,10 @@ export default observer(function HomePage() {
         <Grid container direction={"row"} justifyContent={"center"}>
           <Grid item>
             <Typography
+              sx={{
+                "&:hover": { cursor: "default" },
+                
+              }}
               color={"white"}
               variant="h3"
               ml={2}

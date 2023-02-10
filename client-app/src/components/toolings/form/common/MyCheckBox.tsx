@@ -13,6 +13,7 @@ export default function MyCheckBox(props: Props) {
 
   return (
     <FormControlLabel
+      sx={{ "& .MuiFormControlLabel-label ": { fontFamily: "anton" } }}
       {...field}
       {...props}
       checked={field.value == null ? false : field.value}
