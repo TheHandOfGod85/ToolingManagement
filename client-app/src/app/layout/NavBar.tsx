@@ -50,6 +50,7 @@ export default observer(function NavBar() {
           component={Link}
           to={"/"}
           variant="button"
+          fontFamily={"anton"}
           sx={{
             color: "white",
             textDecoration: "none",
@@ -72,6 +73,7 @@ export default observer(function NavBar() {
           />
         </IconButton>
         <Typography
+          fontFamily={"anton"}
           component={Link}
           to={"/toolings"}
           variant="button"
@@ -87,6 +89,7 @@ export default observer(function NavBar() {
         {user?.role === "Admin" ? (
           <>
             <StyledTypography
+              fontFamily={"anton"}
               variant="button"
               onClick={() => modalStore.openModal(<RegisterForm />)}
               sx={{
@@ -106,7 +109,12 @@ export default observer(function NavBar() {
         ) : null}
         {user && (
           <Stack direction={"row"} ml={"auto"} alignItems={"center"}>
-            <Typography component={"div"} color={"white"} variant="h6">
+            <Typography
+              component={"div"}
+              color={"white"}
+              variant="h6"
+              fontFamily={"anton"}
+            >
               {user.displayName}
             </Typography>
             <IconButton

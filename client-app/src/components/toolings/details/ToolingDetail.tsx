@@ -58,6 +58,9 @@ export default observer(function ToolingDetail() {
     <Stack direction={"row"} justifyContent={"center"} mt={10} height={"100%"}>
       <Card sx={{ maxWidth: 445 }}>
         <CardHeader
+          sx={{
+            "& .MuiCardHeader-title": { fontFamily: "anton", color: "#1976D2" },
+          }}
           title={`${singleTooling?.tNumber} --- ${singleTooling?.psNumber}`}
           action={
             user?.role === "Admin" ? (
@@ -99,19 +102,19 @@ export default observer(function ToolingDetail() {
           />
         </CardActionArea>
         <CardContent>
-          <Typography variant="h6">
+          <Typography variant="h6" fontFamily={"anton"} color={"#1976D2"}>
             Quantity : {singleTooling?.quantity}
           </Typography>
-          <Typography variant="h6">
+          <Typography variant="h6" fontFamily={"anton"} color={"#1976D2"}>
             Department : {singleTooling?.department}
           </Typography>
-          <Typography variant="h6">
+          <Typography variant="h6" fontFamily={"anton"} color={"#1976D2"}>
             In Use : {singleTooling?.isInProduction === true ? "Yes" : "No"}
           </Typography>
-          <Typography variant="h6">
+          <Typography variant="h6" fontFamily={"anton"} color={"#1976D2"}>
             Impressions : {singleTooling?.numberOfImpressions}
           </Typography>
-          <Typography variant="h6">
+          <Typography variant="h6" fontFamily={"anton"} color={"#1976D2"}>
             Punnet Number : {singleTooling?.punnetNumber}
           </Typography>
         </CardContent>

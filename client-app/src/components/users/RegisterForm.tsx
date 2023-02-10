@@ -65,7 +65,7 @@ export default observer(function RegisterForm() {
           }) => (
             <Form onSubmit={handleSubmit} autoComplete="off" className="error">
               {user?.role === "Admin" ? (
-                <Typography textAlign={"center"} variant="h6">
+                <Typography textAlign={"center"} variant="h6" fontFamily={"anton"}>
                   Create a new User
                 </Typography>
               ) : (

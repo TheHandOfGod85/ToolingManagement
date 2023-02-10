@@ -23,7 +23,12 @@ export default observer(function HomePage() {
       <HomePageContainer>
         <Grid container direction={"row"} justifyContent={"center"}>
           <Grid item>
-            <Typography color={"white"} variant="h5" ml={2}>
+            <Typography
+              color={"white"}
+              variant="h3"
+              ml={2}
+              fontFamily={"anton"}
+            >
               TOOLING SYSTEM
             </Typography>
           </Grid>

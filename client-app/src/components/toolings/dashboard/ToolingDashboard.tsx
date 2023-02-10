@@ -2,6 +2,7 @@ import {
   DataGrid,
   GridRenderCellParams,
   GridRenderEditCellParams,
+  GridRow,
   GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarDensitySelector,
@@ -12,6 +13,7 @@ import {
   Box,
   Button,
   ButtonGroup,
+  gridClasses,
   IconButton,
   Typography,
 } from "@mui/material";
@@ -26,7 +28,6 @@ export default observer(function ToolingDashboard() {
   const { data: user } = useUser();
   const { data: toolings, isLoading: loading } = useToolings();
   const { mutate: deleteTooling } = useDeleteTooling();
-
 
   // columns set up for the grid table
   const columns = [
@@ -64,9 +65,7 @@ export default observer(function ToolingDashboard() {
       sortable: false,
       disableColumnMenu: true,
       width: 120,
-      renderCell: (params: GridRenderEditCellParams) => {
-        return params.row.isInProduction === true ? "Yes" : "No";
-      },
+      type: "boolean",
     },
     {
       field: "numberOfImpressions",
@@ -183,24 +182,34 @@ export default observer(function ToolingDashboard() {
     <div>
       <Box sx={{ width: "100%", mt: 10 }} height={"100%"}>
         <Typography
-          variant="h3"
+          variant="h2"
           component="h3"
+          fontFamily={"anton"}
+          color={"#1976D2"}
           sx={{ textAlign: "center", mt: 3, mb: 3 }}
         >
           Manage Toolings
         </Typography>
       </Box>
-      <DataGrid
-        loading={loading}
-        sx={{ minHeight: 500 }}
-        autoHeight
-        columns={columns}
-        rowHeight={120}
-        rows={toolings || []}
-        components={{
-          Toolbar: CustomToolbar,
-        }}
-      />
+      <Box height={400} width={"100%"}>
+        <DataGrid
+          disableSelectionOnClick
+          loading={loading}
+          columns={columns}
+          rows={toolings || []}
+          components={{
+            Toolbar: CustomToolbar,
+          }}
+          getRowSpacing={(params) => ({
+            top: params.isFirstVisible ? 0 : 5,
+            bottom: params.isLastVisible ? 0 : 5,
+          })}
+          sx={{
+            "& .MuiDataGrid-row": { bgcolor: "lightblue" },
+            "& .MuiDataGrid-columnHeaderTitle": { fontFamily: "anton",color:"#1976D2" },
+          }}
+        />
+      </Box>
     </div>
   );
 });

@@ -17,7 +17,6 @@ import {
 } from "@mui/x-data-grid";
 import { observer } from "mobx-react-lite";
 import { Link, useParams } from "react-router-dom";
-import { useStore } from "../../app/stores/store";
 import AddIcon from "@mui/icons-material/Add";
 import useTooling from "../../app/hooks/tooling/useTooling";
 import useDeleteProduct from "../../app/hooks/product/useDeleteProduct";
@@ -116,16 +115,34 @@ export default observer(function ToolingProducts() {
   return (
     <>
       <Stack sx={{ height: 400, width: "100%", mt: 10 }} height={"100%"}>
-        <Typography variant="h4" sx={{ textAlign: "center", mt: 3, mb: 3 }}>
-          Product List for {singleTooling?.tNumber} {singleTooling?.psNumber}
+        <Typography
+          variant="h4"
+          sx={{ textAlign: "center", mt: 1, mb: 3 }}
+          fontFamily={"anton"}
+          color={"#1976D2"}
+        >
+          Product List for : <br />
+          {singleTooling?.tNumber} {singleTooling?.psNumber}
         </Typography>
         <DataGrid
+          disableSelectionOnClick
           loading={loading}
           autoHeight
           columns={columns}
           rows={singleTooling?.products! || []}
           components={{
             Toolbar: CustomToolbar,
+          }}
+          getRowSpacing={(params) => ({
+            top: params.isFirstVisible ? 0 : 5,
+            bottom: params.isLastVisible ? 0 : 5,
+          })}
+          sx={{
+            "& .MuiDataGrid-row": { bgcolor: "lightblue" },
+            "& .MuiDataGrid-columnHeaderTitle": {
+              fontFamily: "anton",
+              color: "#1976D2",
+            },
           }}
         />
         <Box textAlign="center" mt={2}>
