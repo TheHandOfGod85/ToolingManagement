@@ -42,9 +42,7 @@ export default observer(function ToolingProducts() {
       width: 120,
       sortable: false,
       disableColumnMenu: true,
-      renderCell: (params: GridRenderEditCellParams) => {
-        return params.row.isAllergen === true ? "Yes" : "No";
-      },
+      type: "boolean",
     },
     {
       field: "col7",
@@ -113,49 +111,51 @@ export default observer(function ToolingProducts() {
   }
 
   return (
-    <>
-      <Stack sx={{ height: 400, width: "100%", mt: 10 }} height={"100%"}>
-        <Typography
-          variant="h4"
-          sx={{ textAlign: "center", mt: 1, mb: 3 }}
-          fontFamily={"anton"}
-          color={"#1976D2"}
+    <Stack sx={{ height: 400, width: "100%", mt: { xs: 7, md: 9 } }}>
+      <Typography
+        variant="h3"
+        sx={{
+          textAlign: "center",
+          mt: 1,
+          mb: 1,
+          fontSize: { xs: "17px", md: "40px" },
+        }}
+        fontFamily={"anton"}
+        color={"primary"}
+      >
+        Product List for : {singleTooling?.tNumber} {singleTooling?.psNumber}
+      </Typography>
+      <DataGrid
+        disableSelectionOnClick
+        loading={loading}
+        autoHeight
+        columns={columns}
+        rows={singleTooling?.products! || []}
+        components={{
+          Toolbar: CustomToolbar,
+        }}
+        getRowSpacing={(params) => ({
+          top: params.isFirstVisible ? 0 : 5,
+          bottom: params.isLastVisible ? 0 : 5,
+        })}
+        sx={{
+          "& .MuiDataGrid-row": { bgcolor: "lightblue" },
+          "& .MuiDataGrid-columnHeaderTitle": {
+            fontFamily: "anton",
+            color: "#1976D2",
+          },
+        }}
+      />
+      <Box textAlign="center" mt={2}>
+        <Button
+          component={Link}
+          to={`/toolings/${singleTooling?.id}`}
+          size="small"
+          variant="outlined"
         >
-          Product List for : <br />
-          {singleTooling?.tNumber} {singleTooling?.psNumber}
-        </Typography>
-        <DataGrid
-          disableSelectionOnClick
-          loading={loading}
-          autoHeight
-          columns={columns}
-          rows={singleTooling?.products! || []}
-          components={{
-            Toolbar: CustomToolbar,
-          }}
-          getRowSpacing={(params) => ({
-            top: params.isFirstVisible ? 0 : 5,
-            bottom: params.isLastVisible ? 0 : 5,
-          })}
-          sx={{
-            "& .MuiDataGrid-row": { bgcolor: "lightblue" },
-            "& .MuiDataGrid-columnHeaderTitle": {
-              fontFamily: "anton",
-              color: "#1976D2",
-            },
-          }}
-        />
-        <Box textAlign="center" mt={2}>
-          <Button
-            component={Link}
-            to={`/toolings/${singleTooling?.id}`}
-            size="small"
-            variant="outlined"
-          >
-            Cancel
-          </Button>
-        </Box>
-      </Stack>
-    </>
+          Cancel
+        </Button>
+      </Box>
+    </Stack>
   );
 });

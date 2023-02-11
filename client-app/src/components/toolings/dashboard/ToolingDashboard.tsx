@@ -2,7 +2,6 @@ import {
   DataGrid,
   GridRenderCellParams,
   GridRenderEditCellParams,
-  GridRow,
   GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarDensitySelector,
@@ -13,7 +12,6 @@ import {
   Box,
   Button,
   ButtonGroup,
-  gridClasses,
   IconButton,
   Typography,
 } from "@mui/material";
@@ -23,6 +21,7 @@ import { Link } from "react-router-dom";
 import useToolings from "../../../app/hooks/tooling/useToolings";
 import useDeleteTooling from "../../../app/hooks/tooling/useDeleteTooling";
 import useUser from "../../../app/hooks/user/useUser";
+import { theme } from "../../../app/theme/theme";
 
 export default observer(function ToolingDashboard() {
   const { data: user } = useUser();
@@ -116,14 +115,14 @@ export default observer(function ToolingDashboard() {
               </Button>
               <Button
                 onClick={() => deleteTooling(params.row.id)}
-                color="warning"
+                color={"warning"}
               >
                 Delete
               </Button>
               <Button
                 component={Link}
                 to={`/toolings/${params.row.id}`}
-                color="secondary"
+                color="primary"
               >
                 View
               </Button>
@@ -179,37 +178,40 @@ export default observer(function ToolingDashboard() {
   }
 
   return (
-    <div>
-      <Box sx={{ width: "100%", mt: 10 }} height={"100%"}>
-        <Typography
-          variant="h2"
-          component="h3"
-          fontFamily={"anton"}
-          color={"#1976D2"}
-          sx={{ textAlign: "center", mt: 3, mb: 3 }}
-        >
-          Manage Toolings
-        </Typography>
-      </Box>
-      <Box height={400} width={"100%"}>
-        <DataGrid
-          disableSelectionOnClick
-          loading={loading}
-          columns={columns}
-          rows={toolings || []}
-          components={{
-            Toolbar: CustomToolbar,
-          }}
-          getRowSpacing={(params) => ({
-            top: params.isFirstVisible ? 0 : 5,
-            bottom: params.isLastVisible ? 0 : 5,
-          })}
-          sx={{
-            "& .MuiDataGrid-row": { bgcolor: "lightblue" },
-            "& .MuiDataGrid-columnHeaderTitle": { fontFamily: "anton",color:"#1976D2" },
-          }}
-        />
-      </Box>
-    </div>
+    <Box sx={{ height: 400, width: "100%", mt: { xs: 8, md: 9 } }}>
+      <Typography
+        variant={"h3"}
+        fontFamily={"anton"}
+        color={"primary"}
+        sx={{
+          textAlign: "center",
+          mt: 1,
+          mb: 1,
+          fontSize: { xs: "17px", md: "40px" },
+        }}
+      >
+        Manage Toolings
+      </Typography>
+      <DataGrid
+        disableSelectionOnClick
+        loading={loading}
+        columns={columns}
+        rows={toolings || []}
+        components={{
+          Toolbar: CustomToolbar,
+        }}
+        getRowSpacing={(params) => ({
+          top: params.isFirstVisible ? 0 : 5,
+          bottom: params.isLastVisible ? 0 : 5,
+        })}
+        sx={{
+          "& .MuiDataGrid-row": { bgcolor: "lightblue" },
+          "& .MuiDataGrid-columnHeaderTitle": {
+            fontFamily: "anton",
+            color: "#1976D2",
+          },
+        }}
+      />
+    </Box>
   );
 });

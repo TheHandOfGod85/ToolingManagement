@@ -4,6 +4,7 @@ import {
   CircularProgress,
   FormGroup,
   Paper,
+  Stack,
   Typography,
 } from "@mui/material";
 import { Form, Formik } from "formik";
@@ -71,23 +72,25 @@ export default function CreateToolingForm() {
   }
 
   return (
-    <>
-      <Paper sx={{ alignItems: "center", m: 3, mt: 10, height: "100%" }}>
+    <Stack sx={{ height: 400, mt: { xs: 8, md: 9 }, ml: 1, mr: 1 }}>
+      <Paper>
         {!id ? (
           <Typography
             textAlign={"center"}
-            variant="h4"
-            mb={3}
+            variant="h3"
+            sx={{ mt: 1, mb: 1, fontSize: { xs: "17px", md: "40px" } }}
             fontFamily={"anton"}
+            color={"primary"}
           >
             Create Tooling Form
           </Typography>
         ) : (
           <Typography
             textAlign={"center"}
-            variant="h4"
-            mb={3}
+            variant="h3"
+            sx={{ mt: 1, mb: 1, fontSize: { xs: "17px", md: "40px" } }}
             fontFamily={"anton"}
+            color={"primary"}
           >
             Edit Tooling Form
           </Typography>
@@ -223,14 +226,12 @@ export default function CreateToolingForm() {
                   >
                     Cancel
                   </Button>
-                  <ToastContainer />
                 </ButtonGroup>
               </FormGroup>
             </Form>
           )}
         </Formik>
       </Paper>
-      <ModalContainer />
-    </>
+    </Stack>
   );
 }

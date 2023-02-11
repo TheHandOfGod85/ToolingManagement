@@ -45,8 +45,8 @@ axios.interceptors.response.use(
           status === 401 &&
           headers["www-authenticate"].startsWith(`Bearer error="invalid_token"`)
         ) {
-          store.userStore.logout();
           router.navigate("/");
+          store.userStore.logout();
           toast.error("Session expired - please login again");
         } else {
           router.navigate("/unauthorized");
@@ -58,15 +58,15 @@ axios.interceptors.response.use(
       case 404:
         router.navigate("/not-found");
         break;
-      case 500:
-        if (status === 500 && !store.commonStore.token) {
-          store.userStore.logout();
-        }
-        // else {
-        //   store.commonStore.setServerError(data);
-        //   router.navigate("/server-error");
-        // }
-        break;
+      // case 500:
+      //   if (status === 500 && !store.commonStore.token) {
+      //     store.userStore.logout();
+      //   }
+      // else {
+      //   store.commonStore.setServerError(data);
+      //   router.navigate("/server-error");
+      // }
+      // break;
     }
     return Promise.reject(error);
   }

@@ -8,6 +8,7 @@ import {
   CircularProgress,
   FormGroup,
   Paper,
+  Stack,
   Typography,
 } from "@mui/material";
 import { Form, Formik } from "formik";
@@ -45,56 +46,63 @@ export default observer(function EditProduct() {
   }
 
   return (
-    <Paper sx={{ alignItems: "center", m: 3, mt: 10, height: "100%" }}>
-      <Typography textAlign={"center"} variant="h4" mb={3}>
-        Edit Product Form
-      </Typography>
-      <Formik
-        enableReinitialize
-        validationSchema={validationSchema}
-        initialValues={product!}
-        onSubmit={(values: Product) => handleFormSubmit(values)}
-      >
-        {({ isValid, isSubmitting, dirty }) => (
-          <Form autoComplete="off">
-            <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
-              <MyTextInput
-                InputProps={{
-                  endAdornment: loading && <CircularProgress size={18} />,
-                }}
-                name="name"
-                placeholder="Product Name"
-              />
-              <MyCheckBox
-                sx={{ ml: 1 }}
-                name={"isAllergen"}
-                label={"Allergen"}
-              ></MyCheckBox>
-            </FormGroup>
-            <FormGroup row sx={{ justifyContent: "space-evenly" }}>
-              <ButtonGroup sx={{ mb: 2 }}>
-                <LoadingButton
-                  loading={isSubmitting}
-                  disabled={isSubmitting || !dirty || !isValid}
-                  type="submit"
-                  variant="contained"
-                  sx={{ mr: 1 }}
-                >
-                  Submit
-                </LoadingButton>
-                <Button
-                  component={Link}
-                  to={`/products/${product?.toolingId}`}
-                  variant="contained"
-                  color="error"
-                >
-                  Cancel
-                </Button>
-              </ButtonGroup>
-            </FormGroup>
-          </Form>
-        )}
-      </Formik>
-    </Paper>
+    <Stack sx={{ height: 400, mt: { xs: 8, md: 9 }, ml: 1, mr: 1 }}>
+      <Paper>
+        <Typography
+          textAlign={"center"}
+          variant="h3"
+          sx={{ mt: 1, mb: 1, fontSize: { xs: "17px", md: "40px" } }}
+          fontFamily={"anton"}
+          color={"primary"}
+        >
+          Edit Product Form
+        </Typography>
+        <Formik
+          enableReinitialize
+          validationSchema={validationSchema}
+          initialValues={product!}
+          onSubmit={(values: Product) => handleFormSubmit(values)}
+        >
+          {({ isValid, isSubmitting, dirty }) => (
+            <Form autoComplete="off">
+              <FormGroup row sx={{ mb: 2, justifyContent: "space-evenly" }}>
+                <MyTextInput
+                  InputProps={{
+                    endAdornment: loading && <CircularProgress size={18} />,
+                  }}
+                  name="name"
+                  placeholder="Product Name"
+                />
+                <MyCheckBox
+                  name={"isAllergen"}
+                  label={"Allergen"}
+                ></MyCheckBox>
+              </FormGroup>
+              <FormGroup row sx={{ justifyContent: "space-evenly" }}>
+                <ButtonGroup sx={{ mb: 2 }}>
+                  <LoadingButton
+                    loading={isSubmitting}
+                    disabled={isSubmitting || !dirty || !isValid}
+                    type="submit"
+                    variant="contained"
+                    sx={{ mr: 1 }}
+                  >
+                    Submit
+                  </LoadingButton>
+                  <Button
+                    component={Link}
+                    to={`/products/${product?.toolingId}`}
+                    variant="contained"
+                    color="error"
+                  >
+                    Cancel
+                  </Button>
+                </ButtonGroup>
+              </FormGroup>
+            </Form>
+          )}
+        </Formik>
+      </Paper>
+    </Stack>
   );
 });

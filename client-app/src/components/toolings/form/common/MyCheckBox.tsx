@@ -1,5 +1,6 @@
 import { Checkbox, FormControlLabel, Grid } from "@mui/material";
 import { useField } from "formik";
+import { theme } from "../../../../app/theme/theme";
 
 interface Props {
   name: string;
@@ -13,7 +14,12 @@ export default function MyCheckBox(props: Props) {
 
   return (
     <FormControlLabel
-      sx={{ "& .MuiFormControlLabel-label ": { fontFamily: "anton" } }}
+      sx={{
+        "& .MuiFormControlLabel-label ": {
+          fontFamily: "anton",
+          color: "#1976D2",
+        },
+      }}
       {...field}
       {...props}
       checked={field.value == null ? false : field.value}
