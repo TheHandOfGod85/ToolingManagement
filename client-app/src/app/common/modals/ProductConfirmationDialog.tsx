@@ -22,7 +22,7 @@ export default function ToolingConfirmationDialog({ id, productName }: Props) {
   }
   return (
     <>
-      <DialogTitle sx={{ fontSize: { xs: "13px", md: "40px" } }}>
+      <DialogTitle sx={{ fontSize: { xs: "13px", md: "20px" } }}>
         Do you really want to delete product : {productName} ?
       </DialogTitle>
       <DialogContent>

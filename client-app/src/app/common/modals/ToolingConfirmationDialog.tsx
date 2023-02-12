@@ -25,7 +25,7 @@ export default function ToolingConfirmationDialog({
   }
   return (
     <>
-      <DialogTitle sx={{ fontSize: { xs: "13px", md: "40px" } }}>
+      <DialogTitle sx={{ fontSize: { xs: "13px", md: "20px" } }}>
         Do you really want to delete tooling : {toolingNumber} ?
       </DialogTitle>
       <DialogContent>
