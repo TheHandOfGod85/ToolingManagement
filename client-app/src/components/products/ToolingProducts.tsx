@@ -21,12 +21,14 @@ import AddIcon from "@mui/icons-material/Add";
 import useTooling from "../../app/hooks/tooling/useTooling";
 import useDeleteProduct from "../../app/hooks/product/useDeleteProduct";
 import useUser from "../../app/hooks/user/useUser";
+import { useStore } from "../../app/stores/store";
+import ProductConfirmationDialog from "../../app/common/modals/ProductConfirmationDialog";
 
 export default observer(function ToolingProducts() {
   const { id } = useParams<{ id: string }>();
   const { data: singleTooling, isLoading: loading } = useTooling(id!);
   const { data: user } = useUser();
-  const deleteProduct = useDeleteProduct();
+  const { modalStore } = useStore();
 
   const columns = [
     {
@@ -63,7 +65,14 @@ export default observer(function ToolingProducts() {
                 Edit
               </Button>
               <Button
-                onClick={() => deleteProduct.mutate(params.row.id)}
+                onClick={() =>
+                  modalStore.openModal(
+                    <ProductConfirmationDialog
+                      id={params.row.id}
+                      productName={params.row.name}
+                    />
+                  )
+                }
                 color="warning"
               >
                 Delete

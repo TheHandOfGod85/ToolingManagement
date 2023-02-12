@@ -21,6 +21,8 @@ import useSetMainImage from "../../../app/hooks/image/useSetMainImage";
 import useTooling from "../../../app/hooks/tooling/useTooling";
 import useUnSetMainImage from "../../../app/hooks/image/useUnSetMainImage";
 import useUser from "../../../app/hooks/user/useUser";
+import { useStore } from "../../../app/stores/store";
+import ImageConfirmationDialog from "../../../app/common/modals/ImageConfirmationDialog";
 
 export default observer(function ToolingImagesDetail() {
   const { id } = useParams<{ id: string }>();
@@ -29,6 +31,7 @@ export default observer(function ToolingImagesDetail() {
   const setMainImage = useSetMainImage();
   const unSetImage = useUnSetMainImage();
   const { data: user } = useUser();
+  const { modalStore } = useStore();
 
   const [openArray, setOpenArray] = useState<Array<boolean>>(
     new Array(singleTooling?.images!.length).fill(false)
@@ -118,7 +121,13 @@ export default observer(function ToolingImagesDetail() {
                       onClose={() => handleClose(index)}
                       anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
                     >
-                      <IconButton onClick={() => deleteImage.mutate(img.id)}>
+                      <IconButton
+                        onClick={() =>
+                          modalStore.openModal(
+                            <ImageConfirmationDialog id={img.id} />
+                          )
+                        }
+                      >
                         <DeleteIcon />
                       </IconButton>
                       <IconButton

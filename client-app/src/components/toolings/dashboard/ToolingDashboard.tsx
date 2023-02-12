@@ -21,12 +21,13 @@ import { Link } from "react-router-dom";
 import useToolings from "../../../app/hooks/tooling/useToolings";
 import useDeleteTooling from "../../../app/hooks/tooling/useDeleteTooling";
 import useUser from "../../../app/hooks/user/useUser";
-import { theme } from "../../../app/theme/theme";
+import { useStore } from "../../../app/stores/store";
+import ToolingConfirmationDialog from "../../../app/common/modals/ToolingConfirmationDialog";
 
 export default observer(function ToolingDashboard() {
   const { data: user } = useUser();
   const { data: toolings, isLoading: loading } = useToolings();
-  const { mutate: deleteTooling } = useDeleteTooling();
+  const { modalStore } = useStore();
 
   // columns set up for the grid table
   const columns = [
@@ -114,7 +115,14 @@ export default observer(function ToolingDashboard() {
                 Edit
               </Button>
               <Button
-                onClick={() => deleteTooling(params.row.id)}
+                onClick={() =>
+                  modalStore.openModal(
+                    <ToolingConfirmationDialog
+                      id={params.row.id}
+                      toolingNumber={params.row.tNumber}
+                    />
+                  )
+                }
                 color={"warning"}
               >
                 Delete
