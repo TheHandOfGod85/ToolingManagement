@@ -75,6 +75,7 @@ namespace API.Extensions
             services.AddAutoMapper(typeof(Markup));
             services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+           
             return services;
         }
     }

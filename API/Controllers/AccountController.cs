@@ -1,17 +1,12 @@
-using System.Security.Claims;
 using API.Attributes.ExceptionsAttributes;
 using API.DTOs;
 using Application.DTOs.User;
-using Application.Implementations.Services;
 using Application.Users.Commands;
 using Application.Users.Queries;
 using AutoMapper;
-using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -67,6 +62,24 @@ namespace API.Controllers
         public async Task<ActionResult<UserDto>> RefreshToken()
         {
             var query = new RefreshTokenQuery(User);
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("verifyEmail")]
+        public async Task<IActionResult> VerifyEmail(string token, string email)
+        {
+            var command = new VerifyEmailCommand(token, email);
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("resendEmailConfirmationLink")]
+        public async Task<IActionResult> ResendEmailConfirmationLink(string email)
+        {
+            var query = new ResendEmailConfirmationQuery(email);
             var result = await _mediator.Send(query);
             return Ok(result);
         }

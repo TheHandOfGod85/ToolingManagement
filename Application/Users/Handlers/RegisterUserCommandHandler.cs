@@ -3,10 +3,11 @@ using Application.Services.Interfaces;
 using Application.Users.Commands;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Users.Handlers
 {
-    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, AppUser>
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, ActionResult>
     {
         private readonly IRoleService _roleService;
         private readonly IUserService _userService;
@@ -20,7 +21,7 @@ namespace Application.Users.Handlers
         }
 
 
-        public async Task<AppUser> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<ActionResult> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             var user = _mapper.Map<AppUser>(request);
             var isRegistered = await _userService.RegisterUser(user, request.Password);

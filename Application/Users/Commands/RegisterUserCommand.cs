@@ -1,8 +1,9 @@
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Users.Commands
 {
-    public class RegisterUserCommand : IRequest<AppUser>
+    public class RegisterUserCommand : IRequest<ActionResult>
     {
         public string Email { get; set; }
         public string Password { get; set; }
