@@ -33,18 +33,23 @@ export default observer(function LoginForm() {
               }
             });
           }}
-          validationSchema={Yup.object({
-            email: Yup.string().required(),
-            password: Yup.string().required(),
-          })}
+          // validationSchema={Yup.object({
+          //   email: Yup.string().email("Please enter a valid email"),
+          //   password: Yup.string().required(),
+          // })}
         >
-          {({ handleSubmit, isSubmitting, errors, isValid }) => (
+          {({ handleSubmit, isSubmitting, errors }) => (
             <Form onSubmit={handleSubmit} autoComplete="off">
               <Typography textAlign={"center"} variant="h6">
                 Login to Toolings
               </Typography>
               <FormGroup row sx={{ padding: 2, justifyContent: "" }}>
-                <MyTextInput name="email" placeholder="Email" fullWidth />
+                <MyTextInput
+                  name="email"
+                  placeholder="Email"
+                  fullWidth
+                  type="email"
+                />
               </FormGroup>
               <FormGroup row sx={{ padding: 2, justifyContent: "" }}>
                 <MyTextInput
@@ -72,7 +77,6 @@ export default observer(function LoginForm() {
                 sx={{ padding: 2, justifyContent: "space-between" }}
               >
                 <LoadingButton
-                  disabled={!isValid}
                   loading={isSubmitting || loading}
                   variant="contained"
                   type="submit"

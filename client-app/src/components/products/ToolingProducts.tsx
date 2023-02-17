@@ -5,6 +5,8 @@ import {
   IconButton,
   Stack,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import {
   DataGrid,
@@ -29,6 +31,8 @@ export default observer(function ToolingProducts() {
   const { data: singleTooling, isLoading: loading } = useTooling(id!);
   const { data: user } = useUser();
   const { modalStore } = useStore();
+  const theme = useTheme();
+  const xs = useMediaQuery(theme.breakpoints.only("xs"));
 
   const columns = [
     {
@@ -89,8 +93,6 @@ export default observer(function ToolingProducts() {
     return (
       <GridToolbarContainer>
         <GridToolbarColumnsButton />
-        <GridToolbarFilterButton />
-        <GridToolbarDensitySelector />
         <GridToolbarExport />
         {user?.role === "Admin" ? (
           <>
@@ -120,14 +122,18 @@ export default observer(function ToolingProducts() {
   }
 
   return (
-    <Stack sx={{ height: 400, width: "100%", mt: { xs: 7, md: 9 } }}>
+    <Stack
+      ml={1}
+      mr={1}
+      sx={{ height: 400, mt: { xs: 7, md: 9 } }}
+    >
       <Typography
         variant="h3"
         sx={{
           textAlign: "center",
           mt: 1,
           mb: 1,
-          fontSize: { xs: "17px", md: "40px" },
+          fontSize: { xs: "17px", md: "40px", sm: "30px" },
         }}
         fontFamily={"anton"}
         color={"primary"}
@@ -135,6 +141,10 @@ export default observer(function ToolingProducts() {
         Product List for : {singleTooling?.tNumber} {singleTooling?.psNumber}
       </Typography>
       <DataGrid
+        localeText={{
+          toolbarExport: xs ? "" : "Export",
+          toolbarColumns: xs ? "" : "Columns",
+        }}
         disableSelectionOnClick
         loading={loading}
         autoHeight
