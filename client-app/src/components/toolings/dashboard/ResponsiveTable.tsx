@@ -17,6 +17,9 @@ import {
   useMediaQuery,
   useTheme,
   TablePagination,
+  Stack,
+  Divider,
+  MenuItem,
 } from "@mui/material";
 import useToolings from "../../../app/hooks/tooling/useToolings";
 import useUser from "../../../app/hooks/user/useUser";
@@ -27,17 +30,18 @@ import {
   createColumnHelper,
   getFilteredRowModel,
   getPaginationRowModel,
-  PaginationState,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
 } from "@tanstack/react-table";
 import DoneIcon from "@mui/icons-material/Done";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
-import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
+import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ToolingConfirmationDialog from "../../../app/common/modals/ToolingConfirmationDialog";
 import { router } from "../../../app/router/Routes";
 import { observer } from "mobx-react-lite";
@@ -200,7 +204,7 @@ export default observer(function ResponsiveTable() {
         color={"primary"}
         sx={{
           textAlign: "center",
-          mt: 1,
+          mt: { xs: 2, md: 1 },
           mb: 1,
           fontSize: { xs: "17px", md: "40px" },
         }}
@@ -254,7 +258,7 @@ export default observer(function ResponsiveTable() {
           />
           <div></div>
         </Box>
-        <Table sx={{ minWidth: 650 }} stickyHeader>
+        <Table stickyHeader>
           <TableHead>
             {table.getHeaderGroups().map((headergroup) => (
               <TableRow key={headergroup.id}>
@@ -305,17 +309,101 @@ export default observer(function ResponsiveTable() {
             ))}
           </TableBody>
         </Table>
-        {/* <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={-1}
-          rowsPerPage={5}
-          page={table.getState().pagination.pageIndex + 1}
-          onPageChange={table.getState().pagination}
-          onRowsPerPageChange={(e) => {
-            table.setPageSize(Number(e.target.value));
-          }}
-        /> */}
+        <Stack
+          alignContent={"center"}
+          direction={"row"}
+          alignItems={"center"}
+          mt={1}
+          mb={1}
+        >
+          <Box sx={{ whiteSpace: "nowrap" }}>
+            <IconButton
+              onClick={() => table.setPageIndex(0)}
+              disabled={!table.getCanPreviousPage()}
+            >
+              <KeyboardDoubleArrowLeftIcon />
+            </IconButton>
+            <IconButton
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              <ChevronLeftIcon />
+            </IconButton>
+            <IconButton
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              <ChevronRightIcon />
+            </IconButton>
+            <IconButton
+              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+              disabled={!table.getCanNextPage()}
+            >
+              <KeyboardDoubleArrowRightIcon />
+            </IconButton>
+          </Box>
+          <Box display={"flex"}>
+            <Typography
+              sx={{
+                fontSize: { xs: "12px", md: "15px" },
+              }}
+              mr={1}
+            >
+              Page
+            </Typography>
+            <Typography
+              sx={{
+                whiteSpace: "nowrap",
+                fontSize: { xs: "12px", md: "15px" },
+              }}
+            >
+              {table.getState().pagination.pageIndex + 1} of{" "}
+              {table.getPageCount()}
+            </Typography>
+          </Box>
+          <Box ml={3}>
+            <Box component={"span"} display={"flex"} alignItems={"center"}>
+              <Typography
+                sx={{
+                  whiteSpace: "nowrap",
+                  fontSize: { xs: "12px", md: "15px" },
+                }}
+                mr={1}
+              >
+                Go to page :
+              </Typography>
+              <TextField
+                InputProps={{
+                  inputProps: { min: 1 },
+                }}
+                size={"small"}
+                sx={{ maxWidth: 60, minWidth: 60 }}
+                type="number"
+                defaultValue={table.getState().pagination.pageIndex + 1}
+                onChange={(e) => {
+                  const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                  table.setPageIndex(page);
+                }}
+              />
+            </Box>
+          </Box>
+          <Box ml={1}>
+            <TextField
+              size="small"
+              select
+              value={table.getState().pagination.pageSize}
+              onChange={(e) => {
+                table.setPageSize(Number(e.target.value));
+              }}
+            >
+              {[5, 10, 15].map((pageSize) => (
+                <MenuItem key={pageSize} value={pageSize}>
+                  Show {pageSize}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Box>
+        </Stack>
       </TableContainer>
     </>
   );
