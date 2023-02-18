@@ -5,7 +5,7 @@ import ServerError from "../../components/errors/ServerError";
 import Unauthorized from "../../components/errors/Unauthorized";
 import CreateProducts from "../../components/products/form/CreateProducts";
 import EditProduct from "../../components/products/form/EditProduct";
-import ToolingProducts from "../../components/products/ToolingProducts";
+import ProductsDashboard from "../../components/products/ProductsDashboard";
 import ToolingDashboard from "../../components/toolings/dashboard/ToolingDashboard";
 import ToolingDetail from "../../components/toolings/details/ToolingDetail";
 import ToolingImagesDetail from "../../components/toolings/details/ToolingImagesDetail";
@@ -28,7 +28,7 @@ export const routes: RouteObject[] = [
         ],
       },
       { path: "toolings", element: <ToolingDashboard /> },
-      { path: "products/:id", element: <ToolingProducts /> },
+      { path: "products/:id", element: <ProductsDashboard /> },
       { path: "toolings/:id", element: <ToolingDetail /> },
       { path: "images/:id", element: <ToolingImagesDetail /> },
       { path: "not-found", element: <NotFound /> },

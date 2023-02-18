@@ -16,9 +16,7 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
-  TablePagination,
   Stack,
-  Divider,
   MenuItem,
 } from "@mui/material";
 import useToolings from "../../../app/hooks/tooling/useToolings";
@@ -51,7 +49,6 @@ export default observer(function ResponsiveTable() {
   const { data: toolings, isLoading: loading } = useToolings();
   const { modalStore } = useStore();
   const theme = useTheme();
-  const xs = useMediaQuery(theme.breakpoints.only("xs"));
 
   const data = useMemo(() => toolings || [], [toolings]);
 
@@ -79,10 +76,6 @@ export default observer(function ResponsiveTable() {
       header: "PS Number",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("quantity", {
-      header: "Quantity",
-      cell: (info) => info.getValue(),
-    }),
     columnHelper.accessor("department", {
       header: "Department",
       cell: (info) => info.getValue(),
@@ -100,16 +93,8 @@ export default observer(function ResponsiveTable() {
         },
       }
     ),
-    columnHelper.accessor("numberOfImpressions", {
-      header: "Impressions",
-      cell: (info) => info.getValue(),
-    }),
     columnHelper.accessor("punnetNumber", {
       header: "Punnet Number",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("note", {
-      header: "Note",
       cell: (info) => info.getValue(),
     }),
     columnHelper.display({
