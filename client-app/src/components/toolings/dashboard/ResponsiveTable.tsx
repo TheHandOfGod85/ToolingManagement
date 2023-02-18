@@ -361,7 +361,7 @@ export default observer(function ResponsiveTable() {
               {table.getPageCount()}
             </Typography>
           </Box>
-          <Box ml={3}>
+          <Box ml={1}>
             <Box component={"span"} display={"flex"} alignItems={"center"}>
               <Typography
                 sx={{
@@ -377,7 +377,11 @@ export default observer(function ResponsiveTable() {
                   inputProps: { min: 1 },
                 }}
                 size={"small"}
-                sx={{ maxWidth: 60, minWidth: 60 }}
+                sx={{
+                  maxWidth: 60,
+                  minWidth: 60,
+                  "& .MuiOutlinedInput-input": { height: "0.4rem" },
+                }}
                 type="number"
                 defaultValue={table.getState().pagination.pageIndex + 1}
                 onChange={(e) => {
@@ -391,6 +395,15 @@ export default observer(function ResponsiveTable() {
             <TextField
               size="small"
               select
+              sx={{
+                "& .css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select":
+                  {
+                    minHeight: "0.4rem",
+                    maxHeight: "0.4rem",
+                    fontSize: "10px",
+                    transform: "translate(0,-40%)",
+                  },
+              }}
               value={table.getState().pagination.pageSize}
               onChange={(e) => {
                 table.setPageSize(Number(e.target.value));
