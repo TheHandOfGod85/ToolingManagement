@@ -20,6 +20,7 @@ export interface Product {
   toolingId?: string | undefined;
 }
 
+
 export interface Image {
   id: string;
   url: string;
