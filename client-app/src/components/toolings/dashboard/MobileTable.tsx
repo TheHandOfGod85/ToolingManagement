@@ -245,7 +245,7 @@ export default observer(function MobileTable() {
           />
           <div></div>
         </Box>
-        <Table stickyHeader>
+        <Table stickyHeader size="small">
           {/* <TableHead>
             {table.getHeaderGroups().map((headergroup) => (
               <TableRow key={headergroup.id}>

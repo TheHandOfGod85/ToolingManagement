@@ -152,35 +152,6 @@ export default observer(function MobileTableProducts() {
             </List>
           )}
         </>
-        // <>
-        //   {user?.role === "Admin" ? (
-        //     <ButtonGroup variant="contained" size="small">
-        //       <Button
-        //         onClick={() =>
-        //           router.navigate(
-        //             `/manage/products/edit/${props.row.original.id}`
-        //           )
-        //         }
-        //         color="inherit"
-        //       >
-        //         Edit
-        //       </Button>
-        //       <Button
-        //         onClick={() =>
-        //           modalStore.openModal(
-        //             <ProductConfirmationDialog
-        //               id={props.row.original.id}
-        //               productName={props.row.original.name}
-        //             />
-        //           )
-        //         }
-        //         color="warning"
-        //       >
-        //         Delete
-        //       </Button>
-        //     </ButtonGroup>
-        //   ) : null}
-        // </>
       ),
     }),
   ];
@@ -280,7 +251,7 @@ export default observer(function MobileTableProducts() {
           />
           <div></div>
         </Box>
-        <Table stickyHeader>
+        <Table stickyHeader size="small">
           {/* <TableHead>
             {table.getHeaderGroups().map((headergroup) => (
               <TableRow key={headergroup.id}>

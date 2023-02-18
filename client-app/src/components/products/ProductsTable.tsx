@@ -216,7 +216,7 @@ export default observer(function ProductsTable() {
           />
           <div></div>
         </Box>
-        <Table stickyHeader>
+        <Table stickyHeader size="small">
           <TableHead>
             {table.getHeaderGroups().map((headergroup) => (
               <TableRow key={headergroup.id}>
