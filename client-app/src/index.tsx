@@ -14,14 +14,11 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <StoreContext.Provider value={store}>
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />{" "}
-          <ReactQueryDevtools initialIsOpen />
-        </QueryClientProvider>
-      </StoreContext.Provider>
-    </ThemeProvider>
-  </React.StrictMode>
+  <ThemeProvider theme={theme}>
+    <StoreContext.Provider value={store}>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} /> <ReactQueryDevtools initialIsOpen />
+      </QueryClientProvider>
+    </StoreContext.Provider>
+  </ThemeProvider>
 );

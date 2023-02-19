@@ -9,7 +9,7 @@ import useDeleteTooling from "../../hooks/tooling/useDeleteTooling";
 import { useStore } from "../../stores/store";
 
 interface Props {
-  id: string;
+  id: string | undefined;
   toolingNumber: string;
 }
 
@@ -20,7 +20,7 @@ export default function ToolingConfirmationDialog({
   const { mutate: deleteTooling } = useDeleteTooling();
   const { modalStore } = useStore();
   function handleDelete(id: string) {
-    deleteTooling(id);
+    deleteTooling(id!);
     modalStore.closeModal();
   }
   return (
@@ -44,7 +44,7 @@ export default function ToolingConfirmationDialog({
           color="warning"
           variant="contained"
           size="small"
-          onClick={() => handleDelete(id)}
+          onClick={() => handleDelete(id!)}
         >
           Yes
         </Button>

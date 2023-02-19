@@ -22,6 +22,7 @@ import React from "react";
 import ImageUploadWidget from "../../images/ImageUploadWidget";
 import useTooling from "../../../app/hooks/tooling/useTooling";
 import useUser from "../../../app/hooks/user/useUser";
+import { theme } from "../../../app/theme/theme";
 
 export default observer(function ToolingDetail() {
   const { id } = useParams<{ id: string }>();
@@ -102,20 +103,47 @@ export default observer(function ToolingDetail() {
           />
         </CardActionArea>
         <CardContent>
-          <Typography variant="h6" fontFamily={"anton"} color={"#1976D2"}>
+          <Typography
+            variant="h6"
+            fontFamily={"anton"}
+            color={theme.palette.primary.main}
+          >
             Quantity : {singleTooling?.quantity}
           </Typography>
-          <Typography variant="h6" fontFamily={"anton"} color={"#1976D2"}>
+          <Typography
+            variant="h6"
+            fontFamily={"anton"}
+            color={theme.palette.primary.main}
+          >
             Department : {singleTooling?.department}
           </Typography>
-          <Typography variant="h6" fontFamily={"anton"} color={"#1976D2"}>
+          <Typography
+            variant="h6"
+            fontFamily={"anton"}
+            color={theme.palette.primary.main}
+          >
             In Use : {singleTooling?.isInProduction === true ? "Yes" : "No"}
           </Typography>
-          <Typography variant="h6" fontFamily={"anton"} color={"#1976D2"}>
+          <Typography
+            variant="h6"
+            fontFamily={"anton"}
+            color={theme.palette.primary.main}
+          >
             Impressions : {singleTooling?.numberOfImpressions}
           </Typography>
-          <Typography variant="h6" fontFamily={"anton"} color={"#1976D2"}>
+          <Typography
+            variant="h6"
+            fontFamily={"anton"}
+            color={theme.palette.primary.main}
+          >
             Punnet Number : {singleTooling?.punnetNumber}
+          </Typography>
+          <Typography
+            variant="h6"
+            fontFamily={"anton"}
+            color={theme.palette.primary.main}
+          >
+            Note : {!!singleTooling?.note ? singleTooling?.note : "none"}
           </Typography>
         </CardContent>
         <CardActions>

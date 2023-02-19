@@ -17,7 +17,6 @@ import { ToastContainer } from "react-toastify";
 
 function App() {
   const location = useLocation();
-  
 
   return (
     <>

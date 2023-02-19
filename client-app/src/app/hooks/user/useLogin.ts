@@ -28,6 +28,7 @@ export default function useLogin() {
     },
     onMutate: () => {
       queryClient.removeQueries([queryKeys.user]);
+      queryClient.removeQueries([queryKeys.toolings]);
     },
   });
 }
