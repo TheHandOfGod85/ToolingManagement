@@ -384,10 +384,10 @@ export default observer(function ResponsiveTable() {
               size="small"
               select
               sx={{
-                "& .MuiSelect-select": {
-                  height: "0.2rem",
-                  fontSize: "0.5rem",
-                  transform: "translate(0,-19%)",
+                "& .css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input": {
+                  height: "0.4rem",
+                  fontSize: "8px",
+                  transform: "translate(0,-17%)",
                 },
               }}
               value={table.getState().pagination.pageSize}
