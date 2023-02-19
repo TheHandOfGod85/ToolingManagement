@@ -20,6 +20,7 @@ import {
   ListItemIcon,
   List,
   ListItemText,
+  Select,
 } from "@mui/material";
 import useToolings from "../../../app/hooks/tooling/useToolings";
 import useUser from "../../../app/hooks/user/useUser";
@@ -387,20 +388,27 @@ export default observer(function MobileTable() {
             </Box>
           </Box>
           <Box ml={1}>
-            <TextField
+            <Select
               size="small"
-              select
+              sx={{
+                height: "1.55rem",
+                "& .MuiSelect-select": { fontSize: "10px" },
+              }}
               value={table.getState().pagination.pageSize}
               onChange={(e) => {
                 table.setPageSize(Number(e.target.value));
               }}
             >
               {[5, 10, 15].map((pageSize) => (
-                <MenuItem key={pageSize} value={pageSize}>
+                <MenuItem
+                  sx={{ fontSize: "small" }}
+                  key={pageSize}
+                  value={pageSize}
+                >
                   Show {pageSize}
                 </MenuItem>
               ))}
-            </TextField>
+            </Select>
           </Box>
         </Stack>
       </TableContainer>
