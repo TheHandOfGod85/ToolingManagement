@@ -383,13 +383,6 @@ export default observer(function ResponsiveTable() {
             <TextField
               size="small"
               select
-              sx={{
-                "& .css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input": {
-                  height: "0.4rem",
-                  fontSize: "8px",
-                  transform: "translate(0,-17%)",
-                },
-              }}
               value={table.getState().pagination.pageSize}
               onChange={(e) => {
                 table.setPageSize(Number(e.target.value));

@@ -390,12 +390,6 @@ export default observer(function MobileTable() {
             <TextField
               size="small"
               select
-              sx={{
-                "& .css-f09v0h-MuiInputBase-root-MuiOutlinedInput-root": {
-                  height: "1.5rem",
-                  fontSize: "10px",
-                },
-              }}
               value={table.getState().pagination.pageSize}
               onChange={(e) => {
                 table.setPageSize(Number(e.target.value));
