@@ -18,6 +18,9 @@ import {
   useTheme,
   Stack,
   MenuItem,
+  InputLabel,
+  Select,
+  OutlinedInput,
 } from "@mui/material";
 import useToolings from "../../../app/hooks/tooling/useToolings";
 import useUser from "../../../app/hooks/user/useUser";
@@ -43,6 +46,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ToolingConfirmationDialog from "../../../app/common/modals/ToolingConfirmationDialog";
 import { router } from "../../../app/router/Routes";
 import { observer } from "mobx-react-lite";
+import { fontSize } from "@mui/system";
 
 export default observer(function ResponsiveTable() {
   const { data: user } = useUser();
@@ -379,21 +383,33 @@ export default observer(function ResponsiveTable() {
               />
             </Box>
           </Box>
-          <Box ml={1}>
-            <TextField
+          <Box
+            ml={1}
+            display={"flex"}
+            flexDirection={"row"}
+            alignItems={"center"}
+          >
+            <Select
               size="small"
-              select
+              sx={{
+                height: "1.55rem",
+                "& .MuiSelect-select": { fontSize: "10px" },
+              }}
               value={table.getState().pagination.pageSize}
               onChange={(e) => {
                 table.setPageSize(Number(e.target.value));
               }}
             >
               {[5, 10, 15].map((pageSize) => (
-                <MenuItem key={pageSize} value={pageSize}>
+                <MenuItem
+                  sx={{ fontSize: "small" }}
+                  key={pageSize}
+                  value={pageSize}
+                >
                   Show {pageSize}
                 </MenuItem>
               ))}
-            </TextField>
+            </Select>
           </Box>
         </Stack>
       </TableContainer>
