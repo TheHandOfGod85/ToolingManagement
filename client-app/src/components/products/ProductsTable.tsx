@@ -357,13 +357,10 @@ export default observer(function ProductsTable() {
               size="small"
               select
               sx={{
-                "& .css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select":
-                  {
-                    minHeight: "0.4rem",
-                    maxHeight: "0.4rem",
-                    fontSize: "10px",
-                    transform: "translate(0,-40%)",
-                  },
+                "& .css-f09v0h-MuiInputBase-root-MuiOutlinedInput-root": {
+                  height: "1.5rem",
+                  fontSize: "10px",
+                },
               }}
               value={table.getState().pagination.pageSize}
               onChange={(e) => {
