@@ -373,7 +373,10 @@ export default observer(function MobileTableProducts() {
                 sx={{
                   maxWidth: 60,
                   minWidth: 60,
-                  "& .MuiOutlinedInput-input": { height: "0.4rem" },
+                  "& .MuiOutlinedInput-input": {
+                    height: "0.4rem",
+                    fontSize: "12px",
+                  },
                 }}
                 type="number"
                 defaultValue={table.getState().pagination.pageIndex + 1}
