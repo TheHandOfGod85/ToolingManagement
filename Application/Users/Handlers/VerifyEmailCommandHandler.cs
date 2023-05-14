@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Users.Handlers
 {
-    public class VerifyEmailCommandHandler : IRequestHandler<VerifyEmailCommand, ActionResult>
+    public class VerifyEmailCommandHandler : IRequestHandler<VerifyEmailCommand, string>
     {
         private readonly IUserService _userService;
         public VerifyEmailCommandHandler(IUserService userService)
@@ -13,7 +13,7 @@ namespace Application.Users.Handlers
             _userService = userService;
         }
 
-        public async Task<ActionResult> Handle(VerifyEmailCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(VerifyEmailCommand request, CancellationToken cancellationToken)
         {
             return await _userService.VerifyEmail(request.Token, request.Email);
         }

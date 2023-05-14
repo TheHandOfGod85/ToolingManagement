@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Users.Commands
 {
-    public class VerifyEmailCommand : IRequest<ActionResult>
+    public class VerifyEmailCommand : IRequest<string>
     {
         public VerifyEmailCommand(string token, string email)
         {

@@ -200,7 +200,10 @@ export default observer(function ResponsiveTable() {
       >
         Manage Toolings
       </Typography>
-      <TableContainer component={Paper}>
+      <TableContainer
+        component={Paper}
+        sx={{ maxWidth: 900, alignSelf: "center" }}
+      >
         <Box
           display="flex"
           justifyContent="space-between"
@@ -247,7 +250,7 @@ export default observer(function ResponsiveTable() {
           />
           <div></div>
         </Box>
-        <Table stickyHeader size="small">
+        <Table stickyHeader>
           <TableHead>
             {table.getHeaderGroups().map((headergroup) => (
               <TableRow key={headergroup.id}>
@@ -259,6 +262,7 @@ export default observer(function ResponsiveTable() {
                       whiteSpace: "nowrap",
                       width: "0.1%",
                       fontFamily: "anton",
+                      fontSize: "20px",
                       color: theme.palette.primary.main,
                     }}
                   >
@@ -288,7 +292,7 @@ export default observer(function ResponsiveTable() {
                     sx={{
                       fontFamily: "anton",
                       color: theme.palette.primary.main,
-                      fontSize: "12px",
+                      fontSize: "16px",
                     }}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

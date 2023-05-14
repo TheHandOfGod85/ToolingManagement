@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Users.Queries
 {
-    public class ResendEmailConfirmationQuery : IRequest<ActionResult>
+    public class ResendEmailConfirmationQuery : IRequest<string>
     {
         public ResendEmailConfirmationQuery(string email)
         {

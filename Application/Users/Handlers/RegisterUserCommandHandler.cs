@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Users.Handlers
 {
-    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, ActionResult>
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, string>
     {
         private readonly IRoleService _roleService;
         private readonly IUserService _userService;
@@ -21,7 +21,7 @@ namespace Application.Users.Handlers
         }
 
 
-        public async Task<ActionResult> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             var user = _mapper.Map<AppUser>(request);
             var isRegistered = await _userService.RegisterUser(user, request.Password);
